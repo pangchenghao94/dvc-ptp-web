@@ -6,16 +6,24 @@
             <form role="form">
                 <div class="form-content">
                     <div class="form-group">
-                        <input type="text" ng-model="name" class="form-control input-underline input-lg" id="" placeholder="Email">
+                        <input type="text" class="form-control input-underline input-lg" id="txtUsername" placeholder="Username" 
+                            required  
+                            [(ngModel)]="user.username" name="txtUsername" #username="ngModel">
                     </div>
 
                     <div class="form-group">
-                        <input type="password" class="form-control input-underline input-lg" id="" placeholder="Password">
+                        <input type="password" class="form-control input-underline input-lg" id="txtPassword" placeholder="Password" 
+                            required 
+                            [(ngModel)]="user.password" name="txtPassword" #password="ngModel">
                     </div>
                 </div>
-                <a class="btn rounded-btn" [routerLink]="['/dashboard']" (click)="onLoggedin()"> Log in </a>
-                &nbsp;
-                <a class="btn rounded-btn" [routerLink]="['/signup']">Register</a>
+                
+                <div [hidden]="showWrongUsernameOrPass" class="alert alert-danger">Username or password is incorrect.</div>
+                <div [hidden]="showPassEmpty" class="alert alert-danger">Password cannot be empty.</div>
+                
+                <button class="btn rounded-btn" [disabled]="username.pristine" (click)="login()"> Log in </button>
+                <!-- &nbsp;
+                <a class="btn rounded-btn" [routerLink]="['/signup']">Register</a> -->
             </form>
         </div>
     </div>

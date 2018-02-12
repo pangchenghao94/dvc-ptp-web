@@ -40,12 +40,13 @@ export class HeaderComponent implements OnInit {
         dom.classList.toggle(this.pushRightClass);
     }
 
-    rltAndLtr() {
-        const dom: any = document.querySelector('body');
-        dom.classList.toggle('rtl');
-    }
+    // rltAndLtr() {
+    //     const dom: any = document.querySelector('body');
+    //     dom.classList.toggle('rtl');
+    // }
 
     onLoggedout() {
+        localStorage.removeItem('userData');
         localStorage.removeItem('isLoggedin');
     }
 

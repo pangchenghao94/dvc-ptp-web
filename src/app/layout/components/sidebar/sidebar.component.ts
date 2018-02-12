@@ -61,6 +61,7 @@ export class SidebarComponent {
     }
 
     onLoggedout() {
+        localStorage.removeItem('userData');
         localStorage.removeItem('isLoggedin');
     }
 }

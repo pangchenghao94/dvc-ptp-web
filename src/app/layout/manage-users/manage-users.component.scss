@@ -1,0 +1,21 @@
+.mat-form-field{
+    display: block;
+}
+
+.highlight{
+    background: #EEEEEE;
+  }
+
+mat-row:hover{
+    background: #FAFAFA;
+    cursor: pointer;
+}
+
+.txtErr{
+    font-size: 0.8rem;
+    color: maroon;
+}
+
+.form-control[readonly]{
+    background-color: #fff;
+}

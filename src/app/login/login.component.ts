@@ -35,15 +35,26 @@ export class LoginComponent implements OnInit {
             this.auth.postData(this.userData, "api/login").then((result) => {
                 this.responseData = result;
     
-                if(this.responseData.error) {
+                if(this.responseData.status == "2") {
                     this.showPassEmpty = true;
                     this.showWrongUsernameOrPass = false;
-                    console.log(this.responseData.error.text);
+                }
+                else if(this.responseData.status == "3"){
+                    console.log(this.responseData.message);
                 }
                 else{
-                    localStorage.setItem('userData', JSON.stringify(this.responseData)); 
-                    localStorage.setItem('isLoggedin', 'true');
-                    this.router.navigate(['/dashboard']);
+                    console.log(this.responseData.data.state);
+                    
+                    if(this.responseData.data.state == 0) //user deactivated 
+                    {
+                        this.showPassEmpty = true;
+                        this.showWrongUsernameOrPass = false;
+                    }
+                    else{
+                        localStorage.setItem('userData', JSON.stringify(this.responseData.data)); 
+                        localStorage.setItem('isLoggedin', 'true');
+                        this.router.navigate(['/dashboard']);
+                    }
                 }
             }, 
             (err) =>{

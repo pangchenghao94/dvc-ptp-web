@@ -157,6 +157,9 @@ export class ManageUsersComponent implements OnInit {
     }
 
     submit() {
+        let token:string = JSON.parse(localStorage.getItem('userData')).token;
+        let user_id: string = JSON.parse(localStorage.getItem('userData')).user_id;
+
         if(this.mode == 1){
             let user: User = new User(null, 
                 this.userForm.get('username').value,
@@ -169,22 +172,31 @@ export class ManageUsersComponent implements OnInit {
                 this.userForm.get('userType').value);
             delete user.user_id;
             delete user.state;
+
+            let data: any = {   "token"     : token,
+                                "user_id"   : user_id, 
+                                "data"      : user};
             
-            this.auth.postData(user, "api/user/add").then((result) => {
+            this.auth.postData(data, "api/user/add").then((result) => {
                 let responseData:any = result;
     
-                if(responseData.error) {
-                    console.log(responseData.error);
+                if(responseData.status == "0"){
+                    alert(responseData.status);
                 }
                 else{
-                    alert("User have been added successfully");
-                    this.dataSource.data.push({
-                        user_id: responseData.id, 
-                        full_name: this.userForm.get('fullName').value, 
-                        usertype: this.general.getUserTypeDesc(this.userForm.get('userType').value), 
-                        phone_no: this.userForm.get('telNo').value, 
-                        state: "1"
-                    });
+                    if(responseData.error) {
+                        console.log(responseData.error);
+                    }
+                    else{
+                        alert("User have been added successfully");
+                        this.dataSource.data.push({
+                            user_id: responseData.id, 
+                            full_name: this.userForm.get('fullName').value, 
+                            usertype: this.general.getUserTypeDesc(this.userForm.get('userType').value), 
+                            phone_no: this.userForm.get('telNo').value, 
+                            state: "1"
+                        });
+                    }
                 }
                 this.modal.close();
             }, 
@@ -203,13 +215,14 @@ export class ManageUsersComponent implements OnInit {
             delete user.user_id
             delete user.username
             delete user.state;
+
             if(this.userForm.get('passwordGrp.repeatPassword').value == ""){
                 delete user.password;
             }
-            console.log(user);
+            
             this.auth.postData(user, "api/user/update/" + this.userForm.get('id').value).then((result) => {
                 let responseData:any = result;
-                
+
                 if(responseData.error) {
                     console.log(responseData.error);
                 }
@@ -223,6 +236,7 @@ export class ManageUsersComponent implements OnInit {
                         } 
                     }
                 }
+                
                 this.modal.close();
             }, 
             (err) =>{

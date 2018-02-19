@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HeaderComponent implements OnInit {
     pushRightClass: string = 'push-right';
+    username: string;
 
     constructor(private translate: TranslateService, public router: Router) {
 
@@ -26,6 +27,12 @@ export class HeaderComponent implements OnInit {
                 this.toggleSidebar();
             }
         });
+
+        let userData: any = JSON.parse(localStorage.getItem('userData'));
+        this.username = userData.username;
+        console.log(userData.username);
+        console.log(localStorage.getItem('userData'));
+
     }
 
     ngOnInit() {}

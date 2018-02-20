@@ -106,7 +106,6 @@ export class ManageUsersComponent implements OnInit {
                         gender: userData.gender,
                         userType: userData.usertype
                     });
-                    console.log(JSON.stringify(this.userForm.value));
                     
                     //disabled input field for username
                     this.userForm.get('username').disable();

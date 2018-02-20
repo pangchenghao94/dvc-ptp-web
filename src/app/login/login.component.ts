@@ -43,8 +43,6 @@ export class LoginComponent implements OnInit {
                     console.log(this.responseData.message);
                 }
                 else{
-                    console.log(this.responseData.data.state);
-                    
                     if(this.responseData.data.state == 0) //user deactivated 
                     {
                         this.showPassEmpty = true;

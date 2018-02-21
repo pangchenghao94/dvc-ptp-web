@@ -1,0 +1,68 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'Manage PDK'" [icon]="'fa-tasks'"></app-page-header>
+    <div class="row">
+        <div class="col col-sm-12">
+            <div class="row" [style.padding-bottom]="'15px'">
+                <div class="col col-lg-12">
+                    <button type="button" class="btn btn-primary" (click)="open(content,'add', -1)"><i class="fa fa-plus"></i>  Add Assignment</button>
+                    <ng-template #content let-c="close" let-d="dismiss">
+                        <div class="modal-header">
+                            <h4 class="modal-title">{{ mode == 2 ? 'Edit Assignment' : 'Add Assignment' }}</h4>
+                            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col col-lg-12">
+                                    <form [formGroup]="assignmentForm" (ngSubmit)="submit()" novalidate>
+                                        <div class="col col-sm-6">
+                                                <div class="form-group"
+                                                    [ngClass]="{'has-error': (userForm.get('fullName').touched
+                                                                            || userForm.get('fullName').dirty) &&
+                                                                            !userForm.get('fullName').valid }">
+                                                    <label for="txtFullName">Full Name</label>
+                                                    <input type="text" class="form-control" id="txtFullName" placeholder="Enter full name"
+                                                        formControlName="fullName">
+                                                    <span class="help-block" *ngIf="(userForm.get('fullName').touched
+                                                                                    || userForm.get('fullName').dirty) &&
+                                                                                    userForm.get('fullName').errors">
+                                                        <span *ngIf="userForm.get('fullName').errors.required" class="txtErr">
+                                                            * Please enter your first name.
+                                                        </span>
+                                                        <span *ngIf="userForm.get('fullName').errors.minlength" class="txtErr">
+                                                            * The first name must be longer than 6 characters.
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                        </div>
+                                        <div class="col col-sm-6"></div>
+                                            
+                                        <!-- [disabled]="!userForm.valid" -->
+                                        <button type="submit" class="btn btn-primary" 
+                                            [disabled]="!userForm.valid">
+                                            {{ mode == 2 ? 'Edit User' : 'Add User' }}
+                                        </button>
+                                        <button type="button" class="btn btn-danger" 
+                                            [hidden]="(mode == 1) || (userForm.get('status').value == 0)" 
+                                            (click)="changeUserState(userForm.get('id').value, '0')">
+                                            Deactivate User
+                                        </button>    
+                                        <button type="button" class="btn btn-success" 
+                                            [hidden]="(mode == 1) || (userForm.get('status').value == 1)" 
+                                            (click)="changeUserState(userForm.get('id').value, '1')">
+                                            Activate User
+                                        </button>                                       
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

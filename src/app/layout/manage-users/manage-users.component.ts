@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { AuthService, UserType, GeneralService } from '../../shared';
-import { NgbModal, NgbModalRef, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { User } from '../../shared';
 
@@ -137,22 +137,6 @@ export class ManageUsersComponent implements OnInit {
             keyboard: false,
             size: 'lg'
         });
-
-        this.modal.result.then((result) => {
-            closeResult = `Closed with: ${result}`;
-        }, (reason) => {
-            closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        });
-    }
-
-    private getDismissReason(reason: any): string {
-        if (reason === ModalDismissReasons.ESC) {
-            return 'by pressing ESC';
-        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-            return 'by clicking on a backdrop';
-        } else {
-            return  `with: ${reason}`;
-        }
     }
 
     submit() {

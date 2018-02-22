@@ -16,34 +16,156 @@
                             <div class="row">
                                 <div class="col col-lg-12">
                                     <form [formGroup]="assignmentForm" (ngSubmit)="submit()" novalidate>
-                                        <div class="col col-sm-6">
-                                                <div class="form-group"
-                                                    [ngClass]="{'has-error': (userForm.get('fullName').touched
-                                                                            || userForm.get('fullName').dirty) &&
-                                                                            !userForm.get('fullName').valid }">
-                                                    <label for="txtFullName">Full Name</label>
-                                                    <input type="text" class="form-control" id="txtFullName" placeholder="Enter full name"
-                                                        formControlName="fullName">
-                                                    <span class="help-block" *ngIf="(userForm.get('fullName').touched
-                                                                                    || userForm.get('fullName').dirty) &&
-                                                                                    userForm.get('fullName').errors">
-                                                        <span *ngIf="userForm.get('fullName').errors.required" class="txtErr">
-                                                            * Please enter your first name.
-                                                        </span>
-                                                        <span *ngIf="userForm.get('fullName').errors.minlength" class="txtErr">
-                                                            * The first name must be longer than 6 characters.
-                                                        </span>
-                                                    </span>
+                                        <div class="row">
+                                            <div class="col col-sm-6">
+                                                <div class="row" [style.padding-bottom]="'10px'">
+                                                    <div class="col col-sm-12">
+                                                        <h4>Assignment Details</h4>
+                                                    </div>
                                                 </div>
+                                                <div class="row">
+                                                    <div class="col col-sm-6">
+                                                        <div class="form-group"
+                                                            [ngClass]="{'has-error': (assignmentForm.get('date').touched
+                                                                                    || assignmentForm.get('date').dirty) &&
+                                                                                    !assignmentForm.get('date').valid }">
+                                                            <label for="txtDate">Date of Assignment*</label>
+                                                            <div class="input-group">
+                                                                <input ngbDatepicker class="form-control" id="txtDate" placeholder="Select assignment date"
+                                                                    formControlName="date" #dp="ngbDatepicker">
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
+                                                                        <i class="fa fa-calendar" style="cursor: pointer"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <!-- <span class="help-block" *ngIf="(assignmentForm.get('fullName').touched
+                                                                                                || assignmentForm.get('fullName').dirty) &&
+                                                                                                assignmentForm.get('fullName').errors">
+                                                                <span *ngIf="assignmentForm.get('fullName').errors.required" class="txtErr">
+                                                                    * Please enter your first name.
+                                                                </span>
+                                                                <span *ngIf="assignmentForm.get('fullName').errors.minlength" class="txtErr">
+                                                                    * The first name must be longer than 6 characters.
+                                                                </span>
+                                                            </span> -->
+                                                        </div>
+                                                    </div>
+                                                    <div class="col col-sm-6">
+                                                        <div class="form-group"
+                                                            [ngClass]="{'has-error': (assignmentForm.get('postcode').touched
+                                                                                    || assignmentForm.get('postcode').dirty) &&
+                                                                                    !assignmentForm.get('postcode').valid }">
+                                                            <label for="txtPostcode">Postcode*</label>
+                                                            <input type="text" class="form-control" id="txtPostcode" placeholder="Insert postcode"
+                                                                formControlName="postcode">
+                                                            <!-- <span class="help-block" *ngIf="(assignmentForm.get('fullName').touched
+                                                                                            || assignmentForm.get('fullName').dirty) &&
+                                                                                            assignmentForm.get('fullName').errors">
+                                                                <span *ngIf="assignmentForm.get('fullName').errors.required" class="txtErr">
+                                                                    * Please enter your first name.
+                                                                </span>
+                                                                <span *ngIf="assignmentForm.get('fullName').errors.minlength" class="txtErr">
+                                                                    * The first name must be longer than 6 characters.
+                                                                </span>
+                                                            </span> -->
+                                                        </div>
+                                                    </div>                                                
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col col-sm-12">
+                                                        
+                                                        <div class="form-group"
+                                                            [ngClass]="{'has-error': (assignmentForm.get('team').touched
+                                                                                    || assignmentForm.get('team').dirty) &&
+                                                                                    !assignmentForm.get('team').valid }">
+                                                            <label for="txtTeam">Team*</label>
+                                                            <input type="text" class="form-control" id="txtTeam" placeholder="Insert team name"
+                                                                formControlName="team">
+                                                            <!-- <span class="help-block" *ngIf="(assignmentForm.get('fullName').touched
+                                                                                            || assignmentForm.get('fullName').dirty) &&
+                                                                                            assignmentForm.get('fullName').errors">
+                                                                <span *ngIf="assignmentForm.get('fullName').errors.required" class="txtErr">
+                                                                    * Please enter your first name.
+                                                                </span>
+                                                                <span *ngIf="assignmentForm.get('fullName').errors.minlength" class="txtErr">
+                                                                    * The first name must be longer than 6 characters.
+                                                                </span>
+                                                            </span> -->
+                                                        </div>
+
+                                                        <div class="form-group"
+                                                            [ngClass]="{'has-error': (assignmentForm.get('address').touched
+                                                                                    || assignmentForm.get('address').dirty) &&
+                                                                                    !assignmentForm.get('address').valid }">
+                                                            <label for="txtAddress">Address*</label>
+                                                            <textarea class="form-control" id="txtAddress" placeholder="Insert full address "
+                                                                formControlName="address"></textarea>
+                                                            <!-- <span class="help-block" *ngIf="(assignmentForm.get('fullName').touched
+                                                                                            || assignmentForm.get('fullName').dirty) &&
+                                                                                            assignmentForm.get('fullName').errors">
+                                                                <span *ngIf="assignmentForm.get('fullName').errors.required" class="txtErr">
+                                                                    * Please enter your first name.
+                                                                </span>
+                                                                <span *ngIf="assignmentForm.get('fullName').errors.minlength" class="txtErr">
+                                                                    * The first name must be longer than 6 characters.
+                                                                </span>
+                                                            </span> -->
+                                                        </div>
+
+                                                        <div class="form-group"
+                                                            [ngClass]="{'has-error': (assignmentForm.get('remark').touched
+                                                                                    || assignmentForm.get('remark').dirty) &&
+                                                                                    !assignmentForm.get('remark').valid }">
+                                                            <label for="txtRemark">Remark</label>
+                                                            <textarea class="form-control" id="txtRemark" placeholder="Insert remark if any "
+                                                                formControlName="remark"></textarea>
+                                                            <!-- <span class="help-block" *ngIf="(assignmentForm.get('fullName').touched
+                                                                                            || assignmentForm.get('fullName').dirty) &&
+                                                                                            assignmentForm.get('fullName').errors">
+                                                                <span *ngIf="assignmentForm.get('fullName').errors.required" class="txtErr">
+                                                                    * Please enter your first name.
+                                                                </span>
+                                                                <span *ngIf="assignmentForm.get('fullName').errors.minlength" class="txtErr">
+                                                                    * The first name must be longer than 6 characters.
+                                                                </span>
+                                                            </span> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col col-sm-6">
+                                                <div class="row">
+                                                    <div class="col col-sm-12" [style.padding-bottom]="'10px'">
+                                                        <h4>Assigned PDK</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col col-sm-12">
+                                                        <mat-form-field>
+                                                            <input matInput placeholder="Select user" aria-label="user" [matAutocomplete]="auto" [formControl]="selectUserCtrl">
+                                                            <mat-autocomplete #auto="matAutocomplete">
+                                                                <mat-option *ngFor="let u of filteredUser | async" [value]="u.user_id">
+                                                                    <small>{{ u.user_id }}</small> |                                                       
+                                                                    <span>{{ u.full_name }}</span>
+                                                                </mat-option>
+                                                            </mat-autocomplete>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col col-sm-6"></div>
-                                            
+                                        <div class="row">
+                                            <div class="col col-sm-12">
+                                                <button type="submit" class="btn btn-primary" 
+                                                    [disabled]="!assignmentForm.valid">
+                                                    {{ mode == 2 ? 'Edit Assignment' : 'Add Assignment' }}
+                                                </button>
+                                            </div>
+                                        </div>
                                         <!-- [disabled]="!userForm.valid" -->
-                                        <button type="submit" class="btn btn-primary" 
-                                            [disabled]="!userForm.valid">
-                                            {{ mode == 2 ? 'Edit User' : 'Add User' }}
-                                        </button>
-                                        <button type="button" class="btn btn-danger" 
+                                        <!--<button type="button" class="btn btn-danger" 
                                             [hidden]="(mode == 1) || (userForm.get('status').value == 0)" 
                                             (click)="changeUserState(userForm.get('id').value, '0')">
                                             Deactivate User
@@ -52,7 +174,7 @@
                                             [hidden]="(mode == 1) || (userForm.get('status').value == 1)" 
                                             (click)="changeUserState(userForm.get('id').value, '1')">
                                             Activate User
-                                        </button>                                       
+                                        </button>-->
                                     </form>
                                 </div>
                             </div>

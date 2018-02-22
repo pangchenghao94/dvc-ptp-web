@@ -6,13 +6,17 @@ import { ManagePDKComponent } from './manage-pdk.component';
 import { PageHeaderModule } from './../../shared';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatAutocompleteModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
 @NgModule({
     imports: [CommonModule, 
         ManagePDKRoutingModule,
         PageHeaderModule,
         ReactiveFormsModule,
-        NgbModule],
+        MatAutocompleteModule,
+        MatFormFieldModule,
+        MatInputModule,
+        NgbModule.forRoot()],
     declarations: [ManagePDKComponent]
 })
 export class ManagePDKModule {}

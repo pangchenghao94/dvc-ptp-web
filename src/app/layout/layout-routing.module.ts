@@ -18,7 +18,12 @@ const routes: Routes = [
             { path: 'blank-page', loadChildren: './blank-page/blank-page.module#BlankPageModule' },
 
             { path: 'manageUsers', loadChildren: './manage-users/manage-users.module#ManageUsersModule' },
-            { path: 'managePDK', loadChildren: './manage-pdk/manage-pdk.module#ManagePDKModule' }
+            { path: 'managePDK', loadChildren: './manage-pdk/manage-pdk.module#ManagePDKModule',
+                children:[
+                    { path: '', loadChildren: './manage-pdk/manage-pdk.module#ManagePDKModule' },
+                    { path: 'addPDKAssignment', loadChildren: './manage-pdk/add-pdkassignment/add-pdkassignment.module#AddPDKAssignmentModule' }
+                ], }
+            // { path: 'addPDKAssignment', loadChildren: './manage-pdk/add-pdkassignment/add-pdkassignment.module#AddPDKAssignmentModule' }
         ]
     }
 ];

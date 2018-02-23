@@ -9,6 +9,8 @@ export class User {
     gender: number;
     usertype: number;
 
+    constructor();
+    constructor(user_id:number, username: string, state: boolean, password: string, full_name: string, phone_no: string, email: string, gender: number, usertype: number)
     constructor(
         user_id?: number,
         username?: string,

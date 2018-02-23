@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ManagePDKComponent } from './manage-pdk.component';
+import { AddPDKAssignmentComponent } from './add-pdkassignment.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: ManagePDKComponent
-    },
+        component: AddPDKAssignmentComponent
+    }
 ];
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class ManagePDKRoutingModule {}
+export class AddPDKAssignmentRoutingModule {}

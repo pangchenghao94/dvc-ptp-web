@@ -30,6 +30,7 @@ export class ManageUsersComponent implements OnInit {
     constructor(private auth: AuthService, private general: GeneralService, private modalService: NgbModal, private fb: FormBuilder) {
         this.getUserList();
     }
+    
     ngOnInit(): void {
         this.userForm = this.fb.group({
             id: '-1',
@@ -65,7 +66,6 @@ export class ManageUsersComponent implements OnInit {
                 for(let result of userList){
                     result.usertype = this.general.getUserTypeDesc(result.usertype);
                 }
-
                 this.dataSource = new MatTableDataSource(userList);
                 this.dataSource.paginator = this.paginator;
                 this.dataSource.sort = this.sort;
@@ -179,6 +179,8 @@ export class ManageUsersComponent implements OnInit {
                             phone_no: this.userForm.get('telNo').value, 
                             state: "1"
                         });
+                        this.dataSource._updateChangeSubscription();
+                        this.dataSource.paginator = this.paginator;
                     }
                 }
                 this.modal.close();

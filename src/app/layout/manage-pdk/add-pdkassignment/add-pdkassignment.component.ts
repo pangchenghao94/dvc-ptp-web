@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { routerTransition } from '../../../router.animations';
 import { Observable } from 'rxjs/Observable';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthService, User } from '../../../shared';
 import { FormGroup, FormBuilder, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
@@ -16,24 +17,26 @@ import { FormGroup, FormBuilder, FormControl, Validators, ValidatorFn, AbstractC
 })
 export class AddPDKAssignmentComponent implements OnInit {
     mode: number = 1; //1=add, 2=edit, 3=delete    
-    date: {year: number, month: number};
+    dpMinDate: NgbDateStruct;
     assignmentForm: FormGroup;
     users: Array<User> = [];    
     //selectUserCtrl: FormControl;
     filteredUsers: Observable<any[]>;
     displayedColumns = ['user_id', 'full_name', 'action'];
     dataSource: any;
+    showNoUser: boolean = false;
     
     //selectedRowIndex: number = -1;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(private fb: FormBuilder, private auth: AuthService) {}
+    constructor(private fb: FormBuilder, private auth: AuthService, private changeDetectorRefs: ChangeDetectorRef) {
+        this.dataSource = new MatTableDataSource();
+        this.dataSource.paginator = this.paginator;
 
-    ngOnInit() {
         this.assignmentForm = this.fb.group({
             date: ['',Validators.required],
-            postcode: ['', [Validators.requiredTrue, Validators.pattern("^[0-9]{10,12}$")]],
+            postcode: ['', [Validators.required, Validators.pattern("^[0-9]{5,5}$")]],
             team: ['', Validators.required],
             address: ['', Validators.required],
             remark: '',
@@ -68,17 +71,12 @@ export class AddPDKAssignmentComponent implements OnInit {
             console.log("API error: " + err);
         });
 
-        //initiate userlist datatable
-        let tempuser: User = new User();
+        //set min date for assignment == tomorrow
+        let today = new Date();
+        this.dpMinDate = {year: today.getFullYear(), month: today.getMonth() + 1, day: today.getDate() + 1};
+    }
 
-        tempuser.user_id=1;
-        tempuser.full_name="sdfsddsf";     
-        
-        let templist: User[] = [tempuser,tempuser];
-        console.log(templist);
-        this.dataSource = new MatTableDataSource(templist);
-        console.log(this.dataSource);
-        this.dataSource.paginator = this.paginator;
+    ngOnInit() {
     }
 
     //filter function for search
@@ -93,8 +91,45 @@ export class AddPDKAssignmentComponent implements OnInit {
     }
 
     removeUser(user_id: string){
-        console.log(user_id);
+        this.dataSource.data = this.dataSource.data.filter(function(el){
+            return el.user_id != user_id;
+        });
     }
 
-    submit(){}    
+    addUser(){
+        let temp_user : User = this.assignmentForm.get('selectUserCtrl').value;        
+
+        if(temp_user.user_id == undefined){
+            alert('undefined');
+        }
+        else{
+            let exist : boolean = false;
+            this.dataSource.data.forEach(element => {
+                if(element.user_id == temp_user.user_id)
+                    exist = true;
+            });
+
+            if(!exist){
+                this.dataSource.data.push(this.assignmentForm.get('selectUserCtrl').value);
+                this.dataSource._updateChangeSubscription();
+                this.dataSource.paginator = this.paginator;
+            }
+            else{
+                alert("User have already been added.");
+            }
+        }
+    }
+
+    submit(){
+        if(this.dataSource.data.length == 0)
+            this.showNoUser = this.dataSource.data.length > 0 ? false : true;
+        else{
+            console.log(this.dataSource.data);
+            console.log(this.assignmentForm.get('date').value);
+            console.log(this.assignmentForm.get('postcode').value);
+            console.log(this.assignmentForm.get('team').value);
+            console.log(this.assignmentForm.get('address').value);
+            console.log(this.assignmentForm.get('remark').value);
+        }
+    }    
 }

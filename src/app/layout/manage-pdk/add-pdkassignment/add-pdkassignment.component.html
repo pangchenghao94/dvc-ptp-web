@@ -19,23 +19,20 @@
                                     <label for="txtDate">Date of Assignment*</label>
                                     <div class="input-group">
                                         <input ngbDatepicker class="form-control" id="txtDate" placeholder="Select assignment date"
-                                            formControlName="date" #dp="ngbDatepicker">
+                                            formControlName="date" #dp="ngbDatepicker" [minDate]= "dpMinDate" readonly="readonly">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
                                                 <i class="fa fa-calendar" style="cursor: pointer"></i>
                                             </button>
                                         </div>
                                     </div>
-                                    <!-- <span class="help-block" *ngIf="(assignmentForm.get('fullName').touched
-                                                                        || assignmentForm.get('fullName').dirty) &&
-                                                                        assignmentForm.get('fullName').errors">
-                                        <span *ngIf="assignmentForm.get('fullName').errors.required" class="txtErr">
+                                    <span class="help-block" *ngIf="(assignmentForm.get('date').touched
+                                                                        || assignmentForm.get('date').dirty) &&
+                                                                        assignmentForm.get('date').errors">
+                                        <span *ngIf="assignmentForm.get('date').errors.required" class="txtErr">
                                             * Please enter your first name.
                                         </span>
-                                        <span *ngIf="assignmentForm.get('fullName').errors.minlength" class="txtErr">
-                                            * The first name must be longer than 6 characters.
-                                        </span>
-                                    </span> -->
+                                    </span>
                                 </div>
                             </div>
                             <div class="col col-md-6">
@@ -46,16 +43,16 @@
                                     <label for="txtPostcode">Postcode*</label>
                                     <input type="text" class="form-control" id="txtPostcode" placeholder="Insert postcode"
                                         formControlName="postcode">
-                                    <!-- <span class="help-block" *ngIf="(assignmentForm.get('fullName').touched
-                                                                    || assignmentForm.get('fullName').dirty) &&
-                                                                    assignmentForm.get('fullName').errors">
-                                        <span *ngIf="assignmentForm.get('fullName').errors.required" class="txtErr">
-                                            * Please enter your first name.
+                                    <span class="help-block" *ngIf="(assignmentForm.get('postcode').touched
+                                                                    || assignmentForm.get('postcode').dirty) &&
+                                                                    assignmentForm.get('postcode').errors">
+                                        <span *ngIf="assignmentForm.get('postcode').errors.required" class="txtErr">
+                                            * Please enter the assignmnet postcode.
                                         </span>
-                                        <span *ngIf="assignmentForm.get('fullName').errors.minlength" class="txtErr">
-                                            * The first name must be longer than 6 characters.
+                                        <span *ngIf="assignmentForm.get('postcode').errors.pattern" class="txtErr">
+                                            * The postcode must be exactly 5 numeric characters.
                                         </span>
-                                    </span> -->
+                                    </span>
                                 </div>
                             </div>                                                
                         </div>
@@ -69,16 +66,13 @@
                                     <label for="txtTeam">Team*</label>
                                     <input type="text" class="form-control" id="txtTeam" placeholder="Insert team name"
                                         formControlName="team">
-                                    <!-- <span class="help-block" *ngIf="(assignmentForm.get('fullName').touched
-                                                                    || assignmentForm.get('fullName').dirty) &&
-                                                                    assignmentForm.get('fullName').errors">
-                                        <span *ngIf="assignmentForm.get('fullName').errors.required" class="txtErr">
-                                            * Please enter your first name.
+                                    <span class="help-block" *ngIf="(assignmentForm.get('team').touched
+                                                                    || assignmentForm.get('team').dirty) &&
+                                                                    assignmentForm.get('team').errors">
+                                        <span *ngIf="assignmentForm.get('team').errors.required" class="txtErr">
+                                            * Please enter team name for this assignment.
                                         </span>
-                                        <span *ngIf="assignmentForm.get('fullName').errors.minlength" class="txtErr">
-                                            * The first name must be longer than 6 characters.
-                                        </span>
-                                    </span> -->
+                                    </span>
                                 </div>
 
                                 <div class="form-group"
@@ -88,16 +82,13 @@
                                     <label for="txtAddress">Address*</label>
                                     <textarea class="form-control" id="txtAddress" placeholder="Insert full address "
                                         formControlName="address"></textarea>
-                                    <!-- <span class="help-block" *ngIf="(assignmentForm.get('fullName').touched
-                                                                    || assignmentForm.get('fullName').dirty) &&
-                                                                    assignmentForm.get('fullName').errors">
-                                        <span *ngIf="assignmentForm.get('fullName').errors.required" class="txtErr">
-                                            * Please enter your first name.
+                                    <span class="help-block" *ngIf="(assignmentForm.get('address').touched
+                                                                    || assignmentForm.get('address').dirty) &&
+                                                                    assignmentForm.get('address').errors">
+                                        <span *ngIf="assignmentForm.get('address').errors.required" class="txtErr">
+                                            * Please enter assignment full address.
                                         </span>
-                                        <span *ngIf="assignmentForm.get('fullName').errors.minlength" class="txtErr">
-                                            * The first name must be longer than 6 characters.
-                                        </span>
-                                    </span> -->
+                                    </span>
                                 </div>
 
                                 <div class="form-group"
@@ -105,18 +96,7 @@
                                                             || assignmentForm.get('remark').dirty) &&
                                                             !assignmentForm.get('remark').valid }">
                                     <label for="txtRemark">Remark</label>
-                                    <textarea class="form-control" id="txtRemark" placeholder="Insert remark if any "
-                                        formControlName="remark"></textarea>
-                                    <!-- <span class="help-block" *ngIf="(assignmentForm.get('fullName').touched
-                                                                    || assignmentForm.get('fullName').dirty) &&
-                                                                    assignmentForm.get('fullName').errors">
-                                        <span *ngIf="assignmentForm.get('fullName').errors.required" class="txtErr">
-                                            * Please enter your first name.
-                                        </span>
-                                        <span *ngIf="assignmentForm.get('fullName').errors.minlength" class="txtErr">
-                                            * The first name must be longer than 6 characters.
-                                        </span>
-                                    </span> -->
+                                    <textarea class="form-control" id="txtRemark" placeholder="Insert remark if any "formControlName="remark"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -125,6 +105,10 @@
                         <div class="row">
                             <div class="col col-sm-12" [style.padding-bottom]="'10px'">
                                 <h4>Assigned PDK</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-sm-10">
                                 <mat-form-field class="form-group">
                                     <input matInput placeholder="State" aria-label="State" [matAutocomplete]="auto" formControlName="selectUserCtrl">
                                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayWithFn">
@@ -134,6 +118,11 @@
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
+                            </div>
+                            <div class="col col-sm-2">
+                                <button type="button" class="btn btn-success" 
+                                (click)="addUser()" [disabled]="assignmentForm.get('selectUserCtrl').value.user_id == undefined">
+                                <i class="fa fa-plus"></i>  Add User</button>
                             </div>
                         </div>
                         <div class="row">
@@ -146,15 +135,15 @@
                                         </ng-container>
                                         <ng-container matColumnDef="full_name">
                                             <mat-header-cell *matHeaderCellDef> Full Name </mat-header-cell>
-                                            <mat-cell *matCellDef="let row"> 
-                                                <button type="button" class="btn-removeUser" aria-label="Close" (click)="removeUser(row.user_id)">
-                                                    <i class="fa fa-trash-o"></i>
-                                                </button>
-                                            </mat-cell>
+                                            <mat-cell *matCellDef="let row"> {{row.full_name}} </mat-cell>
                                         </ng-container>
                                         <ng-container matColumnDef="action">
-                                            <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-                                            <mat-cell *matCellDef="let row">test</mat-cell>
+                                            <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+                                            <mat-cell *matCellDef="let row">
+                                                <button type="button" class="btn-removeUser" aria-label="Close" (click)="removeUser(row.user_id)">
+                                                    <i class="fa fa-trash-o fa-3"></i>
+                                                </button>
+                                            </mat-cell>
                                         </ng-container>
                                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                                         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
@@ -163,8 +152,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            
+                        <div class="row" [style.padding-top]="'15px'">
+                            <div class="col col-sm-12">
+                                <span *ngIf="showNoUser" class="txtErr">
+                                    * Please select users for this assignment.
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>

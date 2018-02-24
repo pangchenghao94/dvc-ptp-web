@@ -22,8 +22,8 @@ const routes: Routes = [
                 children:[
                     { path: '', loadChildren: './manage-pdk/manage-pdk.module#ManagePDKModule' },
                     { path: 'addPDKAssignment', loadChildren: './manage-pdk/add-pdkassignment/add-pdkassignment.module#AddPDKAssignmentModule' }
-                ], }
-            // { path: 'addPDKAssignment', loadChildren: './manage-pdk/add-pdkassignment/add-pdkassignment.module#AddPDKAssignmentModule' }
+                ]
+            }
         ]
     }
 ];

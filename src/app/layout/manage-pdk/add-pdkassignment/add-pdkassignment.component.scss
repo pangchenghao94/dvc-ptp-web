@@ -1,0 +1,29 @@
+.mat-cell, .mat-header-cell{
+    flex: unset;
+}
+
+.mat-column-user_id{
+    width: 10%;
+}
+
+.mat-column-full_name{
+    width: 80%;
+}
+
+.mat-column-action{
+    width: 10%;
+}
+
+.btn-removeUser{
+    border: none;
+    float: right;
+    background-color: transparent;
+}
+
+.mat-form-field{
+    display: block;
+}
+
+.form-control[readonly]{
+    background-color: #fff;
+}

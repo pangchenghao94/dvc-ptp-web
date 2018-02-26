@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PageHeaderModule } from './../../../shared';
+import { PageHeaderModule } from './../../shared';
 
-import { AddPDKAssignmentRoutingModule } from './add-pdkassignment-routing.module';
-import { AddPDKAssignmentComponent } from './add-pdkassignment.component';
+import { AddEditPDKAssignmentRoutingModule } from './addEdit-pdkassignment-routing.module';
+import { AddEditPDKAssignmentComponent } from './addEdit-pdkassignment.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatFormFieldModule, MatInputModule, MatTableModule, MatPaginatorModule } from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     imports: [CommonModule, 
-        AddPDKAssignmentRoutingModule,
+        AddEditPDKAssignmentRoutingModule,
         PageHeaderModule,
         ReactiveFormsModule,
         MatAutocompleteModule,
@@ -19,6 +19,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         MatTableModule, 
         MatPaginatorModule ,
         NgbModule.forRoot()],
-    declarations: [AddPDKAssignmentComponent]
+    declarations: [AddEditPDKAssignmentComponent]
 })
-export class AddPDKAssignmentModule {}
+export class AddEditPDKAssignmentModule {}

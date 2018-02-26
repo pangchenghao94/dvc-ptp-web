@@ -1,22 +1,22 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { routerTransition } from '../../../router.animations';
+import { routerTransition } from '../../router.animations';
 import { Observable } from 'rxjs/Observable';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-
-import { AuthService, User } from '../../../shared';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService, User, Assignment, GeneralService } from '../../shared';
 import { FormGroup, FormBuilder, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
 @Component({
-    selector: 'add-pdkassignment-page',
-    templateUrl: './add-pdkassignment.component.html',
-    styleUrls: ['./add-pdkassignment.component.scss'],
+    selector: 'addEdit-pdkassignment-page',
+    templateUrl: './addEdit-pdkassignment.component.html',
+    styleUrls: ['./addEdit-pdkassignment.component.scss'],
     animations: [routerTransition()]        
 })
-export class AddPDKAssignmentComponent implements OnInit {
-    mode: number = 1; //1=add, 2=edit, 3=delete    
+export class AddEditPDKAssignmentComponent implements OnInit {
+    mode: number = 1; //1=add, 2=edit, 3=delete  
     dpMinDate: NgbDateStruct;
     assignmentForm: FormGroup;
     users: Array<User> = [];    
@@ -30,7 +30,9 @@ export class AddPDKAssignmentComponent implements OnInit {
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(private fb: FormBuilder, private auth: AuthService, private changeDetectorRefs: ChangeDetectorRef) {
+    constructor(private fb: FormBuilder, private auth: AuthService, private changeDetectorRefs: ChangeDetectorRef, private generalService: GeneralService, 
+        private route: ActivatedRoute, private router: Router) {
+
         this.dataSource = new MatTableDataSource();
         this.dataSource.paginator = this.paginator;
 
@@ -77,6 +79,14 @@ export class AddPDKAssignmentComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.route.params.subscribe(params => {
+            if(params['action'] == "1"){
+                this.mode = 1;
+            } 
+            else if(params['action'] == "2"){
+                this.mode = 2;
+            }
+         });
     }
 
     //filter function for search
@@ -117,6 +127,7 @@ export class AddPDKAssignmentComponent implements OnInit {
             else{
                 alert("User have already been added.");
             }
+            this.assignmentForm.get('selectUserCtrl').setValue("");
         }
     }
 
@@ -124,12 +135,47 @@ export class AddPDKAssignmentComponent implements OnInit {
         if(this.dataSource.data.length == 0)
             this.showNoUser = this.dataSource.data.length > 0 ? false : true;
         else{
-            console.log(this.dataSource.data);
-            console.log(this.assignmentForm.get('date').value);
-            console.log(this.assignmentForm.get('postcode').value);
-            console.log(this.assignmentForm.get('team').value);
-            console.log(this.assignmentForm.get('address').value);
-            console.log(this.assignmentForm.get('remark').value);
+            let token:string = JSON.parse(localStorage.getItem('userData')).token;
+            let user_id: string = JSON.parse(localStorage.getItem('userData')).user_id;
+
+            if(this.mode == 1){
+                let assignment: Assignment = new Assignment();
+                assignment.team = this.assignmentForm.get('team').value;
+                assignment.date = this.generalService.toMySqlDateStr(this.assignmentForm.get('date').value);
+                assignment.postcode = this.assignmentForm.get('postcode').value;
+                assignment.remark = this.assignmentForm.get('remark').value;
+                assignment.address = this.assignmentForm.get('address').value;
+
+                let user_id_lst = new Array<string>();
+                this.dataSource.data.forEach(element => {
+                    user_id_lst.push(element.user_id);
+                });
+
+                let data: any = {   "token"     : token,
+                                    "user_id"   : user_id, 
+                                    "data"      : assignment,
+                                    "data2"     : user_id_lst };
+                
+                this.auth.postData(data, "api/assignment/add").then((result) => {
+                    let responseData:any = result;
+                    
+                    if(responseData.status == "0"){
+                        alert(responseData.status);
+                    }
+                    else{
+                        if(responseData.error) {
+                            console.log(responseData.error);
+                        }
+                        else{
+                            alert("Assignment have been added successfully");
+                            this.router.navigate(['/managePDK']);
+                        }
+                    }
+                }, 
+                (err) =>{
+                    console.log("API error: " + err);
+                });
+            }
         }
     }    
 }

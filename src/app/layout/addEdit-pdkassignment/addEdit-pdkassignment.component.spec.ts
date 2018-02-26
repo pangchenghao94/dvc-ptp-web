@@ -1,21 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddPDKAssignmentComponent } from './add-pdkassignment.component';
+import { AddEditPDKAssignmentComponent } from './addEdit-pdkassignment.component';
 
-describe('AddPDKAssignmentComponent', () => {
-    let component: AddPDKAssignmentComponent;
-    let fixture: ComponentFixture<AddPDKAssignmentComponent>;
+describe('AddEditPDKAssignmentComponent', () => {
+    let component: AddEditPDKAssignmentComponent;
+    let fixture: ComponentFixture<AddEditPDKAssignmentComponent>;
 
     beforeEach(
         async(() => {
             TestBed.configureTestingModule({
-                declarations: [AddPDKAssignmentComponent]
+                declarations: [AddEditPDKAssignmentComponent]
             }).compileComponents();
         })
     );
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(AddPDKAssignmentComponent);
+        fixture = TestBed.createComponent(AddEditPDKAssignmentComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

@@ -1,5 +1,5 @@
 <div [@routerTransition]>
-    <app-page-header [heading]="'Add PDK Assignment'" [icon]="'fa-tasks'"></app-page-header>
+    <app-page-header [heading]="{{ mode == 2 ? 'Edit Assignment' : 'Add Assignment' }}" [icon]="'fa-tasks'"></app-page-header>
     <div class="row" [style.padding-bottom]="'15px'">
         <div class="col col-lg-12">
             <form [formGroup]="assignmentForm" (ngSubmit)="submit()" novalidate>

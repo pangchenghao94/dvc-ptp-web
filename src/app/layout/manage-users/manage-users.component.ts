@@ -1,13 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { AuthService, UserType, GeneralService } from '../../shared';
+import { AuthService, User, UserType, GeneralService } from '../../shared';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
-import { User } from '../../shared';
 
 @Component({
-    selector: 'app-blank-page',
+    selector: 'manage-users',
     templateUrl: './manage-users.component.html',
     styleUrls: ['./manage-users.component.scss'],
     animations: [routerTransition()]
@@ -162,7 +161,7 @@ export class ManageUsersComponent implements OnInit {
             
             this.auth.postData(data, "api/user/add").then((result) => {
                 let responseData:any = result;
-    
+                
                 if(responseData.status == "0"){
                     alert(responseData.status);
                 }

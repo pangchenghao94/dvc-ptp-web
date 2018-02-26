@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserType } from '../../class';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable()
 export class GeneralService {
@@ -19,5 +20,12 @@ export class GeneralService {
       return "Clerk";
     else
       return "error"; 
+  }
+
+  toMySqlDateStr(date: NgbDateStruct){
+    let temp_date : Date = new Date(date.year, date.month-1, date.day);    
+    temp_date.setDate(temp_date.getDate() + 1);
+
+    return temp_date.toISOString().slice(0, 19).replace('T', ' ');
   }
 }

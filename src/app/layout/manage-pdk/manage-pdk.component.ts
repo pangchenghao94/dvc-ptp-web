@@ -1,19 +1,61 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { routerTransition } from '../../router.animations';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { AuthService, GeneralService } from '../../shared';
 
 @Component({
-    selector: 'app-blank-page',
+    selector: 'manage-pdk',
     templateUrl: './manage-pdk.component.html',
     styleUrls: ['./manage-pdk.component.scss'],
     animations: [routerTransition()]    
 })
 export class ManagePDKComponent implements OnInit {
-    constructor() {
+    displayedColumns = ['assignment_id', 'address', 'team', 'postcode', 'date'];
+    dataSource: any;
+    selectedRowIndex: number = -1;
+    
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatSort) sort: MatSort;
+
+    constructor(private auth : AuthService) {
+        this.getAssignmentList();
     }
 
     ngOnInit() {     
     }
-    
+
+    getAssignmentList(){
+        let token:string = JSON.parse(localStorage.getItem('userData')).token;
+        let user_id: string = JSON.parse(localStorage.getItem('userData')).user_id;
+
+        let data: any = {   "token"     : token,
+                            "user_id"   : user_id };
+                
+        this.auth.postData(data, "api/assignment/assignmentList").then((result) => {
+            let responseData: any = result
+            if(responseData.status == "0"){
+                alert(responseData.status);
+            }
+            else{
+                if(responseData.error){
+                    console.log(responseData.error.text);
+                }
+                else{
+                    console.log(responseData);
+                    // Assign the data to the data source for the table to render
+                    
+                    // this.dataSource = new MatTableDataSource(responseData);
+                    // this.dataSource.paginator = this.paginator;
+                    // this.dataSource.sort = this.sort;
+                }
+            }
+                
+        },
+        (err) => {
+            console.log("API error: " + err);
+        });
+    }
+
     // open(content, type: any, id: number) {
     //     if(type == "edit"){
     //         this.mode = 2;

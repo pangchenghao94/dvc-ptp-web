@@ -1,3 +1,11 @@
 .highlight{
     background: #EEEEEE;
 }
+
+.mat-form-field{
+    display: block;
+}
+
+.form-control[readonly]{
+    background-color: #fff;
+}

@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { AuthService, GeneralService } from '../../shared';
+import { Form } from '@angular/forms';
+
 
 @Component({
     selector: 'manage-pdk',
@@ -13,6 +15,7 @@ export class ManagePDKComponent implements OnInit {
     displayedColumns = ['assignment_id', 'address', 'team', 'postcode', 'date'];
     dataSource: any;
     selectedRowIndex: number = -1;
+    dateFilter: string;
     
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -22,6 +25,10 @@ export class ManagePDKComponent implements OnInit {
     }
 
     ngOnInit() {     
+    }
+
+    testing(){
+        console.log('sdsdsd');
     }
 
     getAssignmentList(){
@@ -34,7 +41,7 @@ export class ManagePDKComponent implements OnInit {
         this.auth.postData(data, "api/assignment/assignmentList").then((result) => {
             let responseData: any = result
             if(responseData.status == "0"){
-                alert(responseData.status);
+                alert(responseData.message);
             }
             else{
                 if(responseData.error){
@@ -42,11 +49,9 @@ export class ManagePDKComponent implements OnInit {
                 }
                 else{
                     console.log(responseData);
-                    // Assign the data to the data source for the table to render
-                    
-                    // this.dataSource = new MatTableDataSource(responseData);
-                    // this.dataSource.paginator = this.paginator;
-                    // this.dataSource.sort = this.sort;
+                    this.dataSource = new MatTableDataSource(responseData);
+                    this.dataSource.paginator = this.paginator;
+                    this.dataSource.sort = this.sort;
                 }
             }
                 
@@ -54,6 +59,16 @@ export class ManagePDKComponent implements OnInit {
         (err) => {
             console.log("API error: " + err);
         });
+    }
+
+    applyFilter(filterValue: string) {
+        filterValue = filterValue.trim(); // Remove whitespace
+        filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+        this.dataSource.filter = filterValue;
+    }
+
+    rowClicked(row){
+        this.selectedRowIndex = row.user_id;
     }
 
     // open(content, type: any, id: number) {

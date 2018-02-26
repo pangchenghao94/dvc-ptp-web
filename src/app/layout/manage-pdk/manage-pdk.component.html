@@ -5,26 +5,57 @@
             <button type="button" class="btn btn-primary" [routerLink]="['/addEditPDKAssignment', '1']" [routerLinkActive]="['router-link-active']" >
                 <i class="fa fa-plus"></i>  Add Assignment
             </button>
+        </div>
+    </div>
 
-            <ng-template #content let-c="close" let-d="dismiss">
-                <div class="modal-header">
-                    <h4 class="modal-title">{{ mode == 2 ? 'Edit Assignment' : 'Add Assignment' }}</h4>
-                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <ng-template #content let-c="close" let-d="dismiss">
+        <div class="modal-header">
+            <h4 class="modal-title">{{ mode == 2 ? 'Edit Assignment' : 'Add Assignment' }}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col col-lg-12">
+                    
                 </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col col-lg-12">
-                            
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+        </div>
+    </ng-template>
+          
+    <div class="row" [style.padding-bottom]="'15px'">
+        <div class="col col-lg-12">
+            <div class="example-header">
+                <mat-form-field>
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Enter Location">
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+
+            <!-- <div class="row">
+                <div class="col-lg-5" [style.float]="'right'">
+                    <div class="form-group">
+                        <label for="txtDate">Date of Assignment</label>
+                        <div class="input-group">
+                            <input ngbDatepicker class="form-control" id="txtDate" placeholder="Select assignment date"
+                                [(ngModel)]="dateFilter" name="txtDate" #dp="ngbDatepicker" readonly="readonly" (change)="testing">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
+                                    <i class="fa fa-calendar" style="cursor: pointer"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-                </div>
-            </ng-template>
+            </div> -->
             
+    <div class="row">
+        <div class="col col-lg-12">
             <div class="example-container mat-elevation-z8">
 
                 <mat-table [dataSource]="dataSource" matSort>
@@ -61,7 +92,7 @@
 
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;"
-                        (click)="open(content, 'edit', row.assignment_id)" [ngClass]="{'highlight': selectedRowIndex == row.user_id}">
+                        (click)="open(content, 'edit', row.assignment_id)" [ngClass]="{'highlight': selectedRowIndex == row.assignment_id}">
                     </mat-row>
                 </mat-table>
 
@@ -69,4 +100,5 @@
             </div>
         </div>
     </div>
+
 </div>

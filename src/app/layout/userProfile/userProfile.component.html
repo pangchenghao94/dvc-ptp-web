@@ -1,11 +1,54 @@
 <div [@routerTransition]>
-    <app-page-header [heading]="'Add Assignment'" [icon]="'fa-tasks'"></app-page-header>
-    <div class="row" [style.padding-bottom]="'15px'">
-            <div class="col-sm-6 col-centered">
+    <app-page-header [heading]="'Profile'" [icon]="'fa-tasks'"></app-page-header>
+    <div class="row" [style.padding-top]="'15px'">
+            <div class="col-sm-4 col-centered">
                 <div class="card mb-3">
-                    <div class="card-header"></div>
+                    <div class="card-header">{{ user.full_name }}</div>
                     <div class="card-body">
-                        
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <strong>Username</strong>
+                            </div>
+                            <div class="col-lg-8">
+                                {{ user.username }}
+                            </div>
+                        </div>
+                        <div class="row" [style.padding-top]="'15px'">
+                            <div class="col-lg-4">
+                                <strong>Contact No.</strong>                        
+                            </div>
+                            <div class="col-lg-8">
+                                {{ user.phone_no }}
+                            </div>
+                        </div>
+                        <div class="row" [style.padding-top]="'15px'">
+                            <div class="col-lg-4">
+                                <strong>Gender</strong>                        
+                            </div>
+                            <div class="col-lg-8">
+                                {{ user.gender == 1 ? 'Male' : 'Female' }}
+                            </div>
+                        </div>
+                        <div class="row" [style.padding-top]="'15px'">
+                            <div class="col-lg-4">
+                                <strong>Usertype</strong>                        
+                            </div>
+                            <div class="col-lg-8">
+                                {{ usertypeStr }}
+                            </div>
+                        </div>
+                        <div class="row" [style.padding-top]="'20px'">
+                            <div class="col-lg-6">
+                                <button type="button" class="btn btn-outline-primary" [style.float]="'left'">
+                                    <i class="fa fa-pencil"></i>  Change Password
+                                </button>
+                            </div>
+                            <div class="col-lg-6">
+                                <!-- <button type="button" class="btn btn-outline-primary" [style.float]="'right'">
+                                    <i class="fa fa-plus"></i>  Edit Profile
+                                </button> -->
+                            </div>                            
+                        </div>
                     </div>
                 </div>
             </div>

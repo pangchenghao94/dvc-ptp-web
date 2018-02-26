@@ -54,23 +54,36 @@ export class ManageUsersComponent implements OnInit {
     }
 
     getUserList(){
-        this.auth.getData("api/userlist").then((result) => {
-            let userList: any = result
+        let token:string = JSON.parse(localStorage.getItem('userData')).token;
+        let user_id: string = JSON.parse(localStorage.getItem('userData')).user_id;
 
-            if(userList.error){
-                console.log(userList.error.text);
+        let data: any = {   "token"     : token,
+                            "user_id"   : user_id };
+
+        console.log(data);
+        this.auth.postData(data, "api/userlist").then((result) => {
+            let userList: any = result;
+            console.log(userList);
+            if(userList.status == "0"){
+                alert(userList.message);
             }
             else{
-                // Assign the data to the data source for the table to render
-                for(let result of userList){
-                    result.usertype = this.general.getUserTypeDesc(result.usertype);
+                if(userList.error){
+                    console.log(userList.error.text);
                 }
-                this.dataSource = new MatTableDataSource(userList);
-                this.dataSource.paginator = this.paginator;
-                this.dataSource.sort = this.sort;
+                else{
+                    // Assign the data to the data source for the table to render
+                    for(let result of userList.data){
+                        result.usertype = this.general.getUserTypeDesc(result.usertype);
+                    }
+                    this.dataSource = new MatTableDataSource(userList.data);
+                    this.dataSource.paginator = this.paginator;
+                    this.dataSource.sort = this.sort;
+                }
             }
         },
         (err) => {
+            debugger;
             console.log("API error: " + err);
         });
     }

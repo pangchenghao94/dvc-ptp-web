@@ -20,7 +20,6 @@ export class AddEditPDKAssignmentComponent implements OnInit {
     dpMinDate: NgbDateStruct;
     assignmentForm: FormGroup;
     users: Array<User> = [];    
-    //selectUserCtrl: FormControl;
     filteredUsers: Observable<any[]>;
     displayedColumns = ['user_id', 'full_name', 'action'];
     dataSource: any;
@@ -46,15 +45,15 @@ export class AddEditPDKAssignmentComponent implements OnInit {
         });
 
         this.auth.getData("api/fullNameList").then((result) => {
-            let list: any = result
-
+            let list: any = result;
+            
             if(list.status != "1"){
                 alert("Error in get fullNameList" + list.error.text);
                 console.log(list.error.text);
             }
             else{
                 let data:any = list.data;
-                data.forEach(user => {
+                data.forEach(user => { 
                     let temp: User = new User();
                     temp.user_id = user.user_id;
                     temp.full_name = user.full_name;
@@ -160,7 +159,7 @@ export class AddEditPDKAssignmentComponent implements OnInit {
                     let responseData:any = result;
                     
                     if(responseData.status == "0"){
-                        alert(responseData.status);
+                        alert(responseData.message);
                     }
                     else{
                         if(responseData.error) {

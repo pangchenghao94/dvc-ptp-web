@@ -17,7 +17,7 @@ const routes: Routes = [
             { path: 'components', loadChildren: './bs-component/bs-component.module#BsComponentModule' },
             { path: 'blank-page', loadChildren: './blank-page/blank-page.module#BlankPageModule' },
 
-            { path: 'userProfile', loadChildren: './addEdit-pdkassignment/addEdit-pdkassignment.module#AddEditPDKAssignmentModule' },        
+            { path: 'userProfile', loadChildren: './userProfile/userProfile.module#UserProfileModule' },        
             { path: 'manageUsers', loadChildren: './manage-users/manage-users.module#ManageUsersModule' },
             { path: 'managePDK', loadChildren: './manage-pdk/manage-pdk.module#ManagePDKModule'},
             { path: 'addEditPDKAssignment/:action', loadChildren: './addEdit-pdkassignment/addEdit-pdkassignment.module#AddEditPDKAssignmentModule' }

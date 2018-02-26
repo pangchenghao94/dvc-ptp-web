@@ -1,17 +1,17 @@
 <div [@routerTransition]>
-    <app-page-header [heading]="{{ mode == 2 ? 'Edit Assignment' : 'Add Assignment' }}" [icon]="'fa-tasks'"></app-page-header>
+    <app-page-header [heading]="'Add Assignment'" [icon]="'fa-tasks'"></app-page-header>
     <div class="row" [style.padding-bottom]="'15px'">
-        <div class="col col-lg-12">
+        <div class="col-lg-12">
             <form [formGroup]="assignmentForm" (ngSubmit)="submit()" novalidate>
                 <div class="row">
-                    <div class="col col-sm-6">
+                    <div class="col-sm-6">
                         <div class="row" [style.padding-bottom]="'10px'">
-                            <div class="col col-sm-12">
+                            <div class="col-sm-12">
                                 <h4>Assignment Details</h4>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col col-md-6">
+                            <div class="col-md-6">
                                 <div class="form-group"
                                     [ngClass]="{'has-error': (assignmentForm.get('date').touched
                                                             || assignmentForm.get('date').dirty) &&
@@ -35,7 +35,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col col-md-6">
+                            <div class="col-md-6">
                                 <div class="form-group"
                                     [ngClass]="{'has-error': (assignmentForm.get('postcode').touched
                                                             || assignmentForm.get('postcode').dirty) &&
@@ -57,7 +57,7 @@
                             </div>                                                
                         </div>
                         <div class="row">
-                            <div class="col col-sm-12">
+                            <div class="col-sm-12">
                                 
                                 <div class="form-group"
                                     [ngClass]="{'has-error': (assignmentForm.get('team').touched
@@ -101,9 +101,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col col-sm-6">
+                    <div class="col-sm-6">
                         <div class="row">
-                            <div class="col col-sm-12" [style.padding-bottom]="'10px'">
+                            <div class="col-sm-12" [style.padding-bottom]="'10px'">
                                 <h4>Assigned PDK</h4>
                             </div>
                         </div>
@@ -126,7 +126,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col col-sm-12">
+                            <div class="col-sm-12">
                                 <div class="mat-elevation-z8">
                                     <mat-table [dataSource]="dataSource">
                                         <ng-container matColumnDef="user_id">
@@ -153,7 +153,7 @@
                             </div>
                         </div>
                         <div class="row" [style.padding-top]="'15px'">
-                            <div class="col col-sm-12">
+                            <div class="col-sm-12">
                                 <span *ngIf="showNoUser" class="txtErr">
                                     * Please select users for this assignment.
                                 </span>
@@ -162,7 +162,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col col-sm-12">
+                    <div class="col-sm-12">
                         <button type="submit" class="btn btn-primary" 
                             [disabled]="!assignmentForm.valid">
                             {{ mode == 2 ? 'Edit Assignment' : 'Add Assignment' }}

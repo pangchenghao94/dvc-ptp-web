@@ -15,7 +15,6 @@ import { FormGroup, FormBuilder, FormControl, Validators, ValidatorFn, AbstractC
 export class ManageUsersComponent implements OnInit {
     displayedColumns = ['user_id', 'full_name', 'usertype', 'phone_no', 'state'];
     dataSource: any;
-    selectedRowIndex: number = -1;
     mode: number = 1; //1=add, 2=edit, 3=delete
     userForm: any;
     modal: NgbModalRef;
@@ -102,10 +101,6 @@ export class ManageUsersComponent implements OnInit {
         filterValue = filterValue.trim(); // Remove whitespace
         filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
         this.dataSource.filter = filterValue;
-    }
-
-    rowClicked(row){
-        this.selectedRowIndex = row.user_id;
     }
     
     open(content, type: any, id: number) {

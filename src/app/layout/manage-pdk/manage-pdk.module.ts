@@ -16,7 +16,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         MatFormFieldModule,
         MatPaginatorModule,
         MatSortModule,
-        MatInputModule
+        MatInputModule,
+        NgbModule.forRoot()
     ],
     declarations: [ManagePDKComponent]
 })

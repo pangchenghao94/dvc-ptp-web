@@ -2,7 +2,7 @@
     <app-page-header [heading]="'Manage PDK'" [icon]="'fa-tasks'"></app-page-header>
     <div class="row" [style.padding-bottom]="'15px'">
         <div class="col col-lg-12">
-            <button type="button" class="btn btn-primary" [routerLink]="['/addEditPDKAssignment', '1']" [routerLinkActive]="['router-link-active']" >
+            <button type="button" class="btn btn-outline-primary" [routerLink]="['/addEditPDKAssignment', '1']" [routerLinkActive]="['router-link-active']" >
                 <i class="fa fa-plus"></i>  Add Assignment
             </button>
         </div>
@@ -31,28 +31,11 @@
         <div class="col col-lg-12">
             <div class="example-header">
                 <mat-form-field>
-                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Enter Location">
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter assignment list">
                 </mat-form-field>
             </div>
         </div>
     </div>
-
-            <!-- <div class="row">
-                <div class="col-lg-5" [style.float]="'right'">
-                    <div class="form-group">
-                        <label for="txtDate">Date of Assignment</label>
-                        <div class="input-group">
-                            <input ngbDatepicker class="form-control" id="txtDate" placeholder="Select assignment date"
-                                [(ngModel)]="dateFilter" name="txtDate" #dp="ngbDatepicker" readonly="readonly" (change)="testing">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
-                                    <i class="fa fa-calendar" style="cursor: pointer"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
             
     <div class="row">
         <div class="col col-lg-12">
@@ -92,7 +75,7 @@
 
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;"
-                        (click)="open(content, 'edit', row.assignment_id)" [ngClass]="{'highlight': selectedRowIndex == row.assignment_id}">
+                        (click)="open(content, row.assignment_id)">
                     </mat-row>
                 </mat-table>
 
@@ -100,5 +83,71 @@
             </div>
         </div>
     </div>
+
+    <ng-template #content let-c="close" let-d="dismiss">
+        <div class="modal-header">
+            <h4 class="modal-title"> View Assignment </h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-lg-4">
+                    <strong>Assignment ID</strong>
+                </div>
+                <div class="col-lg-8">
+                    {{ assignment.assignment_id }}
+                </div>
+            </div>
+            <div class="row" [style.padding-top]="'15px'">
+                <div class="col-lg-4">
+                    <strong>Team</strong>                        
+                </div>
+                <div class="col-lg-8">
+                    {{ assignment.team }}
+                </div>
+            </div>
+            <div class="row" [style.padding-top]="'15px'">
+                <div class="col-lg-4">
+                    <strong>Created by</strong>
+                </div>
+                <div class="col-lg-8">
+                    {{ assignment.createdBy }}
+                </div>
+            </div>
+            <div class="row" [style.padding-top]="'15px'">
+                <div class="col-lg-4">
+                    <strong>Address</strong>                        
+                </div>
+                <div class="col-lg-8">
+                    {{ assignment.address }}
+                </div>
+            </div>
+            <div class="row" [style.padding-top]="'15px'">
+                <div class="col-lg-4">
+                    <strong>Remark</strong>                        
+                </div>
+                <div class="col-lg-8">
+                    {{ assignment.remark }}
+                </div>
+            </div>
+            <div class="row" [style.padding-top]="'20px'">
+                <div class="col">
+                    <button type="button" class="btn btn-outline-primary">
+                        <i class="fa fa-pencil"></i>  Edit Assignment
+                    </button>
+                    <button type="button" class="btn btn-outline-danger">
+                        <i class="fa fa-pencil"></i>  Delete Assignment
+                    </button>
+                </div>
+                <div class="col-lg-6">
+                    <!-- <button type="button" class="btn btn-outline-primary" [style.float]="'right'">
+                        <i class="fa fa-plus"></i>  Edit Profile
+                    </button> -->
+                </div>                            
+            </div>
+        </div>
+    </ng-template>
 
 </div>

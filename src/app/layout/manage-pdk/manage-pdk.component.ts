@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { AuthService, GeneralService } from '../../shared';
+import { AuthService, GeneralService, Assignment } from '../../shared';
 import { Form } from '@angular/forms';
-
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'manage-pdk',
@@ -14,13 +14,14 @@ import { Form } from '@angular/forms';
 export class ManagePDKComponent implements OnInit {
     displayedColumns = ['assignment_id', 'address', 'team', 'postcode', 'date'];
     dataSource: any;
-    selectedRowIndex: number = -1;
     dateFilter: string;
+    modal: NgbModalRef;
+    assignment: Assignment;
     
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
 
-    constructor(private auth : AuthService) {
+    constructor(private auth : AuthService, private modalService: NgbModal) {
         this.getAssignmentList();
     }
 
@@ -67,60 +68,41 @@ export class ManagePDKComponent implements OnInit {
         this.dataSource.filter = filterValue;
     }
 
-    rowClicked(row){
-        this.selectedRowIndex = row.user_id;
+    open(content, id: number) {
+        this.assignment = new Assignment();
+
+        let token:string = JSON.parse(localStorage.getItem('userData')).token;
+        let user_id: string = JSON.parse(localStorage.getItem('userData')).user_id;
+        let data: any = {   "token"     : token,
+                            "user_id"   : user_id};
+
+        this.auth.postData(data, "api/assignment/get/" + id).then((result) => {
+            let assignment: any = result;
+                    
+            if(assignment.status == "0"){
+                alert(assignment.message);
+            }
+            else{
+                if(assignment.error) {
+                    console.log(assignment.error.text);
+                }
+                else{
+                    this.assignment.assignment_id = assignment.data.assignment_id;
+                    this.assignment.team = assignment.data.team;
+                    this.assignment.address = assignment.data.address;
+                    this.assignment.remark = assignment.data.remark;
+                }
+            }
+        },
+        (err) => {
+            console.log("API error: " + err);
+        });
+
+
+        this.modal = this.modalService.open(content, {
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg'
+        });
     }
-
-    // open(content, type: any, id: number) {
-    //     if(type == "edit"){
-    //         this.mode = 2;
-    //         // this.auth.getData("api/user/"+id).then((result) => {
-    //         //     let userData: any = result
-    //         //     if(userData.error){
-    //         //         console.log(userData.error.text);
-    //         //     }
-    //         //     else{
-    //         //         //fetch user data to form for edit
-    //         //         this.userForm.patchValue({
-    //         //             id: id,
-    //         //             status: userData.state,
-    //         //             fullName: userData.full_name,
-    //         //             username: userData.username,
-    //         //             email: userData.email,
-    //         //             telNo: userData.phone_no,
-    //         //             gender: userData.gender,
-    //         //             userType: userData.usertype
-    //         //         });
-                    
-    //         //         //disabled input field for username
-    //         //         this.userForm.get('username').disable();
-                    
-    //         //         //remove validators for password and username
-    //         //         this.userForm.get('username').clearValidators();
-    //         //         this.userForm.get('username').updateValueAndValidity()
-    //         //         this.userForm.get('passwordGrp.password').clearValidators();
-    //         //         this.userForm.get('passwordGrp.password').setValidators([Validators.pattern(this.passwordPattern)]);                    
-    //         //         this.userForm.get('passwordGrp.password').updateValueAndValidity()
-    //         //         this.userForm.get('passwordGrp.repeatPassword').clearValidators();
-    //         //         this.userForm.get('passwordGrp.repeatPassword').updateValueAndValidity()
-                    
-    //         //     }
-    //         // },
-    //         // (err) => {
-    //         //     console.log("API error: " + err);
-    //         // });
-    //     }
-    //     else{
-    //         this.mode = 1;
-    //         //this.userForm.reset();
-    //         //this.userForm.get('username').enable();
-    //     }
-
-    //     let closeResult: string;
-    //     this.modal = this.modalService.open(content, {
-    //         backdrop: 'static',
-    //         keyboard: false,
-    //         size: 'lg'
-    //     });
-    // }
 }

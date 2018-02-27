@@ -9,3 +9,38 @@
 .form-control[readonly]{
     background-color: #fff;
 }
+
+@media (min-width: 992px){
+    .mat-cell, .mat-header-cell{
+        flex: unset;
+    }
+
+    .mat-column-assignment_id{
+        width: 5%;
+    }
+
+    .mat-column-team{
+        width: 10%;
+    }
+
+    .mat-column-postcode{
+        width: 5%;
+    }
+
+    
+    .mat-column-date{
+        width: 5%;
+    }
+
+    .mat-column-address{
+        width: 70%;
+    }
+}
+
+
+
+
+
+
+
+

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UserType } from '../../class';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { AbstractControl } from '@angular/forms';
 
 @Injectable()
 export class GeneralService {
@@ -28,4 +29,26 @@ export class GeneralService {
 
     return temp_date.toISOString().slice(0, 19).replace('T', ' ');
   }
+
+  getPasswordPattern(): string{
+    return "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,25}$";
+  }
+
+  getUsernamePattern(): string{
+    return "^[a-zA-Z0-9.\-_]{4,30}$";
+  }
+
+  checkPasswordEqual(c: AbstractControl): {[key: string]: boolean} | null{
+    let password = c.get('password');
+    let repeatPassword = c.get('repeatPassword');
+    
+    if(password.pristine || repeatPassword.pristine)
+        return null;
+
+    if(password.value === repeatPassword.value){
+        return null;
+    }
+    return { 'match' : true };
 }
+}
+

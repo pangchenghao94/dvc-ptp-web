@@ -20,9 +20,6 @@ export class ManageUsersComponent implements OnInit {
     userForm: any;
     modal: NgbModalRef;
 
-    passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,25}$";
-    usernamePattern = "^[a-zA-Z0-9.\-_]{4,30}$";
-
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
 
@@ -38,13 +35,13 @@ export class ManageUsersComponent implements OnInit {
                 [Validators.required, Validators.minLength(6)]],
 
             username: ['', 
-                [Validators.required, Validators.pattern(this.usernamePattern)], 
+                [Validators.required, Validators.pattern(this.general.getUsernamePattern())], 
                 this.checkUniqueUsername.bind(this)],
 
             passwordGrp: this.fb.group({
-                password: ['', [Validators.required, Validators.pattern(this.passwordPattern)]],
+                password: ['', [Validators.required, Validators.pattern(this.general.getPasswordPattern())]],
                 repeatPassword: ['', [Validators.required]],
-            }, { validator: this.checkPasswordEqual }),
+            }, { validator: this.general.checkPasswordEqual }),
 
             email: ['',[Validators.required, Validators.email]],
             telNo: ['', [Validators.required, Validators.pattern("^[0-9]{10,12}$")]],
@@ -60,10 +57,9 @@ export class ManageUsersComponent implements OnInit {
         let data: any = {   "token"     : token,
                             "user_id"   : user_id };
 
-        console.log(data);
         this.auth.postData(data, "api/userlist").then((result) => {
             let userList: any = result;
-            console.log(userList);
+
             if(userList.status == "0"){
                 alert(userList.message);
             }
@@ -73,9 +69,10 @@ export class ManageUsersComponent implements OnInit {
                 }
                 else{
                     // Assign the data to the data source for the table to render
-                    for(let result of userList.data){
-                        result.usertype = this.general.getUserTypeDesc(result.usertype);
-                    }
+                    userList.data.forEach(element => {
+                        element.usertype = this.general.getUserTypeDesc(element.usertype)
+                    });
+                    
                     this.dataSource = new MatTableDataSource(userList.data);
                     this.dataSource.paginator = this.paginator;
                     this.dataSource.sort = this.sort;
@@ -126,7 +123,7 @@ export class ManageUsersComponent implements OnInit {
                     this.userForm.get('username').clearValidators();
                     this.userForm.get('username').updateValueAndValidity()
                     this.userForm.get('passwordGrp.password').clearValidators();
-                    this.userForm.get('passwordGrp.password').setValidators([Validators.pattern(this.passwordPattern)]);                    
+                    this.userForm.get('passwordGrp.password').setValidators([Validators.pattern(this.general.getPasswordPattern())]);                    
                     this.userForm.get('passwordGrp.password').updateValueAndValidity()
                     this.userForm.get('passwordGrp.repeatPassword').clearValidators();
                     this.userForm.get('passwordGrp.repeatPassword').updateValueAndValidity()
@@ -261,18 +258,18 @@ export class ManageUsersComponent implements OnInit {
         return promise;
     }
 
-    checkPasswordEqual(c: AbstractControl): {[key: string]: boolean} | null{
-        let password = c.get('password');
-        let repeatPassword = c.get('repeatPassword');
+    // checkPasswordEqual(c: AbstractControl): {[key: string]: boolean} | null{
+    //     let password = c.get('password');
+    //     let repeatPassword = c.get('repeatPassword');
         
-        if(password.pristine || repeatPassword.pristine)
-            return null;
+    //     if(password.pristine || repeatPassword.pristine)
+    //         return null;
 
-        if(password.value === repeatPassword.value){
-            return null;
-        }
-        return { 'match' : true };
-    }
+    //     if(password.value === repeatPassword.value){
+    //         return null;
+    //     }
+    //     return { 'match' : true };
+    // }
 
     changeUserState(id: any, type: number){
         if(type == 0){//deactive

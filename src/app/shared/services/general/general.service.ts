@@ -37,18 +37,5 @@ export class GeneralService {
   getUsernamePattern(): string{
     return "^[a-zA-Z0-9.\-_]{4,30}$";
   }
-
-  checkPasswordEqual(c: AbstractControl): {[key: string]: boolean} | null{
-    let password = c.get('password');
-    let repeatPassword = c.get('repeatPassword');
-    
-    if(password.pristine || repeatPassword.pristine)
-        return null;
-
-    if(password.value === repeatPassword.value){
-        return null;
-    }
-    return { 'match' : true };
-}
 }
 

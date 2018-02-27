@@ -41,13 +41,26 @@ export class ManageUsersComponent implements OnInit {
             passwordGrp: this.fb.group({
                 password: ['', [Validators.required, Validators.pattern(this.general.getPasswordPattern())]],
                 repeatPassword: ['', [Validators.required]],
-            }, { validator: this.general.checkPasswordEqual }),
+            }, { validator: this.checkPasswordEqual }),
 
             email: ['',[Validators.required, Validators.email]],
             telNo: ['', [Validators.required, Validators.pattern("^[0-9]{10,12}$")]],
             gender: ['', Validators.required],
             userType: ['', Validators.required]
         });
+    }
+
+    checkPasswordEqual(c: AbstractControl): {[key: string]: boolean} | null{
+        let password = c.get('password');
+        let repeatPassword = c.get('repeatPassword');
+        
+        if(password.pristine || repeatPassword.pristine)
+            return null;
+    
+        if(password.value === repeatPassword.value){
+            return null;
+        }
+        return { 'match' : true };
     }
 
     getUserList(){
@@ -98,22 +111,33 @@ export class ManageUsersComponent implements OnInit {
     open(content, type: any, id: number) {
         if(type == "edit"){
             this.mode = 2;
-            this.auth.getData("api/user/"+id).then((result) => {
-                let userData: any = result
-                if(userData.error){
-                    console.log(userData.error.text);
+
+            let token:string = JSON.parse(localStorage.getItem('userData')).token;
+            let user_id: string = JSON.parse(localStorage.getItem('userData')).user_id;
+            let data: any = {   "token"     : token,
+                                "user_id"   : user_id};
+
+            this.auth.postData(data, "api/user/get/" + id).then((result) => {
+                let userData: any = result;
+                        
+                if(userData.status == "0"){
+                    alert(userData.message);
                 }
                 else{
-                    //fetch user data to form for edit
+                    if(userData.error) {
+                        console.log(userData.error.text);
+                    }
+                    else{
+                         //fetch user data to form for edit
                     this.userForm.patchValue({
                         id: id,
-                        status: userData.state,
-                        fullName: userData.full_name,
-                        username: userData.username,
-                        email: userData.email,
-                        telNo: userData.phone_no,
-                        gender: userData.gender,
-                        userType: userData.usertype
+                        status: userData.data.state,
+                        fullName: userData.data.full_name,
+                        username: userData.data.username,
+                        email: userData.data.email,
+                        telNo: userData.data.phone_no,
+                        gender: userData.data.gender,
+                        userType: userData.data.usertype
                     });
                     
                     //disabled input field for username
@@ -127,7 +151,7 @@ export class ManageUsersComponent implements OnInit {
                     this.userForm.get('passwordGrp.password').updateValueAndValidity()
                     this.userForm.get('passwordGrp.repeatPassword').clearValidators();
                     this.userForm.get('passwordGrp.repeatPassword').updateValueAndValidity()
-                    
+                    }
                 }
             },
             (err) => {

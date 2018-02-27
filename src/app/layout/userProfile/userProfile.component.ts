@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { AuthService, User, GeneralService } from '../../shared';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { FormControl, FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
 @Component({
     selector: 'user-profile',
@@ -31,7 +31,7 @@ constructor(private auth: AuthService, private general: GeneralService, private 
             }
             else{
                 if(user.error) {
-                    console.log(user.error);
+                    console.log(user.error.text);
                 }
                 else{
                     this.user.full_name = user.data.full_name;
@@ -40,30 +40,78 @@ constructor(private auth: AuthService, private general: GeneralService, private 
                     this.user.gender = user.data.gender;
                     this.user.usertype = user.data.usertype;
                     this.usertypeStr = this.general.getUserTypeDesc(this.user.usertype);
-                    console.log(this.user);
                 }
             }
         },
         (err) => {
             console.log("API error: " + err);
         });
-
-        this.changePasswordForm = this.fb.group({
-            oldPass: ['', Validators.required],
-            passwordGrp: this.fb.group({
-                newPass: ['', [Validators.required, Validators.pattern(this.general.getPasswordPattern())]],
-                newPassRepeat: ['', [Validators.required]],
-            }, { validator: this.general.checkPasswordEqual }),
-        });
     }
 
     ngOnInit() {}
 
     changePassword(changePasswordModal){
+        this.changePasswordForm = this.fb.group({
+            oldPass: ['', Validators.required],
+            passwordGrp: this.fb.group({
+                newPass: ['', [Validators.required, Validators.pattern(this.general.getPasswordPattern())]],
+                newPassRepeat: ['', [Validators.required]]
+            }, { validator: this.checkPasswordEqual })
+        });
+
         this.modal = this.modalService.open(changePasswordModal, {
             backdrop: 'static',
-            keyboard: false,
-            size: 'lg'
+            keyboard: false
+        });
+    }
+
+    
+    checkPasswordEqual(c: AbstractControl): {[key: string]: boolean} | null{
+        let password = c.get('newPass');
+        let repeatPassword = c.get('newPassRepeat');
+        
+        if(password.pristine || repeatPassword.pristine)
+            return null;
+    
+        if(password.value === repeatPassword.value){
+            return null;
+        }
+        return { 'match' : true };
+    }
+
+    submit(){
+        let token:string = JSON.parse(localStorage.getItem('userData')).token;
+        let user_id: string = JSON.parse(localStorage.getItem('userData')).user_id;
+        let passwordData: any = {
+            "oldPass"       : this.changePasswordForm.get('oldPass').value,
+            "newPassRepeat" : this.changePasswordForm.get('passwordGrp.newPassRepeat').value
+        };
+
+        let data: any = {   "token"     : token,
+                            "user_id"   : user_id,
+                            "data"      : passwordData};
+        console.log(data);
+                
+        this.auth.postData(data, "api/user/changePassword").then((result) => {
+            let responseData: any = result
+            console.log(responseData);
+            if(responseData.status == "0"){
+                alert(responseData.message);
+            }
+            else{
+                if(responseData.error){
+                    console.log(responseData.error.text);
+                }
+                else{
+                    alert("Password has been updated successfully");
+                    this.modal.close();
+                    this.changePasswordForm.reset();
+                }
+            }
+                
+        },
+        (err) => {
+            console.log("API error: " + err);
         });
     }
 }

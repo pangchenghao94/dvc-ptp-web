@@ -49,7 +49,6 @@ export class ManagePDKComponent implements OnInit {
                     console.log(responseData.error.text);
                 }
                 else{
-                    console.log(responseData);
                     this.dataSource = new MatTableDataSource(responseData);
                     this.dataSource.paginator = this.paginator;
                     this.dataSource.sort = this.sort;
@@ -69,6 +68,7 @@ export class ManagePDKComponent implements OnInit {
     }
 
     open(content, id: number) {
+        console.log('open');
         this.assignment = new Assignment();
 
         let token:string = JSON.parse(localStorage.getItem('userData')).token;
@@ -88,9 +88,30 @@ export class ManagePDKComponent implements OnInit {
                 }
                 else{
                     this.assignment.assignment_id = assignment.data.assignment_id;
+                    this.assignment.user_id = assignment.data.user_id;
                     this.assignment.team = assignment.data.team;
                     this.assignment.address = assignment.data.address;
                     this.assignment.remark = assignment.data.remark;
+                    
+                    this.auth.postData(data, "api/user/getFullName/" + this.assignment.user_id).then((result) => {
+                        let full_name: any = result;
+                        
+                        if(full_name.status == "0"){
+                            alert(full_name.message);
+                        }
+                        else{
+                            if(full_name.error) {
+                                console.log(full_name.error.text);
+                            }
+                            else{
+                                console.log(full_name);
+                                this.assignment.createdBy = full_name.data.full_name;
+                            }
+                        }
+                    },
+                    (err) => {
+                        console.log("API error: " + err);
+                    });
                 }
             }
         },
@@ -98,11 +119,11 @@ export class ManagePDKComponent implements OnInit {
             console.log("API error: " + err);
         });
 
+        console.log(JSON.stringify(data));
 
         this.modal = this.modalService.open(content, {
             backdrop: 'static',
-            keyboard: false,
-            size: 'lg'
+            keyboard: false
         });
     }
 }

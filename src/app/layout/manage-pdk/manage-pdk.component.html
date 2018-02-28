@@ -2,7 +2,8 @@
     <app-page-header [heading]="'Manage PDK'" [icon]="'fa-tasks'"></app-page-header>
     <div class="row" [style.padding-bottom]="'15px'">
         <div class="col col-lg-12">
-            <button type="button" class="btn btn-outline-primary" [routerLink]="['/addEditPDKAssignment', '1']" [routerLinkActive]="['router-link-active']" >
+            <button type="button" class="btn btn-outline-primary" [style.float]="'right'"
+                [routerLink]="['/addEditPDKAssignment', '1']" [routerLinkActive]="['router-link-active']" >
                 <i class="fa fa-plus"></i>  Add Assignment
             </button>
         </div>
@@ -133,11 +134,11 @@
                 </div>
             </div>
             <div class="row" [style.padding-top]="'20px'">
-                <div class="col">
-                    <button type="button" class="btn btn-outline-primary">
+                <div class="col col-lg-12">
+                    <button type="button" class="btn btn-outline-primary btn-editAssignment">
                         <i class="fa fa-pencil"></i>  Edit Assignment
                     </button>
-                    <button type="button" class="btn btn-outline-danger">
+                    <button type="button" class="btn btn-outline-danger btn-delAssignment">
                         <i class="fa fa-pencil"></i>  Delete Assignment
                     </button>
                 </div>

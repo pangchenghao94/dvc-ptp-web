@@ -4,7 +4,10 @@
         <div class="col col-lg-12">
             <div class="row" [style.padding-bottom]="'15px'">
                 <div class="col col-lg-12">
-                    <button type="button" class="btn btn-outline-primary" (click)="open(content,'add', -1)"><i class="fa fa-plus"></i>  Add User</button>
+                    <button type="button" class="btn btn-outline-primary" (click)="open(content,'add', -1)" [style.float]="'right'">
+                        <i class="fa fa-plus"></i>  Add User
+                    </button>
+                    
                     <ng-template #content let-c="close" let-d="dismiss">
                         <div class="modal-header">
                             <h4 class="modal-title">{{ mode == 2 ? 'Edit User' : 'Add User' }}</h4>

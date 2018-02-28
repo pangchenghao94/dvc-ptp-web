@@ -108,7 +108,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col col-sm-10">
+                            <div class="col col-sm-9">
                                 <mat-form-field class="form-group">
                                     <input matInput placeholder="State" aria-label="State" [matAutocomplete]="auto" formControlName="selectUserCtrl">
                                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayWithFn">
@@ -119,7 +119,7 @@
                                     </mat-autocomplete>
                                 </mat-form-field>
                             </div>
-                            <div class="col col-sm-2">
+                            <div class="col col-sm-3">
                                 <button type="button" class="btn btn-success" 
                                 (click)="addUser()" [disabled]="assignmentForm.get('selectUserCtrl').value.user_id == undefined">
                                 <i class="fa fa-plus"></i>  Add User</button>

@@ -17,13 +17,8 @@ export class UserProfileComponent implements OnInit {
     changePasswordForm: any;
     
 
-constructor(private auth: AuthService, private general: GeneralService, private modalService: NgbModal, private fb: FormBuilder) {
-        let token:string = JSON.parse(localStorage.getItem('userData')).token;
-        let user_id: string = JSON.parse(localStorage.getItem('userData')).user_id;
-        let data: any = {   "token"     : token,
-                            "user_id"   : user_id};
-
-        this.auth.postData(data, "api/user/get/" + user_id).then((result) => {
+    constructor(private auth: AuthService, private general: GeneralService, private modalService: NgbModal, private fb: FormBuilder) {
+        this.auth.postData(this.general.getAuthObject(), "api/user/get/" + this.general.getUserID()).then((result) => {
             let user: any = result;
                     
             if(user.status == "0"){
@@ -80,15 +75,13 @@ constructor(private auth: AuthService, private general: GeneralService, private 
     }
 
     submit(){
-        let token:string = JSON.parse(localStorage.getItem('userData')).token;
-        let user_id: string = JSON.parse(localStorage.getItem('userData')).user_id;
         let passwordData: any = {
             "oldPass"       : this.changePasswordForm.get('oldPass').value,
             "newPassRepeat" : this.changePasswordForm.get('passwordGrp.newPassRepeat').value
         };
 
-        let data: any = {   "token"     : token,
-                            "user_id"   : user_id,
+        let data: any = {   "token"     : this.general.getToken(),
+                            "user_id"   : this.general.getUserID(),
                             "data"      : passwordData};
         console.log(data);
                 

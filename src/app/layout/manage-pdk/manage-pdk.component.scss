@@ -7,34 +7,35 @@
 }
 
 @media (min-width: 992px){
-    .mat-cell, .mat-header-cell{
+    .tbl-assignmentlst .mat-cell, 
+    .tbl-assignmentlst .mat-header-cell{
         flex: unset;
     }
 
-    .mat-column-assignment_id{
+    .tbl-assignmentlst .mat-column-assignment_id{
         width: 5%;
     }
 
-    .mat-column-team{
+    .tbl-assignmentlst .mat-column-team{
         width: 10%;
     }
 
-    .mat-column-postcode{
+    .tbl-assignmentlst .mat-column-postcode{
         width: 10%;
     }
 
-    
-    .mat-column-date{
+    .tbl-assignmentlst .mat-column-date{
         width: 10%;
     }
 
-    .mat-column-address{
+    .tbl-assignmentlst .mat-column-address{
         width: 65%;
     }
 
     .btn-delAssignment{
         float: right;
     } 
+    
     .btn-editAssignment{
         float: left;
     }
@@ -43,6 +44,19 @@
 mat-row:hover{
     background: #FAFAFA;
     cursor: pointer;
+}
+
+.tbl-userlst .mat-cell, 
+.tbl-userlst .mat-header-cell{
+    flex: unset;
+}
+
+.tbl-userlst .mat-column-user_id{
+    width: 10%;
+}
+
+.tbl-userlst .mat-column-full_name{
+    width: 90%;
 }
 
 

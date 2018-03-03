@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { AuthService, GeneralService, Assignment } from '../../shared';
+import { AuthService, GeneralService, Assignment, User } from '../../shared';
 import { Form } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'manage-pdk',
@@ -13,33 +14,27 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ManagePDKComponent implements OnInit {
     displayedColumns = ['assignment_id', 'address', 'team', 'postcode', 'date'];
+    displayedColumns2 = ['user_id', 'full_name'];
     dataSource: any;
+    dataSource2: any;
     dateFilter: string;
     modal: NgbModalRef;
-    assignment: Assignment;
+    assignment: Assignment = new Assignment();
     
     @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatPaginator) paginator2: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatSort) sort2: MatSort;    
 
-    constructor(private auth : AuthService, private modalService: NgbModal) {
+    constructor(private auth : AuthService, private modalService: NgbModal, private general: GeneralService, private router: Router) {
         this.getAssignmentList();
     }
 
     ngOnInit() {     
     }
 
-    testing(){
-        console.log('sdsdsd');
-    }
-
     getAssignmentList(){
-        let token:string = JSON.parse(localStorage.getItem('userData')).token;
-        let user_id: string = JSON.parse(localStorage.getItem('userData')).user_id;
-
-        let data: any = {   "token"     : token,
-                            "user_id"   : user_id };
-                
-        this.auth.postData(data, "api/assignment/assignmentList").then((result) => {
+        this.auth.postData(this.general.getAuthObject(), "api/assignment/assignmentList").then((result) => {
             let responseData: any = result
             if(responseData.status == "0"){
                 alert(responseData.message);
@@ -68,50 +63,54 @@ export class ManagePDKComponent implements OnInit {
     }
 
     open(content, id: number) {
-        console.log('open');
-        this.assignment = new Assignment();
-
-        let token:string = JSON.parse(localStorage.getItem('userData')).token;
-        let user_id: string = JSON.parse(localStorage.getItem('userData')).user_id;
-        let data: any = {   "token"     : token,
-                            "user_id"   : user_id};
-
-        this.auth.postData(data, "api/assignment/get/" + id).then((result) => {
-            let assignment: any = result;
+        this.auth.postData(this.general.getAuthObject(), "api/assignment/get/" + id).then((result) => {
+            let assignmentData: any = result;
                     
-            if(assignment.status == "0"){
-                alert(assignment.message);
+            if(assignmentData.status == "0"){
+                alert(assignmentData.message);
             }
             else{
-                if(assignment.error) {
-                    console.log(assignment.error.text);
+                if(assignmentData.error) {
+                    console.log(assignmentData.error.text);
                 }
                 else{
-                    this.assignment.assignment_id = assignment.data.assignment_id;
-                    this.assignment.user_id = assignment.data.user_id;
-                    this.assignment.team = assignment.data.team;
-                    this.assignment.address = assignment.data.address;
-                    this.assignment.remark = assignment.data.remark;
-                    
-                    this.auth.postData(data, "api/user/getFullName/" + this.assignment.user_id).then((result) => {
-                        let full_name: any = result;
-                        
-                        if(full_name.status == "0"){
-                            alert(full_name.message);
+                    this.assignment.assignment_id = assignmentData.data.assignment_id;
+                    this.assignment.date = assignmentData.data.date;
+                    this.assignment.user_id = assignmentData.data.user_id;
+                    this.assignment.team = assignmentData.data.team;
+                    this.assignment.address = assignmentData.data.address;
+                    this.assignment.remark = assignmentData.data.remark;
+                    this.assignment.createdBy = assignmentData.data.full_name;
+
+                    this.auth.postData(this.general.getAuthObject(), "api/assignment_admin/getList/" + this.assignment.assignment_id).then((result) => {
+                        let assignment_admin: any = result;
+                                
+                        if(assignment_admin.status == "0"){
+                            alert(assignment_admin.message);
                         }
                         else{
-                            if(full_name.error) {
-                                console.log(full_name.error.text);
+                            if(assignment_admin.error) {
+                                console.log(assignment_admin.error.text);
                             }
                             else{
-                                console.log(full_name);
-                                this.assignment.createdBy = full_name.data.full_name;
+                                this.dataSource2 = new MatTableDataSource();
+                                assignment_admin.data.forEach(element => {
+                                    let temp_user : User = new User();
+                                    temp_user.user_id = element.user_id;
+                                    temp_user.full_name = element.full_name;
+            
+                                    this.dataSource2.data.push(temp_user);
+                                });
+            
+                                this.dataSource2._updateChangeSubscription();
+                                this.dataSource2.paginator = this.paginator2;
+                                this.dataSource2.sort = this.sort2;
                             }
                         }
                     },
                     (err) => {
                         console.log("API error: " + err);
-                    });
+                    }); 
                 }
             }
         },
@@ -119,11 +118,47 @@ export class ManagePDKComponent implements OnInit {
             console.log("API error: " + err);
         });
 
-        console.log(JSON.stringify(data));
-
         this.modal = this.modalService.open(content, {
             backdrop: 'static',
-            keyboard: false
+            keyboard: false,
+            size: 'lg'
         });
+    }
+
+    editBtn(){
+        this.modal.close();
+        this.router.navigate(['/addEditPDKAssignment', '2', this.assignment.assignment_id]);
+    }
+
+    deleteBtn(){
+        if(confirm("Confirm to delete assignment?")){
+            this.auth.postData(this.general.getAuthObject(), "api/assignment/delete/" + this.assignment.assignment_id).then((result) => {
+                let responseData: any = result;
+                
+                if(responseData.status == "0"){
+                    alert(responseData.message);
+                }
+                else{
+                    if(responseData.error) {
+                        console.log(responseData.error.text);
+                    }
+                    else{
+                        alert("Assignment has been deleted successfully");
+                        this.modal.close();
+    
+                        let id : number = this.assignment.assignment_id;
+                        this.dataSource.data = this.dataSource.data.filter(function(el){
+                            return el.assignment_id != id;
+                        });
+    
+                        this.dataSource._updateChangeSubscription();
+                        this.dataSource.paginator = this.paginator;
+                    }
+                }
+            },
+            (err) => {
+                console.log("API error: " + err);
+            });  
+        }
     }
 }

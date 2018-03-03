@@ -1,184 +1,253 @@
 <div [@routerTransition]>
     <app-page-header [heading]="'Manage Users'" [icon]="'fa-user'"></app-page-header>
-    <div class="row">
-        <div class="col col-lg-12">
-            <div class="row" [style.padding-bottom]="'15px'">
-                <div class="col col-lg-12">
-                    <button type="button" class="btn btn-outline-primary" (click)="open(content,'add', -1)" [style.float]="'right'">
-                        <i class="fa fa-plus"></i>  Add User
-                    </button>
-                    
-                    <ng-template #content let-c="close" let-d="dismiss">
-                        <div class="modal-header">
-                            <h4 class="modal-title">{{ mode == 2 ? 'Edit User' : 'Add User' }}</h4>
-                            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col col-lg-12">
-                                    <form [formGroup]="userForm" (ngSubmit)="submit()" novalidate>
-                                        <div class="form-group"
-                                        [ngClass]="{'has-error': (userForm.get('fullName').touched
-                                                                || userForm.get('fullName').dirty) &&
-                                                                !userForm.get('fullName').valid }">
-                                            <label for="txtFullName">Full Name</label>
-                                            <input type="text" class="form-control" id="txtFullName" placeholder="Enter full name"
-                                                formControlName="fullName">
-                                            <span class="help-block" *ngIf="(userForm.get('fullName').touched
-                                                                            || userForm.get('fullName').dirty) &&
-                                                                            userForm.get('fullName').errors">
-                                                <span *ngIf="userForm.get('fullName').errors.required" class="txtErr">
-                                                    * Please enter your first name.
-                                                </span>
-                                                <span *ngIf="userForm.get('fullName').errors.minlength" class="txtErr">
-                                                    * The first name must be longer than 6 characters.
-                                                </span>
-                                            </span>
-                                        </div>
-                                        <div class="form-group"
-                                        [ngClass]="{'has-error': (userForm.get('username').touched ||
-                                                                userForm.get('username').dirty) &&
-                                                                !userForm.get('username').valid }">
-                                            <label for="txtUsername">Username</label>
-                                            <input type="text" class="form-control" id="txtUsername" placeholder="Enter unique username"
-                                                formControlName="username">
-                                            <span class="help-block" *ngIf="(userForm.get('username').touched
-                                                                            || userForm.get('username').dirty) &&
-                                                                            userForm.get('username').errors">
-                                                <span *ngIf="userForm.get('username').errors.required" class="txtErr">
-                                                    * Please enter username.
-                                                </span>
-                                                <span *ngIf="userForm.get('username').errors.pattern" class="txtErr">
-                                                    * The username must be longer than between 6 to 20 characters without special characters.
-                                                </span>
-                                                <span *ngIf="userForm.get('username').errors.unique" class="txtErr">
-                                                    * The username is in used, pick another unique username.
-                                                </span>
-                                            </span>
-                                        </div>
-                                        <div formGroupName="passwordGrp" class="row"
-                                            [ngClass]="{'has-error': userForm.get('passwordGrp').errors }">
-                                            <div class="col col-lg-6">
-                                                <div class="form-group"
-                                                    [ngClass]="{'has-error': (userForm.get('passwordGrp.password').touched
-                                                                                || userForm.get('passwordGrp.password').dirty) &&
-                                                                                !userForm.get('passwordGrp.password').valid }">
-                                                    <label for="txtPass">Password</label>
-                                                    <input type="password" class="form-control" id="txtPass" placeholder="Enter password" 
-                                                        readonly onfocus="this.removeAttribute('readonly');"
-                                                        [pattern]="passwordPattern"
-                                                        formControlName="password">
-                                                    <span class="help-block" *ngIf="(userForm.get('passwordGrp.password').touched ||
-                                                                                    userForm.get('passwordGrp.password').dirty) &&
-                                                                                    userForm.get('passwordGrp.password').errors">
-                                                        <span *ngIf="userForm.get('passwordGrp.password').errors.required" class="txtErr">
-                                                            * Please enter password.
-                                                        </span>
-                                                        <span *ngIf="userForm.get('passwordGrp.password').errors.pattern" class="txtErr">
-                                                            * The password must have at least 8 characters with minimum one letter and one number.
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="col col-lg-6">
-                                                <div class="form-group"
-                                                    [ngClass]="{'has-error': (userForm.get('passwordGrp.repeatPassword').touched ||
-                                                                                            userForm.get('passwordGrp.repeatPassword').dirty) &&
-                                                                                            !userForm.get('passwordGrp.repeatPassword').valid }">
-                                                    <label for="txtRepeatPass">Re-enter Password</label>
-                                                    <input type="password" class="form-control" id="txtRepeatPass" placeholder="Re-enter your Password" 
-                                                        readonly onfocus="this.removeAttribute('readonly');"
-                                                        formControlName="repeatPassword">
-                                                    <span class="help-block" *ngIf="(userForm.get('passwordGrp.repeatPassword').touched ||
-                                                                                    userForm.get('passwordGrp.repeatPassword').dirty) &&
-                                                                                    (userForm.get('passwordGrp.repeatPassword').errors ||
-                                                                                    userForm.get('passwordGrp').errors)">
-                                                        <span *ngIf="userForm.get('passwordGrp.repeatPassword').errors?.required" class="txtErr">
-                                                            * Please re-enter password.
-                                                        </span>
-                                                        <span *ngIf="userForm.get('passwordGrp').errors?.match" class="txtErr">
-                                                            * The passwords you enter does not match.
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group"
-                                        [ngClass]="{'has-error': (userForm.get('email').touched ||
-                                                                userForm.get('email').dirty) &&
-                                                                !userForm.get('email').valid }">
-                                            <label for="txtEmail">Email Address</label>
-                                            <input type="text" class="form-control" id="txtEmail" placeholder="Enter email address here"
-                                                formControlName="email">
-                                            <span class="help-block" *ngIf="(userForm.get('email').touched ||
-                                                                            userForm.get('email').dirty) &&
-                                                                            userForm.get('email').errors">
-                                                <span *ngIf="userForm.get('email').errors.required" class="txtErr">
-                                                    * Please enter your email address. <br/>
-                                                </span>
-                                                <span *ngIf="userForm.get('email').errors.email" class="txtErr">
-                                                    * The enter valid email address (eg: abc@email.com)
-                                                </span>
-                                            </span>
-                                        </div>
-                                        <div class="form-group"
-                                        [ngClass]="{'has-error': (userForm.get('telNo').touched ||
-                                                                userForm.get('telNo').dirty) &&
-                                                                !userForm.get('telNo').valid }">
-                                            <label for="txtTelNo">Contact No.</label>
-                                            <input type="text" class="form-control" id="txtTelNo" placeholder="Enter contact number"
-                                                formControlName="telNo">
-                                            <span class="help-block" *ngIf="(userForm.get('telNo').touched ||
-                                                                            userForm.get('telNo').dirty) &&
-                                                                            userForm.get('telNo').errors">
-                                                <span *ngIf="userForm.get('telNo').errors.required" class="txtErr">
-                                                    * Please enter your contact number.
-                                                </span>
-                                                <span *ngIf="userForm.get('telNo').errors.pattern" class="txtErr">
-                                                    * The contact no. must be between 10 to 13 numeric characters (eg: 60122790153).
-                                                </span>
-                                            </span>
-                                        </div>
-                                        
+    <div class="col-sm-11 col-centered">
+        <div class="card mb-3">
+            <div class="card-header">User List</div>
+            <div class="card-body">
+                <div class="row" [style.padding-bottom]="'15px'">
+                    <div class="col col-lg-12">
+                        <button type="button" class="btn btn-outline-primary" (click)="open(content,'add', -1)" [style.float]="'right'">
+                            <i class="fa fa-plus"></i>  Add User
+                        </button>
+                        
+                        <ng-template #content let-c="close" let-d="dismiss">
+                            <div class="modal-header">
+                                <h4 class="modal-title">
+                                    <ng-container [ngSwitch]="mode">
+                                        <span *ngSwitchCase="0">View User</span>
+                                        <span *ngSwitchCase="1">Add User</span>
+                                        <span *ngSwitchCase="2">Edit User</span>
+                                        <span *ngSwitchDefault>View User</span>
+                                    </ng-container>
+                                </h4>
+                                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form [formGroup]="userForm" (ngSubmit)="submit()" novalidate>
+                                <div class="modal-body">
+                                    <ng-container *ngIf="mode == 1 || mode == 2">
                                         <div class="row">
-                                            <div class="col col-lg-6">
-                                                <fieldset class="form-group">
-                                                    <label>Gender</label>
-                                                    <select class="form-control" formControlName="gender">
-                                                        <option selected value="1">Male</option>
-                                                        <option value="0">Female</option>
-                                                    </select>
-                                                    <span class="help-block" *ngIf="(userForm.get('gender').touched ||
-                                                                                    userForm.get('gender').dirty) &&
-                                                                                    userForm.get('gender').errors">
-                                                        <span *ngIf="userForm.get('gender').errors.required" class="txtErr">
-                                                            * Please select gender.
+                                            <div class="col col-lg-12">
+                                                <div class="form-group"
+                                                [ngClass]="{'has-error': (userForm.get('fullName').touched
+                                                                        || userForm.get('fullName').dirty) &&
+                                                                        !userForm.get('fullName').valid }">
+                                                    <label for="txtFullName">Full Name</label>
+                                                    <input type="text" class="form-control" id="txtFullName" placeholder="Enter full name"
+                                                        formControlName="fullName">
+                                                    <span class="help-block" *ngIf="(userForm.get('fullName').touched
+                                                                                    || userForm.get('fullName').dirty) &&
+                                                                                    userForm.get('fullName').errors">
+                                                        <span *ngIf="userForm.get('fullName').errors.required" class="txtErr">
+                                                            * Please enter your first name.
+                                                        </span>
+                                                        <span   class="txtErr">
+                                                            * The first name must be longer than 6 characters.
                                                         </span>
                                                     </span>
-                                                </fieldset>
-                                            </div>
-                                            <div class="col col-lg-6">
-                                                <fieldset class="form-group">
-                                                    <label>User Type</label>
-                                                    <select class="form-control" formControlName="userType">
-                                                        <option value="1">Admin</option>
-                                                        <option selected value="2">Inspector</option>
-                                                        <option value="3">PDK</option>
-                                                        <option value="4">Clerk</option>
-                                                    </select>
-                                                    <span class="help-block" *ngIf="(userForm.get('userType').touched ||
-                                                                                    userForm.get('userType').dirty) &&
-                                                                                    userForm.get('userType').errors">
-                                                        <span *ngIf="userForm.get('userType').errors.required" class="txtErr">
-                                                            * Please select assign user type for this user.
+                                                </div>
+                                                <div class="form-group"
+                                                [ngClass]="{'has-error': (userForm.get('username').touched ||
+                                                                        userForm.get('username').dirty) &&
+                                                                        !userForm.get('username').valid }">
+                                                    <label for="txtUsername">Username</label>
+                                                    <input type="text" class="form-control" id="txtUsername" placeholder="Enter unique username"
+                                                        formControlName="username">
+                                                    <span class="help-block" *ngIf="(userForm.get('username').touched
+                                                                                    || userForm.get('username').dirty) &&
+                                                                                    userForm.get('username').errors">
+                                                        <span *ngIf="userForm.get('username').errors.required" class="txtErr">
+                                                            * Please enter username.
+                                                        </span>
+                                                        <span *ngIf="userForm.get('username').errors.pattern" class="txtErr">
+                                                            * The username must be longer than between 6 to 20 characters without special characters.
+                                                        </span>
+                                                        <span *ngIf="userForm.get('username').errors.unique" class="txtErr">
+                                                            * The username is in used, pick another unique username.
                                                         </span>
                                                     </span>
-                                                </fieldset>
+                                                </div>
+                                                <ng-container *ngIf="!this.userForm.get('passwordGrp').disabled">
+                                                    <div formGroupName="passwordGrp" class="row"
+                                                        [ngClass]="{'has-error': userForm.get('passwordGrp').errors }">
+                                                        <div class="col col-lg-6">
+                                                            <div class="form-group"
+                                                                [ngClass]="{'has-error': (userForm.get('passwordGrp.password').touched
+                                                                                            || userForm.get('passwordGrp.password').dirty) &&
+                                                                                            !userForm.get('passwordGrp.password').valid }">
+                                                                <label for="txtPass">Password</label>
+                                                                <input type="password" class="form-control" id="txtPass" placeholder="Enter password" 
+                                                                    readonly onfocus="this.removeAttribute('readonly');"
+                                                                    [pattern]="passwordPattern"
+                                                                    formControlName="password">
+                                                                <span class="help-block" *ngIf="(userForm.get('passwordGrp.password').touched ||
+                                                                                                userForm.get('passwordGrp.password').dirty) &&
+                                                                                                userForm.get('passwordGrp.password').errors">
+                                                                    <span *ngIf="userForm.get('passwordGrp.password').errors.required" class="txtErr">
+                                                                        * Please enter password.
+                                                                    </span>
+                                                                    <span *ngIf="userForm.get('passwordGrp.password').errors.pattern" class="txtErr">
+                                                                        * The password must have at least 8 characters with minimum one letter and one number.
+                                                                    </span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col col-lg-6">
+                                                            <div class="form-group"
+                                                                [ngClass]="{'has-error': (userForm.get('passwordGrp.repeatPassword').touched ||
+                                                                                                        userForm.get('passwordGrp.repeatPassword').dirty) &&
+                                                                                                        !userForm.get('passwordGrp.repeatPassword').valid }">
+                                                                <label for="txtRepeatPass">Re-enter Password</label>
+                                                                <input type="password" class="form-control" id="txtRepeatPass" placeholder="Re-enter your Password" 
+                                                                    readonly onfocus="this.removeAttribute('readonly');"
+                                                                    formControlName="repeatPassword">
+                                                                <span class="help-block" *ngIf="(userForm.get('passwordGrp.repeatPassword').touched ||
+                                                                                                userForm.get('passwordGrp.repeatPassword').dirty) &&
+                                                                                                (userForm.get('passwordGrp.repeatPassword').errors ||
+                                                                                                userForm.get('passwordGrp').errors)">
+                                                                    <span *ngIf="userForm.get('passwordGrp.repeatPassword').errors?.required" class="txtErr">
+                                                                        * Please re-enter password.
+                                                                    </span>
+                                                                    <span *ngIf="userForm.get('passwordGrp').errors?.match" class="txtErr">
+                                                                        * The passwords you enter does not match.
+                                                                    </span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                                <div class="form-group"
+                                                [ngClass]="{'has-error': (userForm.get('email').touched ||
+                                                                        userForm.get('email').dirty) &&
+                                                                        !userForm.get('email').valid }">
+                                                    <label for="txtEmail">Email Address</label>
+                                                    <input type="text" class="form-control" id="txtEmail" placeholder="Enter email address here"
+                                                        formControlName="email">
+                                                    <span class="help-block" *ngIf="(userForm.get('email').touched ||
+                                                                                    userForm.get('email').dirty) &&
+                                                                                    userForm.get('email').errors">
+                                                        <span *ngIf="userForm.get('email').errors.required" class="txtErr">
+                                                            * Please enter your email address. <br/>
+                                                        </span>
+                                                        <span *ngIf="userForm.get('email').errors.email" class="txtErr">
+                                                            * The enter valid email address (eg: abc@email.com)
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                                <div class="form-group"
+                                                [ngClass]="{'has-error': (userForm.get('telNo').touched ||
+                                                                        userForm.get('telNo').dirty) &&
+                                                                        !userForm.get('telNo').valid }">
+                                                    <label for="txtTelNo">Contact No.</label>
+                                                    <input type="text" class="form-control" id="txtTelNo" placeholder="Enter contact number"
+                                                        formControlName="telNo">
+                                                    <span class="help-block" *ngIf="(userForm.get('telNo').touched ||
+                                                                                    userForm.get('telNo').dirty) &&
+                                                                                    userForm.get('telNo').errors">
+                                                        <span *ngIf="userForm.get('telNo').errors.required" class="txtErr">
+                                                            * Please enter your contact number.
+                                                        </span>
+                                                        <span *ngIf="userForm.get('telNo').errors.pattern" class="txtErr">
+                                                            * The contact no. must be between 10 to 13 numeric characters (eg: 60122790153).
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                                
+                                                <div class="row">
+                                                    <div class="col col-lg-6">
+                                                        <fieldset class="form-group">
+                                                            <label>Gender</label>
+                                                            <select class="form-control" formControlName="gender">
+                                                                <option selected value="1">Male</option>
+                                                                <option value="0">Female</option>
+                                                            </select>
+                                                            <span class="help-block" *ngIf="(userForm.get('gender').touched ||
+                                                                                            userForm.get('gender').dirty) &&
+                                                                                            userForm.get('gender').errors">
+                                                                <span *ngIf="userForm.get('gender').errors.required" class="txtErr">
+                                                                    * Please select gender.
+                                                                </span>
+                                                            </span>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col col-lg-6">
+                                                        <fieldset class="form-group">
+                                                            <label>User Type</label>
+                                                            <select class="form-control" formControlName="userType">
+                                                                <option value="1">Admin</option>
+                                                                <option selected value="2">Inspector</option>
+                                                                <option value="3">PDK</option>
+                                                                <option value="4">Clerk</option>
+                                                            </select>
+                                                            <span class="help-block" *ngIf="(userForm.get('userType').touched ||
+                                                                                            userForm.get('userType').dirty) &&
+                                                                                            userForm.get('userType').errors">
+                                                                <span *ngIf="userForm.get('userType').errors.required" class="txtErr">
+                                                                    * Please select assign user type for this user.
+                                                                </span>
+                                                            </span>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="row" [style.padding]="'15px 0 15px 0'">
+                                    </ng-container>
+                                    <ng-container *ngIf="mode == 0">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <strong>Full Name</strong>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                {{ user.full_name }}
+                                            </div>
+                                        </div>
+                                        <div class="row" [style.padding-top]="'15px'">
+                                            <div class="col-lg-4">
+                                                <strong>Username</strong>                        
+                                            </div>
+                                            <div class="col-lg-8">
+                                                {{ user.username }}
+                                            </div>
+                                        </div>
+                                        <div class="row" [style.padding-top]="'15px'">
+                                                <div class="col-lg-4">
+                                                    <strong>Usertype</strong>                        
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    {{ this.general.getUserTypeDesc(user.usertype) }}
+                                                </div>
+                                            </div>
+                                        <div class="row" [style.padding-top]="'15px'">
+                                            <div class="col-lg-4">
+                                                <strong>Gender</strong>                        
+                                            </div>
+                                            <div class="col-lg-8">
+                                                {{ user.gender == 1 ? 'Male' : 'Female' }}
+                                            </div>
+                                        </div>
+                                        <div class="row" [style.padding-top]="'15px'">
+                                            <div class="col-lg-4">
+                                                <strong>Email Address</strong>                        
+                                            </div>
+                                            <div class="col-lg-8">
+                                                {{ user.email }}
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                                <div class="modal-footer">
+                                    <ng-container *ngIf="mode == 0">
+                                        <div class="row">
+                                                <div class="col-lg-6">
+                                                    <button type="button" class="btn btn-outline-primary" (click)="editUser()">
+                                                        <i class="fa fa-pencil"></i>  Edit User
+                                                    </button>
+                                                </div>
+                                            </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="mode == 1 || mode == 2">
+                                        <div class="row">
                                             <div class="col">
                                                 <!-- [disabled]="!userForm.valid" -->
                                                 <button type="submit" class="btn btn-outline-primary" 
@@ -197,61 +266,59 @@
                                                 </button> 
                                             </div>
                                         </div>
-                                    </form>
+                                    </ng-container>
                                 </div>
-                            </div>
-                        </div>
-                    </ng-template>
+                            </form>
+                        </ng-template>
+                    </div>
                 </div>
-            </div>
 
-            <div class="example-header">
                 <mat-form-field>
                     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter user list">
                 </mat-form-field>
-            </div>
 
-            <div class="example-container mat-elevation-z8">
+                <div class="mat-elevation-z8">
 
-                <mat-table [dataSource]="dataSource" matSort>
+                    <mat-table [dataSource]="dataSource" matSort>
 
-                    <!-- ID Column -->
-                    <ng-container matColumnDef="user_id">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-                        <mat-cell *matCellDef="let row"> {{row.user_id}} </mat-cell>
-                    </ng-container>
+                        <!-- ID Column -->
+                        <ng-container matColumnDef="user_id">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.user_id}} </mat-cell>
+                        </ng-container>
 
-                    <!-- Progress Column -->
-                    <ng-container matColumnDef="full_name">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                        <mat-cell *matCellDef="let row"> {{row.full_name}} </mat-cell>
-                    </ng-container>
+                        <!-- Progress Column -->
+                        <ng-container matColumnDef="full_name">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.full_name}} </mat-cell>
+                        </ng-container>
 
-                    <!-- Color Column [style.color]="row.color"-->
-                    <ng-container matColumnDef="usertype">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header> User Type </mat-header-cell>
-                        <mat-cell *matCellDef="let row"> {{row.usertype}} </mat-cell>
-                    </ng-container>
+                        <!-- Color Column [style.color]="row.color"-->
+                        <ng-container matColumnDef="usertype">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> User Type </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.usertype}} </mat-cell>
+                        </ng-container>
 
-                    <!-- Name Column -->
-                    <ng-container matColumnDef="phone_no">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header> Tel. No. </mat-header-cell>
-                        <mat-cell *matCellDef="let row"> {{row.phone_no}} </mat-cell>
-                    </ng-container>
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="phone_no">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Tel. No. </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.phone_no}} </mat-cell>
+                        </ng-container>
 
-                    <!-- Color Column [style.color]="#4286f4"-->
-                    <ng-container matColumnDef="state">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
-                        <mat-cell *matCellDef="let row" [style.color]=" row.state == 1 ? 'green' : 'maroon' ">{{row.state == 1 ? 'ACTIVE' : 'DEACTIVATED' }} </mat-cell>
-                    </ng-container>
+                        <!-- Color Column [style.color]="#4286f4"-->
+                        <ng-container matColumnDef="state">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+                            <mat-cell *matCellDef="let row" [style.color]=" row.state == 1 ? 'green' : 'maroon' ">{{row.state == 1 ? 'ACTIVE' : 'DEACTIVATED' }} </mat-cell>
+                        </ng-container>
 
-                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns;"
-                        (click)="open(content, 'edit', row.user_id)">
-                    </mat-row>
-                </mat-table>
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"
+                            (click)="open(content, 'edit', row.user_id)">
+                        </mat-row>
+                    </mat-table>
 
-                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                </div>
             </div>
         </div>
     </div>

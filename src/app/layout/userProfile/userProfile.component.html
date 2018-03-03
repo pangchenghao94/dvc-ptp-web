@@ -1,137 +1,142 @@
 <div [@routerTransition]>
     <app-page-header [heading]="'Profile'" [icon]="'fa-tasks'"></app-page-header>
     <div class="row" [style.padding-top]="'15px'">
-            <div class="col-sm-6 col-centered">
-                <div class="card mb-3">
-                    <div class="card-header">{{ user.full_name }}</div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <strong>Username</strong>
-                            </div>
-                            <div class="col-lg-8">
-                                {{ user.username }}
-                            </div>
+        <div class="col-sm-6 col-centered">
+            <div class="card mb-3">
+                <div class="card-header">{{ user.full_name }}</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <strong>Username</strong>
                         </div>
-                        <div class="row" [style.padding-top]="'15px'">
-                            <div class="col-lg-4">
-                                <strong>Contact No.</strong>                        
-                            </div>
-                            <div class="col-lg-8">
-                                {{ user.phone_no }}
-                            </div>
+                        <div class="col-lg-8">
+                            {{ user.username }}
                         </div>
-                        <div class="row" [style.padding-top]="'15px'">
-                            <div class="col-lg-4">
-                                <strong>Gender</strong>                        
-                            </div>
-                            <div class="col-lg-8">
-                                {{ user.gender == 1 ? 'Male' : 'Female' }}
-                            </div>
+                    </div>
+                    <div class="row" [style.padding-top]="'15px'">
+                        <div class="col-lg-4">
+                            <strong>Contact No.</strong>                        
                         </div>
-                        <div class="row" [style.padding-top]="'15px'">
-                            <div class="col-lg-4">
-                                <strong>Usertype</strong>                        
-                            </div>
-                            <div class="col-lg-8">
-                                {{ usertypeStr }}
-                            </div>
+                        <div class="col-lg-8">
+                            {{ user.phone_no }}
                         </div>
-                        <div class="row" [style.padding-top]="'20px'">
-                            <div class="col-lg-6">
-                                <button type="button" class="btn btn-outline-primary" [style.float]="'left'" (click)="changePassword(changePasswordModal)">
-                                    <i class="fa fa-pencil"></i>  Change Password
-                                </button>
-                            </div>
-                            <div class="col-lg-6">
-                                <!-- <button type="button" class="btn btn-outline-primary" [style.float]="'right'">
-                                    <i class="fa fa-plus"></i>  Edit Profile
-                                </button> -->
-                            </div>                            
+                    </div>
+                    <div class="row" [style.padding-top]="'15px'">
+                        <div class="col-lg-4">
+                            <strong>Gender</strong>                        
                         </div>
-                        <ng-template #changePasswordModal let-c="close" let-d="dismiss">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Change Password</h4>
-                                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col col-lg-12">
-                                        <form [formGroup]="changePasswordForm" (ngSubmit)="submit()" novalidate>
-                                            <div class="form-group" 
-                                                [ngClass]="{'has-error': (changePasswordForm.get('oldPass').touched ||
-                                                                            changePasswordForm.get('oldPass').dirty) &&
-                                                                            !changePasswordForm.get('oldPass').valid }">
-                                                <label for="txtOldPass">Old Password</label>
-                                                <input type="password" class="form-control" id="txtOldPass" placeholder="Enter your old password" 
-                                                    formControlName="oldPass">
-                                                <span class="help-block" *ngIf="(changePasswordForm.get('oldPass').touched
-                                                                                || changePasswordForm.get('oldPass').dirty) &&
-                                                                                changePasswordForm.get('oldPass').errors">
-                                                    <span *ngIf="changePasswordForm.get('oldPass').errors.required" class="txtErr">
-                                                        * Please enter old password.
-                                                    </span>
-                                                </span>
-                                            </div>
-                                            <div formGroupName="passwordGrp"
-                                                [ngClass]="{'has-error': changePasswordForm.get('passwordGrp').errors }">
-                                                <div class="form-group"
-                                                    [ngClass]="{'has-error': (changePasswordForm.get('passwordGrp.newPass').touched
-                                                                            || changePasswordForm.get('passwordGrp.newPass').dirty) &&
-                                                                            !changePasswordForm.get('passwordGrp.newPass').valid }">
-                                                    <label for="txtPass">New Password</label>
-                                                    <input type="password" class="form-control" id="txtPass" placeholder="Enter new password" 
-                                                        readonly onfocus="this.removeAttribute('readonly');"
-                                                        formControlName="newPass">
-                                                    <span class="help-block" *ngIf="(changePasswordForm.get('passwordGrp.newPass').touched ||
-                                                                                    changePasswordForm.get('passwordGrp.newPass').dirty) &&
-                                                                                    changePasswordForm.get('passwordGrp.newPass').errors">
-                                                        <span *ngIf="changePasswordForm.get('passwordGrp.newPass').errors.required" class="txtErr">
-                                                            * Please enter new password.
-                                                        </span>
-                                                        <span *ngIf="changePasswordForm.get('passwordGrp.newPass').errors.pattern" class="txtErr">
-                                                            * The password must have at least 8 characters with minimum one letter and one number.
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                                <div class="form-group"
-                                                    [ngClass]="{'has-error': (changePasswordForm.get('passwordGrp.newPassRepeat').touched ||
-                                                                                changePasswordForm.get('passwordGrp.newPassRepeat').dirty) &&
-                                                                                !changePasswordForm.get('passwordGrp.newPassRepeat').valid }">
-                                                    <label for="txtRepeatPass">Re-enter Password</label>
-                                                    <input type="password" class="form-control" id="txtRepeatPass" placeholder="Re-enter your new Password" 
-                                                        readonly onfocus="this.removeAttribute('readonly');"
-                                                        formControlName="newPassRepeat">
-                                                    <span class="help-block" *ngIf="(changePasswordForm.get('passwordGrp.newPassRepeat').touched ||
-                                                                                    changePasswordForm.get('passwordGrp.newPassRepeat').dirty) &&
-                                                                                    (changePasswordForm.get('passwordGrp.newPassRepeat').errors ||
-                                                                                    changePasswordForm.get('passwordGrp').errors)">
-                                                        <span *ngIf="changePasswordForm.get('passwordGrp.newPassRepeat').errors?.required" class="txtErr">
-                                                            * Please re-enter password.
-                                                        </span>
-                                                        <span *ngIf="changePasswordForm.get('passwordGrp').errors?.match" class="txtErr">
-                                                            * The passwords you enter does not match.
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="row" [style.padding-top]="'15px'">
-                                                <div class="col">
-                                                    <button type="submit" class="btn btn-outline-primary" 
-                                                        [disabled]="!changePasswordForm.valid">
-                                                        <i class="fa fa-pencil"></i>  Change Password
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </ng-template>
+                        <div class="col-lg-8">
+                            {{ user.gender == 1 ? 'Male' : 'Female' }}
+                        </div>
+                    </div>
+                    <div class="row" [style.padding-top]="'15px'">
+                        <div class="col-lg-4">
+                            <strong>Usertype</strong>                        
+                        </div>
+                        <div class="col-lg-8">
+                            {{ usertypeStr }}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <button type="button" class="btn btn-outline-primary" [style.float]="'left'" (click)="changePassword(changePasswordModal)">
+                                <i class="fa fa-pencil"></i>  Change Password
+                            </button>
+                        </div>
+                        <div class="col-lg-6">
+                            <!-- <button type="button" class="btn btn-outline-primary" [style.float]="'right'">
+                                <i class="fa fa-plus"></i>  Edit Profile
+                            </button> -->
+                        </div>                            
                     </div>
                 </div>
             </div>
+        </div>
     </div>
+
+    <ng-template #changePasswordModal let-c="close" let-d="dismiss">
+        <div class="modal-header">
+            <h4 class="modal-title">Change Password</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form [formGroup]="changePasswordForm" (ngSubmit)="submit()" novalidate>                            
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col col-lg-12">
+                        <div class="form-group" 
+                            [ngClass]="{'has-error': (changePasswordForm.get('oldPass').touched ||
+                                                        changePasswordForm.get('oldPass').dirty) &&
+                                                        !changePasswordForm.get('oldPass').valid }">
+                            <label for="txtOldPass">Old Password</label>
+                            <input type="password" class="form-control" id="txtOldPass" placeholder="Enter your old password" 
+                                formControlName="oldPass">
+                            <span class="help-block" *ngIf="(changePasswordForm.get('oldPass').touched
+                                                            || changePasswordForm.get('oldPass').dirty) &&
+                                                            changePasswordForm.get('oldPass').errors">
+                                <span *ngIf="changePasswordForm.get('oldPass').errors.required" class="txtErr">
+                                    * Please enter old password.
+                                </span>
+                            </span>
+                        </div>
+                        <div formGroupName="passwordGrp"
+                            [ngClass]="{'has-error': changePasswordForm.get('passwordGrp').errors }">
+                            <div class="form-group"
+                                [ngClass]="{'has-error': (changePasswordForm.get('passwordGrp.newPass').touched
+                                                        || changePasswordForm.get('passwordGrp.newPass').dirty) &&
+                                                        !changePasswordForm.get('passwordGrp.newPass').valid }">
+                                <label for="txtPass">New Password</label>
+                                <input type="password" class="form-control" id="txtPass" placeholder="Enter new password" 
+                                    readonly onfocus="this.removeAttribute('readonly');"
+                                    formControlName="newPass">
+                                <span class="help-block" *ngIf="(changePasswordForm.get('passwordGrp.newPass').touched ||
+                                                                changePasswordForm.get('passwordGrp.newPass').dirty) &&
+                                                                changePasswordForm.get('passwordGrp.newPass').errors">
+                                    <span *ngIf="changePasswordForm.get('passwordGrp.newPass').errors.required" class="txtErr">
+                                        * Please enter new password.
+                                    </span>
+                                    <span *ngIf="changePasswordForm.get('passwordGrp.newPass').errors.pattern" class="txtErr">
+                                        * The password must have at least 8 characters with minimum one letter and one number.
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="form-group"
+                                [ngClass]="{'has-error': (changePasswordForm.get('passwordGrp.newPassRepeat').touched ||
+                                                            changePasswordForm.get('passwordGrp.newPassRepeat').dirty) &&
+                                                            !changePasswordForm.get('passwordGrp.newPassRepeat').valid }">
+                                <label for="txtRepeatPass">Re-enter Password</label>
+                                <input type="password" class="form-control" id="txtRepeatPass" placeholder="Re-enter your new Password" 
+                                    readonly onfocus="this.removeAttribute('readonly');"
+                                    formControlName="newPassRepeat">
+                                <span class="help-block" *ngIf="(changePasswordForm.get('passwordGrp.newPassRepeat').touched ||
+                                                                changePasswordForm.get('passwordGrp.newPassRepeat').dirty) &&
+                                                                (changePasswordForm.get('passwordGrp.newPassRepeat').errors ||
+                                                                changePasswordForm.get('passwordGrp').errors)">
+                                    <span *ngIf="changePasswordForm.get('passwordGrp.newPassRepeat').errors?.required" class="txtErr">
+                                        * Please re-enter password.
+                                    </span>
+                                    <span *ngIf="changePasswordForm.get('passwordGrp').errors?.match" class="txtErr">
+                                        * The passwords you enter does not match.
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row" [style.padding-top]="'15px'">
+                    <div class="col">
+                        <button type="submit" class="btn btn-outline-primary" 
+                            [disabled]="!changePasswordForm.valid">
+                            <i class="fa fa-pencil"></i>  Change Password
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </ng-template>
 </div>

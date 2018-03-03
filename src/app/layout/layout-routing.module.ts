@@ -20,7 +20,7 @@ const routes: Routes = [
             { path: 'userProfile', loadChildren: './userProfile/userProfile.module#UserProfileModule' },        
             { path: 'manageUsers', loadChildren: './manage-users/manage-users.module#ManageUsersModule' },
             { path: 'managePDK', loadChildren: './manage-pdk/manage-pdk.module#ManagePDKModule'},
-            { path: 'addEditPDKAssignment/:action', loadChildren: './addEdit-pdkassignment/addEdit-pdkassignment.module#AddEditPDKAssignmentModule' }
+            { path: 'addEditPDKAssignment/:action/:id', loadChildren: './addEdit-pdkassignment/addEdit-pdkassignment.module#AddEditPDKAssignmentModule' }
         ]
     }
 ];

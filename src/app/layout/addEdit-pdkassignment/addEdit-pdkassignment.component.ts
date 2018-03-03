@@ -3,11 +3,12 @@ import { routerTransition } from '../../router.animations';
 import { Observable } from 'rxjs/Observable';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatAutocompleteTrigger } from '@angular/material';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLinkActive } from '@angular/router';
 import { AuthService, User, Assignment, GeneralService } from '../../shared';
 import { FormGroup, FormBuilder, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import * as $ from 'jquery';
 
 @Component({
     selector: 'addEdit-pdkassignment-page',
@@ -16,21 +17,29 @@ import { FormGroup, FormBuilder, FormControl, Validators, ValidatorFn, AbstractC
     animations: [routerTransition()]        
 })
 export class AddEditPDKAssignmentComponent implements OnInit {
-    mode: number = 1; //1=add, 2=edit, 3=delete  
-    dpMinDate: NgbDateStruct;
+    mode: number = 1; //1=add, 2=edit
     assignmentForm: FormGroup;
     users: Array<User> = [];    
     filteredUsers: Observable<any[]>;
     displayedColumns = ['user_id', 'full_name', 'action'];
     dataSource: any;
     showNoUser: boolean = false;
-    
+    assignment: Assignment = new Assignment();
+
     //selectedRowIndex: number = -1;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild('autoCompleteInput', { read: MatAutocompleteTrigger }) autoComplete: MatAutocompleteTrigger;
 
     constructor(private fb: FormBuilder, private auth: AuthService, private changeDetectorRefs: ChangeDetectorRef, private generalService: GeneralService, 
-        private route: ActivatedRoute, private router: Router) {
+        private route: ActivatedRoute, private router: Router, private general: GeneralService) {
+
+        this.route.params.subscribe(params => {
+            this.mode = params['action'];
+            if(params['action'] == "2"){
+                this.assignment.assignment_id = params['id'];
+            }
+        });
 
         this.dataSource = new MatTableDataSource();
         this.dataSource.paginator = this.paginator;
@@ -72,20 +81,72 @@ export class AddEditPDKAssignmentComponent implements OnInit {
             console.log("API error: " + err);
         });
 
-        //set min date for assignment == tomorrow
-        let today = new Date();
-        this.dpMinDate = {year: today.getFullYear(), month: today.getMonth() + 1, day: today.getDate() + 1};
+        if(this.mode == 2){
+            this.auth.postData(this.general.getAuthObject(), "api/assignment/get/" + this.assignment.assignment_id).then((result) => {
+                let assignmentData: any = result;
+                        
+                if(assignmentData.status == "0"){
+                    alert(assignmentData.message);
+                }
+                else{
+                    if(assignmentData.error) {
+                        console.log(assignmentData.error.text);
+                    }
+                    else{
+                        this.assignment.assignment_id = assignmentData.data.assignment_id;
+                        this.assignment.date = assignmentData.data.date;
+                        this.assignment.user_id = assignmentData.data.user_id;
+                        this.assignment.team = assignmentData.data.team;
+                        this.assignment.address = assignmentData.data.address;
+                        this.assignment.remark = assignmentData.data.remark;
+                        this.assignment.postcode = assignmentData.data.postcode;
+    
+                        //fetch user data to form for edit
+                        this.assignmentForm.patchValue({
+                            date: this.general.toNgbDateStruct(this.assignment.date),
+                            postcode: this.assignment.postcode,
+                            team: this.assignment.team,
+                            address: this.assignment.address,
+                            remark: this.assignment.remark
+                        });
+                    }
+                }
+            },
+            (err) => {
+                console.log("API error: " + err);
+            });
+
+            this.auth.postData(this.general.getAuthObject(), "api/assignment_admin/getList/" + this.assignment.assignment_id).then((result) => {
+                let assignment_admin: any = result;
+                        
+                if(assignment_admin.status == "0"){
+                    alert(assignment_admin.message);
+                }
+                else{
+                    if(assignment_admin.error) {
+                        console.log(assignment_admin.error.text);
+                    }
+                    else{
+                        assignment_admin.data.forEach(element => {
+                            let temp_user : User = new User();
+                            temp_user.user_id = element.user_id;
+                            temp_user.full_name = element.full_name;
+
+                            this.dataSource.data.push(temp_user);
+                        });
+
+                        this.dataSource._updateChangeSubscription();
+                        this.dataSource.paginator = this.paginator;
+                    }
+                }
+            },
+            (err) => {
+                console.log("API error: " + err);
+            }); 
+        }
     }
 
     ngOnInit() {
-        this.route.params.subscribe(params => {
-            if(params['action'] == "1"){
-                this.mode = 1;
-            } 
-            else if(params['action'] == "2"){
-                this.mode = 2;
-            }
-         });
     }
 
     //filter function for search
@@ -105,7 +166,75 @@ export class AddEditPDKAssignmentComponent implements OnInit {
         });
     }
 
-    addUser(){
+    submit(){
+        if(this.dataSource.data.length == 0)
+                this.showNoUser = this.dataSource.data.length > 0 ? false : true;
+        
+        else{
+            this.assignment.team = this.assignmentForm.get('team').value;
+            this.assignment.date = this.generalService.toMySqlDateStr(this.assignmentForm.get('date').value);
+            this.assignment.postcode = this.assignmentForm.get('postcode').value;
+            this.assignment.remark = this.assignmentForm.get('remark').value;
+            this.assignment.address = this.assignmentForm.get('address').value;
+            
+            let user_id_lst = new Array<string>();
+            this.dataSource.data.forEach(element => {
+                user_id_lst.push(element.user_id);
+            });
+
+            let data: any = {   "token"     : this.generalService.getToken(),
+                                "user_id"   : this.generalService.getUserID(), 
+                                "data"      : this.assignment,
+                                "data2"     : user_id_lst };
+
+            if(this.mode == 1){
+                console.log(this.assignment);
+                this.auth.postData(data, "api/assignment/add").then((result) => {
+                    let responseData:any = result;
+                    
+                    if(responseData.status == "0"){
+                        alert(responseData.message);
+                    }
+                    else{
+                        if(responseData.error) {
+                            console.log(responseData.error);
+                        }
+                        else{
+                            alert("Assignment have been added successfully");
+                            this.router.navigate(['/managePDK']);
+                        }
+                    }
+                }, 
+                (err) =>{
+                    console.log("API error: " + err);
+                });
+            }
+            else if(this.mode == 2){
+                this.auth.postData(data, "api/assignment/update").then((result) => {
+                    let responseData:any = result;
+                    
+                    if(responseData.status == "0"){
+                        alert(responseData.message);
+                    }
+                    else{
+                        if(responseData.error) {
+                            console.log(responseData.error);
+                        }
+                        else{
+                            alert("Assignment have been updated successfully");
+                            this.router.navigate(['/managePDK']);
+                        }
+                    }
+                }, 
+                (err) =>{
+                    debugger;
+                    console.log("API error: " + err);
+                });
+            }
+        }
+    }   
+    
+    onUserSelect(){
         let temp_user : User = this.assignmentForm.get('selectUserCtrl').value;        
 
         if(temp_user.user_id == undefined){
@@ -128,53 +257,9 @@ export class AddEditPDKAssignmentComponent implements OnInit {
             }
             this.assignmentForm.get('selectUserCtrl').setValue("");
         }
+
+        $("#txtAutoComplete").blur();
+        this.autoComplete.closePanel();       
+                     
     }
-
-    submit(){
-        if(this.dataSource.data.length == 0)
-            this.showNoUser = this.dataSource.data.length > 0 ? false : true;
-        else{
-            let token:string = JSON.parse(localStorage.getItem('userData')).token;
-            let user_id: string = JSON.parse(localStorage.getItem('userData')).user_id;
-
-            if(this.mode == 1){
-                let assignment: Assignment = new Assignment();
-                assignment.team = this.assignmentForm.get('team').value;
-                assignment.date = this.generalService.toMySqlDateStr(this.assignmentForm.get('date').value);
-                assignment.postcode = this.assignmentForm.get('postcode').value;
-                assignment.remark = this.assignmentForm.get('remark').value;
-                assignment.address = this.assignmentForm.get('address').value;
-
-                let user_id_lst = new Array<string>();
-                this.dataSource.data.forEach(element => {
-                    user_id_lst.push(element.user_id);
-                });
-
-                let data: any = {   "token"     : token,
-                                    "user_id"   : user_id, 
-                                    "data"      : assignment,
-                                    "data2"     : user_id_lst };
-                
-                this.auth.postData(data, "api/assignment/add").then((result) => {
-                    let responseData:any = result;
-                    
-                    if(responseData.status == "0"){
-                        alert(responseData.message);
-                    }
-                    else{
-                        if(responseData.error) {
-                            console.log(responseData.error);
-                        }
-                        else{
-                            alert("Assignment have been added successfully");
-                            this.router.navigate(['/managePDK']);
-                        }
-                    }
-                }, 
-                (err) =>{
-                    console.log("API error: " + err);
-                });
-            }
-        }
-    }    
 }

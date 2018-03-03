@@ -15,9 +15,10 @@ import { FormGroup, FormBuilder, FormControl, Validators, ValidatorFn, AbstractC
 export class ManageUsersComponent implements OnInit {
     displayedColumns = ['user_id', 'full_name', 'usertype', 'phone_no', 'state'];
     dataSource: any;
-    mode: number = 1; //1=add, 2=edit, 3=delete
+    mode: number = 0    ; //0=view, 1=add, 2=edit, 
     userForm: any;
     modal: NgbModalRef;
+    user: User = new User();
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -63,13 +64,7 @@ export class ManageUsersComponent implements OnInit {
     }
 
     getUserList(){
-        let token:string = JSON.parse(localStorage.getItem('userData')).token;
-        let user_id: string = JSON.parse(localStorage.getItem('userData')).user_id;
-
-        let data: any = {   "token"     : token,
-                            "user_id"   : user_id };
-
-        this.auth.postData(data, "api/userlist").then((result) => {
+        this.auth.postData(this.general.getAuthObject(), "api/userlist").then((result) => {
             let userList: any = result;
 
             if(userList.status == "0"){
@@ -104,48 +99,32 @@ export class ManageUsersComponent implements OnInit {
     }
     
     open(content, type: any, id: number) {
-        if(type == "edit"){
-            this.mode = 2;
+        if(type != "add"){
+            this.mode = 0;
 
-            let token:string = JSON.parse(localStorage.getItem('userData')).token;
-            let user_id: string = JSON.parse(localStorage.getItem('userData')).user_id;
-            let data: any = {   "token"     : token,
-                                "user_id"   : user_id};
-
-            this.auth.postData(data, "api/user/get/" + id).then((result) => {
+            this.auth.postData(this.general.getAuthObject(), "api/user/get/" + id).then((result) => {
                 let userData: any = result;
-                        
+                    
                 if(userData.status == "0"){
                     alert(userData.message);
                 }
+
                 else{
+
                     if(userData.error) {
                         console.log(userData.error.text);
                     }
+
                     else{
-                         //fetch user data to form for edit
-                    this.userForm.patchValue({
-                        id: id,
-                        status: userData.data.state,
-                        fullName: userData.data.full_name,
-                        username: userData.data.username,
-                        email: userData.data.email,
-                        telNo: userData.data.phone_no,
-                        gender: userData.data.gender,
-                        userType: userData.data.usertype
-                    });
-                    
-                    //disabled input field for username
-                    this.userForm.get('username').disable();
-                    
-                    //remove validators for password and username
-                    this.userForm.get('username').clearValidators();
-                    this.userForm.get('username').updateValueAndValidity()
-                    this.userForm.get('passwordGrp.password').clearValidators();
-                    this.userForm.get('passwordGrp.password').setValidators([Validators.pattern(this.general.getPasswordPattern())]);                    
-                    this.userForm.get('passwordGrp.password').updateValueAndValidity()
-                    this.userForm.get('passwordGrp.repeatPassword').clearValidators();
-                    this.userForm.get('passwordGrp.repeatPassword').updateValueAndValidity()
+                        this.user = new User();
+                        this.user.user_id = id;
+                        this.user.state = userData.data.state;
+                        this.user.full_name = userData.data.full_name;
+                        this.user.username = userData.data.username;
+                        this.user.email = userData.data.email;
+                        this.user.phone_no = userData.data.phone_no;
+                        this.user.gender = userData.data.gender;
+                        this.user.usertype = userData.data.usertype;
                     }
                 }
             },
@@ -157,20 +136,40 @@ export class ManageUsersComponent implements OnInit {
             this.mode = 1;
             this.userForm.reset();
             this.userForm.get('username').enable();
+            this.userForm.get('passwordGrp').enable();
         }
 
         let closeResult: string;
         this.modal = this.modalService.open(content, {
             backdrop: 'static',
-            keyboard: false,
-            size: 'lg'
+            keyboard: false
         });
     }
 
-    submit() {
-        let token:string = JSON.parse(localStorage.getItem('userData')).token;
-        let user_id: string = JSON.parse(localStorage.getItem('userData')).user_id;
+    editUser(){
+        //fetch user data to form for edit
+        this.mode = 2;
+        this.userForm.patchValue({
+            id: this.user.user_id,
+            status: this.user.state,
+            fullName: this.user.full_name,
+            username: this.user.username,
+            email: this.user.email,
+            telNo: this.user.phone_no,
+            gender: this.user.gender,
+            userType: this.user.usertype
+        });
+        
+        //disabled input field for username
+        //remove validators for password and username                            
+        this.userForm.get('username').disable();                            
+        this.userForm.get('username').clearValidators();
+        this.userForm.get('username').updateValueAndValidity()
+        this.userForm.get('passwordGrp').disable();
 
+    }
+
+    submit() {
         if(this.mode == 1){
             let user: User = new User(null, 
                 this.userForm.get('username').value,
@@ -184,8 +183,8 @@ export class ManageUsersComponent implements OnInit {
             delete user.user_id;
             delete user.state;
 
-            let data: any = {   "token"     : token,
-                                "user_id"   : user_id, 
+            let data: any = {   "token"     : this.general.getToken(),
+                                "user_id"   : this.general.getUserID(), 
                                 "data"      : user};
             
             this.auth.postData(data, "api/user/add").then((result) => {
@@ -276,19 +275,6 @@ export class ManageUsersComponent implements OnInit {
         });
         return promise;
     }
-
-    // checkPasswordEqual(c: AbstractControl): {[key: string]: boolean} | null{
-    //     let password = c.get('password');
-    //     let repeatPassword = c.get('repeatPassword');
-        
-    //     if(password.pristine || repeatPassword.pristine)
-    //         return null;
-
-    //     if(password.value === repeatPassword.value){
-    //         return null;
-    //     }
-    //     return { 'match' : true };
-    // }
 
     changeUserState(id: any, type: number){
         if(type == 0){//deactive

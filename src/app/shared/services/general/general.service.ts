@@ -30,6 +30,12 @@ export class GeneralService {
     return temp_date.toISOString().slice(0, 19).replace('T', ' ');
   }
 
+  toNgbDateStruct(date: string){
+    let temp_date = date.split("-");
+    let temp_date2: NgbDateStruct = {year: parseInt(temp_date[0]), month: parseInt(temp_date[1]), day:parseInt(temp_date[2])};
+    return temp_date2;
+  }
+
   getPasswordPattern(): string{
     return "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,25}$";
   }
@@ -37,5 +43,19 @@ export class GeneralService {
   getUsernamePattern(): string{
     return "^[a-zA-Z0-9.\-_]{4,30}$";
   }
-}
 
+  getAuthObject(){
+    let data: any = {   "token"     : this.getToken(),
+                        "user_id"   : this.getUserID()};
+
+    return data;
+  }
+
+  getUserID(){
+     return JSON.parse(localStorage.getItem('userData')).user_id;    
+  }
+
+  getToken(){
+    return JSON.parse(localStorage.getItem('userData')).token;
+  }
+}

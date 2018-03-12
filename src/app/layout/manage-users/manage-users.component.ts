@@ -183,9 +183,8 @@ export class ManageUsersComponent implements OnInit {
             delete user.user_id;
             delete user.state;
 
-            let data: any = {   "token"     : this.general.getToken(),
-                                "user_id"   : this.general.getUserID(), 
-                                "data"      : user};
+            let data: any = this.general.getAuthObject();
+            data["data"] = user;
             
             this.auth.postData(data, "api/user/add").then((result) => {
                 let responseData:any = result;

@@ -21,10 +21,10 @@ export class ManagePDKComponent implements OnInit {
     modal: NgbModalRef;
     assignment: Assignment = new Assignment();
     
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatPaginator) paginator2: MatPaginator;
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatSort) sort2: MatSort;    
+    @ViewChild("paginator") paginator: MatPaginator;
+    @ViewChild("paginator2") paginator2: MatPaginator;
+    @ViewChild("sort") sort: MatSort;
+    @ViewChild("sort2") sort2: MatSort;    
 
     constructor(private auth : AuthService, private modalService: NgbModal, private general: GeneralService, private router: Router) {
         this.getAssignmentList();
@@ -35,7 +35,8 @@ export class ManagePDKComponent implements OnInit {
 
     getAssignmentList(){
         this.auth.postData(this.general.getAuthObject(), "api/assignment/assignmentList").then((result) => {
-            let responseData: any = result
+            let responseData: any = result;
+            console.log(responseData);
             if(responseData.status == "0"){
                 alert(responseData.message);
             }

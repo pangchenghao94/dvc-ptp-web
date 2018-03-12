@@ -63,7 +63,7 @@
                                 </mat-row>
                             </mat-table>
 
-                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                            <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
                         </div>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                                         <mat-header-row *matHeaderRowDef="displayedColumns2"></mat-header-row>
                                         <mat-row *matRowDef="let row; columns: displayedColumns2;"></mat-row>
                                     </mat-table>
-                                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                                    <mat-paginator #paginator2 [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
                                 </div>
                             </div>
                         </div>

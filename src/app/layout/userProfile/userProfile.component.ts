@@ -16,7 +16,6 @@ export class UserProfileComponent implements OnInit {
     usertypeStr: string;
     changePasswordForm: any;
     
-
     constructor(private auth: AuthService, private general: GeneralService, private modalService: NgbModal, private fb: FormBuilder) {
         this.auth.postData(this.general.getAuthObject(), "api/user/get/" + this.general.getUserID()).then((result) => {
             let user: any = result;
@@ -75,15 +74,11 @@ export class UserProfileComponent implements OnInit {
     }
 
     submit(){
-        let passwordData: any = {
+        let data : any = this.general.getAuthObject();
+        data["data"] = {
             "oldPass"       : this.changePasswordForm.get('oldPass').value,
             "newPassRepeat" : this.changePasswordForm.get('passwordGrp.newPassRepeat').value
         };
-
-        let data: any = {   "token"     : this.general.getToken(),
-                            "user_id"   : this.general.getUserID(),
-                            "data"      : passwordData};
-        console.log(data);
                 
         this.auth.postData(data, "api/user/changePassword").then((result) => {
             let responseData: any = result

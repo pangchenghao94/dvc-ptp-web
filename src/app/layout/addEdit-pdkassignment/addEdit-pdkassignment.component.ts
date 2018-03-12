@@ -182,10 +182,9 @@ export class AddEditPDKAssignmentComponent implements OnInit {
                 user_id_lst.push(element.user_id);
             });
 
-            let data: any = {   "token"     : this.generalService.getToken(),
-                                "user_id"   : this.generalService.getUserID(), 
-                                "data"      : this.assignment,
-                                "data2"     : user_id_lst };
+            let data: any = this.general.getAuthObject();
+            data["data"] = this.assignment;
+            data["data2"] = user_id_lst;
 
             if(this.mode == 1){
                 console.log(this.assignment);

@@ -170,9 +170,9 @@
                             [disabled]="!assignmentForm.valid">
                             {{ mode == 2 ? 'Edit Assignment' : 'Add Assignment' }}
                         </button>
-                        <button type="submit" class="btn btn-outline-secondary" [style.float]="'right'" (click)="testing()"
-                            >
-                                Cancel
+                        <button class="btn btn-outline-secondary" [style.float]="'right'" (click)="testing()"
+                            [routerLink]="['/managePDK']" [routerLinkActive]="['router-link-active']">
+                            Cancel
                         </button>
                     </div>
                     <!-- [disabled]="!userForm.valid" -->

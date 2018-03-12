@@ -24,8 +24,9 @@ export class GeneralService {
   }
 
   toMySqlDateStr(date: NgbDateStruct){
-    let temp_date : Date = new Date(date.year, date.month-1, date.day);    
-    temp_date.setDate(temp_date.getDate() + 1);
+    let temp_date : Date = new Date(date.year, date.month-1, date.day);   
+    temp_date.setHours(0, -temp_date.getTimezoneOffset(), 0, 0); 
+    // temp_date.setDate(temp_date.getDate() + 1);
 
     return temp_date.toISOString().slice(0, 19).replace('T', ' ');
   }

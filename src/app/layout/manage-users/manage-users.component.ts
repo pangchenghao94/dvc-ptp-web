@@ -270,7 +270,7 @@ export class ManageUsersComponent implements OnInit {
                     console.log("API error: " + err);
                     resolve(null);
                 });
-            }, 1500);
+            }, 500);
         });
         return promise;
     }

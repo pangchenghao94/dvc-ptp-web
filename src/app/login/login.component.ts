@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
 
         else{
             this.userData = {"username": this.user.username, "password" : this.user.password};
-
+            
             this.auth.postData(this.userData, "api/login").then((result) => {
                 this.responseData = result;
     

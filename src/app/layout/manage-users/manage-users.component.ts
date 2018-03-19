@@ -13,7 +13,7 @@ import { FormGroup, FormBuilder, FormControl, Validators, ValidatorFn, AbstractC
 })
 
 export class ManageUsersComponent implements OnInit {
-    displayedColumns = ['user_id', 'full_name', 'usertype', 'phone_no', 'state'];
+    displayedColumns = ['user_id', 'full_name', 'ic_no', 'usertype', 'phone_no', 'state'];
     dataSource: any;
     mode: number = 0    ; //0=view, 1=add, 2=edit, 
     userForm: any;
@@ -31,6 +31,8 @@ export class ManageUsersComponent implements OnInit {
         this.userForm = this.fb.group({
             id: '-1',
             status: '1',
+            ic_no: ['', [Validators.required, Validators.pattern("^[0-9]{12,12}$")]],
+
             fullName: ['',
                 [Validators.required, Validators.minLength(6)]],
 
@@ -110,14 +112,15 @@ export class ManageUsersComponent implements OnInit {
                 }
 
                 else{
-
                     if(userData.error) {
                         console.log(userData.error.text);
                     }
 
                     else{
+                        console.log(userData.data);
                         this.user = new User();
                         this.user.user_id = id;
+                        this.user.ic_no = userData.data.ic_no;                        
                         this.user.state = userData.data.state;
                         this.user.full_name = userData.data.full_name;
                         this.user.username = userData.data.username;
@@ -152,6 +155,7 @@ export class ManageUsersComponent implements OnInit {
         this.userForm.patchValue({
             id: this.user.user_id,
             status: this.user.state,
+            ic_no: this.user.ic_no,            
             fullName: this.user.full_name,
             username: this.user.username,
             email: this.user.email,
@@ -171,21 +175,19 @@ export class ManageUsersComponent implements OnInit {
 
     submit() {
         if(this.mode == 1){
-            let user: User = new User(null, 
-                this.userForm.get('username').value,
-                null,
-                this.userForm.get('passwordGrp.repeatPassword').value, 
-                this.userForm.get('fullName').value, 
-                this.userForm.get('telNo').value, 
-                this.userForm.get('email').value, 
-                this.userForm.get('gender').value,
-                this.userForm.get('userType').value);
-            delete user.user_id;
-            delete user.state;
+            let user: User = new User();
+            user.username = this.userForm.get('username').value;
+            user.password = this.userForm.get('passwordGrp.repeatPassword').value; 
+            user.full_name = this.userForm.get('fullName').value;
+            user.phone_no = this.userForm.get('telNo').value;
+            user.email = this.userForm.get('email').value;
+            user.gender = this.userForm.get('gender').value;
+            user.usertype = this.userForm.get('userType').value;
 
             let data: any = this.general.getAuthObject();
             data["data"] = user;
-            
+
+            console.log(data);
             this.auth.postData(data, "api/user/add").then((result) => {
                 let responseData:any = result;
                 
@@ -201,6 +203,7 @@ export class ManageUsersComponent implements OnInit {
                         this.dataSource.data.push({
                             user_id: responseData.id, 
                             full_name: this.userForm.get('fullName').value, 
+                            ic_no: this.userForm.get('ic_no').value,
                             usertype: this.general.getUserTypeDesc(this.userForm.get('userType').value), 
                             phone_no: this.userForm.get('telNo').value, 
                             state: "1"
@@ -216,20 +219,14 @@ export class ManageUsersComponent implements OnInit {
             });
         }
         else if(this.mode == 2){
-            let user: User = new User(null, null, null,
-                this.userForm.get('passwordGrp.repeatPassword').value, 
-                this.userForm.get('fullName').value, 
-                this.userForm.get('telNo').value, 
-                this.userForm.get('email').value, 
-                this.userForm.get('gender').value,
-                this.userForm.get('userType').value);
-            delete user.user_id
-            delete user.username
-            delete user.state;
-
-            if(this.userForm.get('passwordGrp.repeatPassword').value == ""){
-                delete user.password;
-            }
+            let user: User = new User();
+            user.password = this.userForm.get('passwordGrp.repeatPassword').value;
+            user.ic_no = this.userForm.get('ic_no').value;
+            user.full_name = this.userForm.get('fullName').value;
+            user.phone_no = this.userForm.get('telNo').value;
+            user.email = this.userForm.get('email').value;
+            user.gender = this.userForm.get('gender').value;
+            user.usertype = this.userForm.get('userType').value;
             
             this.auth.postData(user, "api/user/update/" + this.userForm.get('id').value).then((result) => {
                 let responseData:any = result;
@@ -244,6 +241,7 @@ export class ManageUsersComponent implements OnInit {
                             result.full_name = this.userForm.get('fullName').value;
                             result.usertype = this.general.getUserTypeDesc(this.userForm.get('userType').value);
                             result.phone_no = this.userForm.get('telNo').value;
+                            result.ic_no = this.userForm.get('ic_no').value;                            
                         } 
                     }
                 }
@@ -273,6 +271,10 @@ export class ManageUsersComponent implements OnInit {
             }, 500);
         });
         return promise;
+    }
+
+    resetPassword(id: any){
+        
     }
 
     changeUserState(id: any, type: number){

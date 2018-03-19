@@ -48,6 +48,24 @@
                                                     </span>
                                                 </div>
                                                 <div class="form-group"
+                                                [ngClass]="{'has-error': (userForm.get('ic_no').touched ||
+                                                                        userForm.get('ic_no').dirty) &&
+                                                                        !userForm.get('ic_no').valid }">
+                                                    <label for="txtICNo">IC Number</label>
+                                                    <input type="text" class="form-control" id="txtICNo" placeholder="Enter you IC Number"
+                                                        formControlName="ic_no">
+                                                    <span class="help-block" *ngIf="(userForm.get('ic_no').touched ||
+                                                                                    userForm.get('ic_no').dirty) &&
+                                                                                    userForm.get('ic_no').errors">
+                                                        <span *ngIf="userForm.get('ic_no').errors.required" class="txtErr">
+                                                            * Please enter your IC Number.
+                                                        </span>
+                                                        <span *ngIf="userForm.get('ic_no').errors.pattern" class="txtErr">
+                                                            * The IC number must be 12 numeric characters (eg: 941010105021).
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                                <div class="form-group"
                                                 [ngClass]="{'has-error': (userForm.get('username').touched ||
                                                                         userForm.get('username').dirty) &&
                                                                         !userForm.get('username').valid }">
@@ -211,6 +229,14 @@
                                             </div>
                                         </div>
                                         <div class="row" [style.padding-top]="'15px'">
+                                            <div class="col-lg-4">
+                                                <strong>IC Number</strong>                        
+                                            </div>
+                                            <div class="col-lg-8">
+                                                {{ user.ic_no }}
+                                            </div>
+                                        </div>
+                                        <div class="row" [style.padding-top]="'15px'">
                                                 <div class="col-lg-4">
                                                     <strong>Usertype</strong>                        
                                                 </div>
@@ -249,21 +275,30 @@
                                     <ng-container *ngIf="mode == 1 || mode == 2">
                                         <div class="row">
                                             <div class="col">
-                                                <!-- [disabled]="!userForm.valid" -->
+
                                                 <button type="submit" class="btn btn-outline-primary" 
-                                                [disabled]="!userForm.valid">
-                                                {{ mode == 2 ? 'Edit User' : 'Add User' }}
+                                                    [disabled]="!userForm.valid">
+                                                    {{ mode == 2 ? 'Edit User' : 'Add User' }}
                                                 </button>
-                                                <button type="button" class="btn btn-outline-danger" 
-                                                [hidden]="(mode == 1) || (userForm.get('status').value == 0)" 
-                                                (click)="changeUserState(userForm.get('id').value, '0')">
-                                                Deactivate User
-                                                </button>    
-                                                <button type="button" class="btn btn-outline-success" 
-                                                [hidden]="(mode == 1) || (userForm.get('status').value == 1)" 
-                                                (click)="changeUserState(userForm.get('id').value, '1')">
-                                                Activate User
+                                                
+                                                <button type="button" class="btn btn-outline-secondary" 
+                                                    [hidden]="(mode == 1)" 
+                                                    (click)="resetPassword(userForm.get('id').value)">
+                                                    Reset Password
                                                 </button> 
+                                                
+                                                <button type="button" class="btn btn-outline-danger" 
+                                                    [hidden]="(mode == 1) || (userForm.get('status').value == 0)" 
+                                                    (click)="changeUserState(userForm.get('id').value, '0')">
+                                                    Deactivate User
+                                                </button>    
+                                                
+                                                <button type="button" class="btn btn-outline-success" 
+                                                    [hidden]="(mode == 1) || (userForm.get('status').value == 1)" 
+                                                    (click)="changeUserState(userForm.get('id').value, '1')">
+                                                    Activate User
+                                                </button> 
+                                                
                                             </div>
                                         </div>
                                     </ng-container>
@@ -281,31 +316,31 @@
 
                     <mat-table [dataSource]="dataSource" matSort>
 
-                        <!-- ID Column -->
                         <ng-container matColumnDef="user_id">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
                             <mat-cell *matCellDef="let row"> {{row.user_id}} </mat-cell>
                         </ng-container>
 
-                        <!-- Progress Column -->
                         <ng-container matColumnDef="full_name">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
                             <mat-cell *matCellDef="let row"> {{row.full_name}} </mat-cell>
                         </ng-container>
 
-                        <!-- Color Column [style.color]="row.color"-->
+                        <ng-container matColumnDef="ic_no">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> IC Number </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.ic_no}} </mat-cell>
+                        </ng-container>
+
                         <ng-container matColumnDef="usertype">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> User Type </mat-header-cell>
                             <mat-cell *matCellDef="let row"> {{row.usertype}} </mat-cell>
                         </ng-container>
 
-                        <!-- Name Column -->
                         <ng-container matColumnDef="phone_no">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Tel. No. </mat-header-cell>
                             <mat-cell *matCellDef="let row"> {{row.phone_no}} </mat-cell>
                         </ng-container>
 
-                        <!-- Color Column [style.color]="#4286f4"-->
                         <ng-container matColumnDef="state">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
                             <mat-cell *matCellDef="let row" [style.color]=" row.state == 1 ? 'green' : 'maroon' ">{{row.state == 1 ? 'ACTIVE' : 'DEACTIVATED' }} </mat-cell>

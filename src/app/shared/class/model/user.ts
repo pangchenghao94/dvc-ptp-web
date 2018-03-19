@@ -1,5 +1,6 @@
 export class User {
     user_id: number;
+    ic_no: string;
     username: string;
     password: string;
     state: boolean;

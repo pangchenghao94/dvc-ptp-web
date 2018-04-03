@@ -20,6 +20,7 @@ const routes: Routes = [
             { path: 'userProfile', loadChildren: './userProfile/userProfile.module#UserProfileModule' },        
             { path: 'manageUsers', loadChildren: './manage-users/manage-users.module#ManageUsersModule' },
             { path: 'managePDK', loadChildren: './manage-pdk/manage-pdk.module#ManagePDKModule'},
+            { path: 'manageIND', loadChildren: './manage-ind/manage-ind.module#ManageINDModule'},            
             { path: 'addEditPDKAssignment/:action/:id', loadChildren: './addEdit-pdkassignment/addEdit-pdkassignment.module#AddEditPDKAssignmentModule' }
         ]
     }

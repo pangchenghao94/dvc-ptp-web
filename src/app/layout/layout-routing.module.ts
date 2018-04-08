@@ -21,7 +21,10 @@ const routes: Routes = [
             { path: 'manageUsers', loadChildren: './manage-users/manage-users.module#ManageUsersModule' },
             { path: 'managePDK', loadChildren: './manage-pdk/manage-pdk.module#ManagePDKModule'},
             { path: 'manageIND', loadChildren: './manage-ind/manage-ind.module#ManageINDModule'},            
-            { path: 'addEditPDKAssignment/:action/:id', loadChildren: './addEdit-pdkassignment/addEdit-pdkassignment.module#AddEditPDKAssignmentModule' }
+            { path: 'addEditPDKAssignment/:action/:id', loadChildren: './addEdit-pdkassignment/addEdit-pdkassignment.module#AddEditPDKAssignmentModule' },
+            { path: 'viewAssignment/:id', loadChildren: './view-assignment/view-assignment.module#ViewAssignmentModule' },  
+            { path: 'viewIND/:id', loadChildren: './view-ind/view-ind.module#ViewINDModule' },
+            { path: 'addEditIND/:action/:id', loadChildren: './addEdit-ind/addEdit-ind.module#AddEditINDModule' }                      
         ]
     }
 ];

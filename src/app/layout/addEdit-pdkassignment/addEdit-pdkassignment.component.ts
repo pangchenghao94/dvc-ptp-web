@@ -4,13 +4,14 @@ import { Observable } from 'rxjs/Observable';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 import { MatPaginator, MatTableDataSource, MatAutocompleteTrigger } from '@angular/material';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router, RouterLinkActive } from '@angular/router';
-import { AuthService, User, Assignment, GeneralService } from '../../shared';
+import { AuthService, User, Assignment, GeneralService, CustomNgbDateParseFormatter } from '../../shared';
 import { FormGroup, FormBuilder, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import * as $ from 'jquery';
 
 @Component({
+    providers: [{provide: NgbDateParserFormatter, useClass: CustomNgbDateParseFormatter}],
     selector: 'addEdit-pdkassignment-page',
     templateUrl: './addEdit-pdkassignment.component.html',
     styleUrls: ['./addEdit-pdkassignment.component.scss'],
@@ -31,7 +32,7 @@ export class AddEditPDKAssignmentComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild('autoCompleteInput', { read: MatAutocompleteTrigger }) autoComplete: MatAutocompleteTrigger;
 
-    constructor(private fb: FormBuilder, private auth: AuthService, private changeDetectorRefs: ChangeDetectorRef, private generalService: GeneralService, 
+    constructor(private fb: FormBuilder, private auth: AuthService, private changeDetectorRefs: ChangeDetectorRef, 
         private route: ActivatedRoute, private router: Router, private general: GeneralService) {
 
         this.route.params.subscribe(params => {
@@ -172,7 +173,7 @@ export class AddEditPDKAssignmentComponent implements OnInit {
         
         else{
             this.assignment.team = this.assignmentForm.get('team').value;
-            this.assignment.date = this.generalService.toMySqlDateStr(this.assignmentForm.get('date').value);
+            this.assignment.date = this.general.toMySqlDateStr(this.assignmentForm.get('date').value);
             this.assignment.postcode = this.assignmentForm.get('postcode').value;
             this.assignment.remark = this.assignmentForm.get('remark').value;
             this.assignment.address = this.assignmentForm.get('address').value;

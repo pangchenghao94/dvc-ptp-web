@@ -10,3 +10,34 @@ mat-row:hover{
 .form-control[readonly]{
     background-color: #fff;
 }
+
+@media (min-width: 992px){
+    .tbl-userlst .mat-cell, 
+    .tbl-userlst .mat-header-cell{
+        flex: unset;
+    }
+
+    .tbl-userlst .mat-column-user_id{
+        width: 5%;
+    }
+
+    .tbl-userlst .mat-column-full_name{
+        width: 55%;
+    }
+
+    .tbl-userlst .mat-column-ic_no{
+        width: 10%;
+    }
+
+    .tbl-userlst .mat-column-usertype{
+        width: 10%;
+    }
+
+    .tbl-userlst .mat-column-phone_no{
+        width: 10%;
+    }
+
+    .tbl-userlst .mat-column-status{
+        width: 10%;
+    }
+}

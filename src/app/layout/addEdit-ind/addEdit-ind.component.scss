@@ -1,0 +1,20 @@
+input[type='checkbox'] {
+    width:17px; 
+    height:17px;
+}
+
+.custom-fab{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 5px;
+    right: 5px;
+    background-color: #E0E0E0;
+    color: #404040;
+    border-radius: 50px;
+    text-align: center;
+    box-shadow: 3px 3px 4px #F0F0F0;
+    z-index: 1;
+    border: none;
+    cursor: pointer;
+}

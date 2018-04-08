@@ -1,0 +1,613 @@
+<div [@routerTransition]>    
+    <ngx-loading [show]="loading" [config]="{fullScreenBackdrop: true}"></ngx-loading>
+    <app-page-header [heading]="'View Inspection & Destruction'" [icon]="'fa-file'"></app-page-header>
+    <div class="col-sm-11 col-centered">
+        <div class="card mb-3">
+            <div class="card-header">
+                <div>View Inspection & Destruction</div>
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-lg-12 d-flex">
+                        <div class="ml-auto row">
+                            <strong>ID:</strong>
+                            <span class="pl-3 pr-4">{{ ind.ind_id }}</span>
+
+                            <strong>Created by:</strong>
+                            <span class="pl-3 pr-4">{{ ind.created_by }}</span>
+        
+                            <strong>Date:  </strong>
+                            <span class="pl-3 pr-3">{{ ind.issue_date }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-md-6 text-wrap">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h5>
+                                    <strong>Premise Details</strong>
+                                </h5>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row pt-2">
+                            <div class="col-lg-4 d-flex align-items-center">
+                                <input type="checkbox" value="" disabled="disabled" [checked]="ind.p_close == '1'">
+                                <strong class="pl-3"> Premise Close</strong>
+                            </div>
+                            <div class="col-lg-4 d-flex align-items-center">
+                                <input type="checkbox" value="" disabled="disabled" [checked]="ind.p_empty == '1'">
+                                <strong class="pl-3"> Premise Empty</strong>
+                            </div>
+                            <div class="col-lg-4 d-flex align-items-center">
+                                <input type="checkbox" value="" disabled="disabled" [checked]="ind.p_cooperation == '1'">
+                                <strong class="pl-3"> Cooperation</strong>
+                            </div>
+                        </div>
+
+                        <div class="row pt-2">
+                            <div class="col-lg-4">
+                                <strong>Name:</strong>
+                            </div>
+                            <div class="col-lg-8">
+                                {{ ind.po_name }}
+                            </div>
+                        </div>
+
+                        <div class="row pt-2">
+                            <div class="col-lg-4">
+                                <strong>IC. Number:</strong>
+                            </div>
+                            <div class="col-lg-8">
+                                {{ ind.po_id }}
+                            </div>
+                        </div>
+
+                        <div class="row pt-2">
+                            <div class="col-lg-4">
+                                <strong>Address:</strong>
+                            </div>
+                            <div class="col-lg-8">
+                                {{ ind.p_shortAddr }}
+                            </div>
+                        </div>
+
+                        <div class="row pt-2">
+                            <div class="col-lg-4">
+                                <strong>No. of family members:</strong>
+                            </div>
+                            <div class="col-lg-8">
+                                {{ ind.no_familyMember }}
+                            </div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-lg-4">
+                                <strong>No. of fever members:</strong>
+                            </div>
+                            <div class="col-lg-8">
+                                {{ ind.no_fever }}
+                            </div>
+                        </div>
+
+                        <div class="row pt-5">
+                            <div class="col-lg-12">
+                                <h5>
+                                    <strong>Aedes Mosquitoes Larvae Breeding Finding</strong>
+                                </h5>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row pt-2">
+                            <div class="col-lg-4">
+                                <strong>Container Type:</strong>
+                            </div>
+                            <div class="col-lg-8">
+                                {{ ind.container_type }}
+                            </div>
+                        </div>
+
+                        <div class="row pt-2">
+                            <div class="col-lg-4">
+                                <strong>Outside:</strong>
+                            </div>
+                            <div class="col-lg-8">
+                                {{ ind.no_out_breeding }}
+                            </div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-lg-4">
+                                <strong>Inside:</strong>
+                            </div>
+                            <div class="col-lg-8">
+                                {{ ind.no_in_breeding }}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h5>
+                                    <strong>Potential Aedes Mosquitoes Larvae Breeding Finding</strong>
+                                </h5>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="row pt-2">
+                            <div class="col-lg-4">
+                                <strong>Outside:</strong>
+                            </div>
+                            <div class="col-lg-8">
+                                {{ ind.no_pot_out_breeding }}
+                            </div>
+                        </div>
+                        <div class="row pt-2">                        
+                            <div class="col-lg-4">
+                                <strong>Inside:</strong>
+                            </div>
+                            <div class="col-lg-8">
+                                {{ ind.no_pot_in_breeding }}
+                            </div>
+                        </div>
+
+                        <div class="row pt-5">
+                            <div class="col-lg-12">
+                                <h5>
+                                    <strong>Action</strong>
+                                </h5>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row pt-2">
+                            <div class="col-lg-12">
+                                <input type="checkbox" value="" disabled="disabled" [checked]="ind.act_abating == '1'">
+                                <strong class="pl-3"> Abating</strong>
+                            </div>
+                            <div class="col-lg-12">
+                                <input type="checkbox" value="" disabled="disabled" [checked]="ind.act_destroy == '1'">
+                                <strong class="pl-3"> Destroy Breeding Area</strong>
+                            </div>
+                            <div class="col-lg-12">
+                                <input type="checkbox" value="" disabled="disabled" [checked]="ind.act_education == '1'">
+                                <strong class="pl-3"> Education</strong>
+                            </div>
+                            <div class="col-lg-12">
+                                <input type="checkbox" value="" disabled="disabled" [checked]="ind.act_pamphlet == '1'">
+                                <strong class="pl-3"> Pamphlet</strong>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="mt-2 ml-3">
+                                <button type="button" [class]="exhibitData ? 'btn btn-primary' : 'btn btn-outline-primary'" [disabled]="!exhibitData" (click)="openExhibitModal(modalExhibit)">
+                                    <i class="fa fa-pencil"></i> Exhibit
+                                </button>
+                            </div>
+                            <div class="mt-2 ml-2">
+                                <button type="button" [class]="sek5Data ? 'btn btn-primary' : 'btn btn-outline-primary'" [disabled]="!sek5Data" (click)="openModal(modalSek5, null)">
+                                    <i class="fa fa-pencil"></i> Seksyen 5
+                                </button>
+                            </div>
+                            <div class="mt-2 ml-2">
+                                <button type="button" [class]="sek8Data ? 'btn btn-primary' : 'btn btn-outline-primary'" [disabled]="!sek8Data" (click)="openModal(modalSek8, 'lg')">
+                                    <i class="fa fa-pencil"></i> Seksyen 8
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button type="button" class="btn btn-outline-primary mr-2" (click)="editBtn()">
+                    <i class="fa fa-pencil"></i> Edit I&D
+                </button>
+                <button type="button" class="btn btn-outline-danger mr-2" (click)="deleteBtn()" [disabled]="true">
+                    <i class="fa fa-pencil"></i> Delete I&D
+                </button>
+                <button class="btn btn-outline-secondary"
+                    [routerLink]="['/manageIND']" [routerLinkActive]="['router-link-active']">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #modalExhibit let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            View Exhibit
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h5><strong>Premise Owner Details</strong></h5>
+            </div>
+        </div>
+
+        <div class="row pt-2">
+            <div class="col-lg-12 d-flex align-items-center">
+                <input type="checkbox" value="" disabled="disabled" [checked]="exhibitData.exhibit.acceptance == '1'">
+                <span class="pl-3"> Premise Owner Cooperation</span>
+            </div>
+        </div>
+
+        <div class="row pt-2">
+            <div class="col-lg-4">
+                <strong>Full Name:</strong>
+            </div>
+            <div class="col-lg-8">
+                {{ exhibitData.exhibit.po_full_name }}
+            </div>
+        </div>
+
+        <div class="row pt-2">
+            <div class="col-lg-4">
+                <strong>IC. Number:</strong>
+            </div>
+            <div class="col-lg-8">
+                {{ exhibitData.exhibit.po_ic_no }}
+            </div>
+        </div>
+
+        <div class="row pt-4">
+            <div class="col-lg-12">
+                <h5><strong>Breeding Location Drawings</strong></h5>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col col-lg-12 pt-2">
+                <button type="button" class="btn btn-outline-primary" (click)="openModal(modalFloorPlan, null)">
+                    <i class="fa fa-pencil"></i> Floor Plan
+                </button>
+                <button type="button" class="btn btn-outline-danger ml-3" (click)="openModal(modalPremiseLocation, null)">
+                    <i class="fa fa-pencil"></i> Premise Location
+                </button>
+            </div>
+        </div>
+
+        <div class="col-sm-12 mt-3 pl-0 pr-0" *ngFor="let item of exhibitData.exhibitItems">
+            <div class="card bg-light mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-8 align-self-center">
+                            <div class="row">
+                                <div class="col-sm-3"><strong>Code</strong></div>
+                                <div class="col-sm-9">{{ item.code }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3"><strong>Type</strong></div>
+                                <div class="col-sm-9">{{ item.type }}</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 d-flex justify-content-around">
+                            <img class="img-thumbnail img-exhibitItem" 
+                                style="width: 100px; height: 100px;"
+                                (click)="openExhibitItemModal(modalExhibitItem, item.fileName)"
+                                [src]="item.fileName" alt="">                
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #modalSek8 let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            View Seksyen 8
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row pt-2">
+            <div class="col-lg-12">
+                <div class="alert alert-info">
+                    PERINTAH BERKENAAN AKTA PEMUSNAHAN SERANGGA PEMBAWA PENYAKIT 1975 (PINDAAN) 2000
+                </div>
+            </div>
+        </div>
+        <div class="row pt-3">
+            <div class="col-lg-12">
+                <strong class="pr-2">Date Until:</strong>
+                {{ sek8Data.checking_date }}
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx1 == '1'">
+            </div>
+            <div class="col">
+                <span>Pungut dan buang bekas-bekas yang atau boleh mengandungi air agaar ia tidak akan mengandungi air.</span>                
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx2 == '1'">
+            </div>
+            <div class="col">
+                <span>Tutup semua bekas simpanan air dengan rapat dan gosok dan bersihkan sebelum mengisi air yang baharu sekurang-kurangnya seminggu sekali.</span>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx3 == '1'">
+            </div>
+            <div class="col">
+                <span>Jangan buang dan bersihkan bekas-bekas air yang telah dicampurkan dengan ubat kimia oleh Jabatan Kesihatan.</span>
+            </div>
+        </div>
+        
+        <hr>
+
+        <div class="row">
+            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx4 == '1'">
+            </div>
+            <div class="col">
+                <span>Campurkan satu sudu besar garam ke dalam perangkap-perangkap semut setiap kali airnya diganti.</span>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col">
+                <span>Elakkan air bertakung di lubang pokok, tunggul-tunggul buluh dan pokok-pokok yang boleh mengandungi air seperti pokok pisang,
+                        pokok bunga dalam pasu dan lain-lain dengan</span>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx5 == '1'">
+            </div>
+            <div class="col">
+                <span>memusnahkan dan melupuskan</span>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx6 == '1'">
+            </div>
+            <div class="col">
+                <span>menyalur air darinya</span>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx7 == '1'">
+            </div>
+            <div class="col">
+                <span>mengisikan dengan simen / pasir</span>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx8 == '1'">
+            </div>
+            <div class="col">
+                <span>Elakkan bahagian-bahagian jentera, besi-besi buruk, pembancuh simen, perkakas jamban, kenderaan rosak dan lain-lain perkakas dari menakung air.</span>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx9 == '1'">
+            </div>
+            <div class="col">
+                <span>Bersihkan tepi-tepi kolam dari rumput-rumpai dan pertumbuhan di bawahnya dan tepi-tepinya mestilah sentiasa bersih dari sebarang tumbuh-tumbuhan.</span>
+            </div>
+        </div>
+        
+        <hr>
+
+        <div class="row">
+            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx10 == '1'">
+            </div>
+            <div class="col">
+                <span>Buang semua tumbuh-tumbuhan dan lain-lain benda yang terapung dari kolam-kolan.</span>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx11 == '1'">
+            </div>
+            <div class="col">
+                <span>Timbus / ratakan lubang-lubang dalam tanah.</span>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx12 == '1'">
+            </div>
+            <div class="col">
+                <span>Membubuh ubat jentik-jentik dalam telaga / kolam / lembah supaya menghalang serangga pembawa penyakit dari membiak.</span>
+            </div>
+        </div>
+
+        <hr>
+        
+        <div class="row">
+            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx13 == '1'">
+            </div>
+            <div class="col">
+                <span>Potong dan buang segala tumbuh-tumbuhan dan pungut dan buang semua sampah-sarapnya supaya premis bersih dan kemas.</span>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row pt-2 pb-3">
+            <div class="col-lg-2">
+                <strong>Remark:</strong>
+            </div>
+            <div class="col-lg-10">
+                {{ sek8Data.remark }}
+            </div>
+        </div>
+    
+    </div>
+</ng-template>
+
+<ng-template #modalSek5 let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            View Seksyen 5
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row pt-2">
+            <div class="col-lg-12">
+                <div class="alert alert-info">
+                    NOTIS UNTUK MEMASUKI PREMISE BAGI PEMERIKSAAN DAN MENJALANKAN KUASA-KUASA DI BAWAH SEKSYEN 5 AKTA PEMUSNAHAN SERANGGA PEMBAWA PENYAKIT (PINDAAN) 2000
+                </div>
+            </div>
+        </div>
+
+        <div class="row pt-2">
+            <div class="col-lg-12">
+                <h5><strong>Appointment Date Time from</strong></h5>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="col-lg-4">
+                <strong>Date:</strong>
+            </div>
+            <div class="col-lg-8">
+                {{ sek5Data.date }}
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="col-lg-4">
+                <strong>Time:</strong>
+            </div>
+            <div class="col-lg-8">
+                {{ sek5Data.time }}
+            </div>
+        </div>
+        <div class="row pt-2 pb-3 text-wrap">
+            <div class="col-lg-4">
+                <strong>Remark:</strong>
+            </div>
+            <div class="col-lg-8">
+                {{ sek5Data.remark }}
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #modalFloorPlan let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            Floor Plan
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <img #floorPlanIMG class="img-thumbnail m-auto" [src]="exhibitData.exhibit.floor_plan_URI" alt="">                
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" (click)="downloadDrawing(floorPlanIMG)">
+            <i class="fa fa-donwload"></i> Download
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #modalPremiseLocation let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            Premise Location
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <img #premiseLocationIMG class="img-thumbnail m-auto" [src]="exhibitData.exhibit.premise_location_URI" alt="">           
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" (click)="downloadDrawing(premiseLocationIMG)">
+            <i class="fa fa-download"></i> Download
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #modalExhibitItem let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            Exhibit Item Photo
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <img #exhibitItemIMG 
+                class="img-thumbnail m-auto modal-img-exhibitItem" 
+                [src]="temp_exhibitItem_URI" alt="">                
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" (click)="downloadDrawing(exhibitItemIMG)">
+            <i class="fa fa-donwload"></i> Download
+        </button>
+    </div>
+</ng-template>

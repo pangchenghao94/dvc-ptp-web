@@ -25,6 +25,25 @@ export class AuthService {
     })
   }
 
+  postData2(credentials, type){
+
+    return new Promise((resolve, reject) =>{
+      
+      let headers = new HttpHeaders();
+      headers.append('Content-Type', 'application/form-data');
+
+      let url = this.Globals.apiURL+type;
+      //let body = JSON.stringify(credentials);
+
+      this.http
+        .post(url, credentials, {headers: headers})
+        .subscribe(
+          res   =>{ resolve(res); }, 
+          (err) =>{ reject(err); } 
+        );
+    })
+  }
+
   getData(type){
 
     return new Promise((resolve, reject) =>{

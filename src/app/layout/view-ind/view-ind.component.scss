@@ -1,0 +1,20 @@
+.img-exhibitItem{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.modal-img-exhibitItem{
+    max-width: 790px;
+    max-height: 600px;
+    object-fit: contain;
+}
+
+input[type='checkbox'][disabled] {
+    width:20px; 
+    height:20px;
+    color:black !important;
+    opacity: 1;
+}
+

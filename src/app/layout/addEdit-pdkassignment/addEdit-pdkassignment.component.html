@@ -15,7 +15,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-xl-6">
                                             <div class="form-group"
                                                 [ngClass]="{'has-error': (assignmentForm.get('date').touched
                                                                         || assignmentForm.get('date').dirty) &&
@@ -39,7 +39,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-xl-6">
                                             <div class="form-group"
                                                 [ngClass]="{'has-error': (assignmentForm.get('postcode').touched
                                                                         || assignmentForm.get('postcode').dirty) &&
@@ -164,17 +164,14 @@
                 </div>
             </div>
             <div class="card-footer">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <button type="submit" class="btn btn-outline-primary" 
-                            [disabled]="!assignmentForm.valid">
-                            {{ mode == 2 ? 'Edit Assignment' : 'Add Assignment' }}
-                        </button>
-                        <button class="btn btn-outline-secondary" [style.float]="'right'" (click)="testing()"
-                            [routerLink]="['/managePDK']" [routerLinkActive]="['router-link-active']">
-                            Cancel
-                        </button>
-                    </div>
+                <button type="submit" class="btn btn-outline-primary mr-3" 
+                    [disabled]="!assignmentForm.valid">
+                    {{ mode == 2 ? 'Edit Assignment' : 'Add Assignment' }}
+                </button>
+                <button class="btn btn-outline-secondary" (click)="testing()"
+                    [routerLink]="['/viewAssignment/'+assignment.assignment_id]" [routerLinkActive]="['router-link-active']">
+                    Cancel
+                </button>
                     <!-- [disabled]="!userForm.valid" -->
                     <!--<button type="button" class="btn btn-danger" 
                         [hidden]="(mode == 1) || (userForm.get('status').value == 0)" 
@@ -186,7 +183,6 @@
                         (click)="changeUserState(userForm.get('id').value, '1')">
                         Activate User
                     </button>-->
-                </div>
             </div>
         </div>
         </form>

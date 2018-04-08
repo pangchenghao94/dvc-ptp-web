@@ -5,8 +5,21 @@ import { AbstractControl } from '@angular/forms';
 
 @Injectable()
 export class GeneralService {
+  temp_data: any;
 
   constructor() { }
+
+  setTempData(data){
+    this.temp_data = data;
+  }
+
+  getTempData(){
+    return this.temp_data;
+  }
+
+  destroyTempData(){
+    this.temp_data = null;
+  }
 
   getUserTypeDesc(userType: any) : string{
     if(userType == UserType.Superadmin)
@@ -37,6 +50,11 @@ export class GeneralService {
     return temp_date2;
   }
 
+  toDateDisplayFormat(date: string){
+    let temp_date = new Date(date);
+    return temp_date.getDate() + "/" + (temp_date.getMonth() + 1) + "/" + temp_date.getFullYear();
+  }
+
   getPasswordPattern(): string{
     return "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,25}$";
   }
@@ -58,5 +76,12 @@ export class GeneralService {
 
   getToken(){
     return JSON.parse(localStorage.getItem('userData')).token;
+  }
+  
+  convertIntToBool(str){
+    if(str == "1")
+      return true;
+    else if( str == "0")
+      return false;
   }
 }

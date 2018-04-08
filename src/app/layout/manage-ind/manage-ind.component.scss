@@ -1,0 +1,43 @@
+.mat-form-field{
+    display: block;
+}
+
+mat-row:hover{
+    background: #FAFAFA;
+    cursor: pointer;
+}
+
+.cdk-overlay-container{
+    z-index: 9999 !important;
+}
+
+@media (min-width: 992px){
+    .tbl-indlst .mat-cell, 
+    .tbl-indlst .mat-header-cell{
+        flex: unset;
+    }
+
+    .tbl-indlst .mat-column-ind_id{
+        width: 5%;
+    }
+
+    .tbl-indlst .mat-column-p_shortAddr{
+        width: 30%;
+    }
+
+    .tbl-indlst .mat-column-po_name{
+        width: 25%;
+    }
+
+    .tbl-indlst .mat-column-team{
+        width: 15%;
+    }
+
+    .tbl-indlst .mat-column-full_name{
+        width: 20%;
+    }
+
+    .tbl-indlst .mat-column-issue_date{
+        width: 5%;
+    }
+}

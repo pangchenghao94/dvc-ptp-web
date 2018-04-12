@@ -85,6 +85,14 @@ export class AddEditINDComponent implements OnInit {
         console.log(this.indForm);
     }
 
+    openModal(content, size) {
+        this.modal = this.modalService.open(content, {
+            backdrop: 'static',
+            keyboard: false,
+            size: size
+        });
+    }
+
     async openExhibitModal(content){
         const promisesArray: any[] = [];  
         this.loading = true;
@@ -181,12 +189,29 @@ export class AddEditINDComponent implements OnInit {
         this.openModal(content, 'lg');
     }
 
-    openModal(content, size) {
-        this.modal = this.modalService.open(content, {
-            backdrop: 'static',
-            keyboard: false,
-            size: size
-        });
+    openExhibitItemModal(content, path){
+        this.temp_exhibitItem_URI = path;
+        this.openModal(content, "lg");
+        this.scrollFix();
+    }
+
+    openFPModal(content, size){
+        this.openModal(content, size);
+        this.scrollFix();
+    }
+
+    openPLModal(content, size){
+        this.openModal(content, size);
+        this.scrollFix();
+    }
+        
+    scrollFix(){
+        this.modal.result.catch(() => {})
+            .then(() => {
+                if (document.querySelector('body > .modal')) {
+                    document.body.classList.add('modal-open');
+                }
+            });
     }
 
     submitExhibitItem(){
@@ -213,10 +238,6 @@ export class AddEditINDComponent implements OnInit {
         window.location.href = type.src;
     }
 
-    openExhibitItemModal(content, path){
-        this.temp_exhibitItem_URI = path;
-        this.openModal(content, "lg");
-    }
     // /// // /// // /// // /// // /// // /// // /// // /// // /// // /// // /// // 
     // //user for upload file to api
     // console.log(this.exhibitForm.get("img").errors);

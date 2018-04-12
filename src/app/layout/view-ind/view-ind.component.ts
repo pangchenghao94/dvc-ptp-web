@@ -207,6 +207,18 @@ export class ViewINDComponent implements OnInit {
     openExhibitItemModal(content, path){
         this.temp_exhibitItem_URI = path;
         this.openModal(content, "lg");
+        this.scrollFix();
+    }
+
+    openFPModal(content, size){
+        this.openModal(content, size);
+        this.scrollFix();
+    }
+
+    
+    openPLModal(content, size){
+        this.openModal(content, size);
+        this.scrollFix();
     }
 
     openSek5Modal(content) {
@@ -219,6 +231,15 @@ export class ViewINDComponent implements OnInit {
             keyboard: false,
             size: size
         });
+    }
+
+    scrollFix(){
+        this.modal.result.catch(() => {})
+            .then(() => {
+                if (document.querySelector('body > .modal')) {
+                    document.body.classList.add('modal-open');
+                }
+            });
     }
 
     downloadDrawing(type) {

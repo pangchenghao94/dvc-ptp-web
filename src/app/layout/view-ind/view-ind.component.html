@@ -1,7 +1,7 @@
 <div [@routerTransition]>    
     <ngx-loading [show]="loading" [config]="{fullScreenBackdrop: true}"></ngx-loading>
     <app-page-header [heading]="'View Inspection & Destruction'" [icon]="'fa-file'"></app-page-header>
-    <div class="col-sm-11 col-centered">
+    <div class="col-sm-12 col-centered">
         <div class="card mb-3">
             <div class="card-header">
                 <div>View Inspection & Destruction</div>
@@ -280,10 +280,10 @@
 
         <div class="row mb-4">
             <div class="col col-lg-12 pt-2">
-                <button type="button" class="btn btn-outline-primary" (click)="openModal(modalFloorPlan, null)">
+                <button type="button" class="btn btn-outline-primary" (click)="openFPModal(modalFloorPlan, null)">
                     <i class="fa fa-pencil"></i> Floor Plan
                 </button>
-                <button type="button" class="btn btn-outline-danger ml-3" (click)="openModal(modalPremiseLocation, null)">
+                <button type="button" class="btn btn-outline-danger ml-3" (click)="openPLModal(modalPremiseLocation, null)">
                     <i class="fa fa-pencil"></i> Premise Location
                 </button>
             </div>

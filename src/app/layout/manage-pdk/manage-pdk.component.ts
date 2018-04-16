@@ -42,6 +42,9 @@ export class ManagePDKComponent implements OnInit {
                     console.log(responseData.error.text);
                 }
                 else{
+                    responseData.forEach(data => {
+                        data.date = this.general.toDateDisplayFormat(data.date);
+                    });
                     this.dataSource = new MatTableDataSource(responseData);
                     this.dataSource.paginator = this.paginator;
                     this.dataSource.sort = this.sort;

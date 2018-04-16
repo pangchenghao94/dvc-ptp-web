@@ -1,6 +1,13 @@
 <div [@routerTransition]>
+    
+    <ng-template #rt let-r="result" let-t="term">
+        <div style="min-width: 25rem;">
+            {{ r.full_name}}
+        </div>
+    </ng-template>
+
     <app-page-header [heading]="mode == 2 ? 'Edit Assignment' : 'Add Assignment'" [icon]="'fa-tasks'"></app-page-header>
-    <div class="col-sm-10 col-centered">
+    <div class="col-lg-12 col-xl-10 col-centered">
         <form [formGroup]="assignmentForm" (ngSubmit)="submit()" novalidate>        
         <div class="card mb-3">
             <div class="card-header">Assignment Form</div>
@@ -14,6 +21,34 @@
                                             <h4>Assignment Details</h4>
                                         </div>
                                     </div>
+                                    <div class="form-group" 
+                                        [ngClass]="{'has-error': (assignmentForm.get('pka').touched
+                                                                || assignmentForm.get('pka').dirty) &&
+                                                                !assignmentForm.get('pka').valid }">
+                                        <label for="typeahead-focus">PKA (Pembantu Kesihatan Am)</label>
+                                        <input id="typeahead-focus" type="text" class="form-control" formControlName="pka" #pkaSelect="ngbTypeahead"
+                                            [ngbTypeahead]="pka_search" [inputFormatter]="formatter" [resultFormatter]="formatter" [resultTemplate]="rt"                                    
+                                            (focus)="focus_pka$.next($event.target.value)" (click)="click_pka$.next($event.target.value)"/>
+                                        
+                                        <span class="help-block" *ngIf="(assignmentForm.get('pka').touched
+                                                                        || assignmentForm.get('pka').dirty) &&
+                                                                        assignmentForm.get('pka').errors">
+                                            <span *ngIf="assignmentForm.get('pka').errors.required" class="txtErr">
+                                                * Please select a PKA for this assignment.
+                                            </span>
+                                        </span>
+                                    </div>
+
+                                    <div class="form-group" 
+                                        [ngClass]="{'has-error': (assignmentForm.get('pa').touched
+                                                                || assignmentForm.get('pa').dirty) &&
+                                                                !assignmentForm.get('pa').valid }">
+                                        <label for="typeahead-focus">PA (Pembantu Am)</label>
+                                        <input id="typeahead-focus" type="text" class="form-control" formControlName="pa" #paSelect="ngbTypeahead"
+                                            [ngbTypeahead]="pa_search" [inputFormatter]="formatter" [resultFormatter]="formatter" [resultTemplate]="rt"                             
+                                            (focus)="focus_pa$.next($event.target.value)" (click)="click_pa$.next($event.target.value)"/>
+                                    </div>
+                                        
                                     <div class="row">
                                         <div class="col-xl-6">
                                             <div class="form-group"
@@ -34,7 +69,7 @@
                                                                                     || assignmentForm.get('date').dirty) &&
                                                                                     assignmentForm.get('date').errors">
                                                     <span *ngIf="assignmentForm.get('date').errors.required" class="txtErr">
-                                                        * Please enter your first name.
+                                                        * Please enter assignment date.
                                                     </span>
                                                 </span>
                                             </div>
@@ -60,49 +95,44 @@
                                             </div>
                                         </div>                                                
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            
-                                            <div class="form-group"
-                                                [ngClass]="{'has-error': (assignmentForm.get('team').touched
+                                    <div class="form-group"
+                                        [ngClass]="{'has-error': (assignmentForm.get('team').touched
+                                                                || assignmentForm.get('team').dirty) &&
+                                                                !assignmentForm.get('team').valid }">
+                                        <label for="txtTeam">Team*</label>
+                                        <input type="text" class="form-control" id="txtTeam" placeholder="Insert team name"
+                                            formControlName="team">
+                                        <span class="help-block" *ngIf="(assignmentForm.get('team').touched
                                                                         || assignmentForm.get('team').dirty) &&
-                                                                        !assignmentForm.get('team').valid }">
-                                                <label for="txtTeam">Team*</label>
-                                                <input type="text" class="form-control" id="txtTeam" placeholder="Insert team name"
-                                                    formControlName="team">
-                                                <span class="help-block" *ngIf="(assignmentForm.get('team').touched
-                                                                                || assignmentForm.get('team').dirty) &&
-                                                                                assignmentForm.get('team').errors">
-                                                    <span *ngIf="assignmentForm.get('team').errors.required" class="txtErr">
-                                                        * Please enter team name for this assignment.
-                                                    </span>
-                                                </span>
-                                            </div>
+                                                                        assignmentForm.get('team').errors">
+                                            <span *ngIf="assignmentForm.get('team').errors.required" class="txtErr">
+                                                * Please enter team name for this assignment.
+                                            </span>
+                                        </span>
+                                    </div>
 
-                                            <div class="form-group"
-                                                [ngClass]="{'has-error': (assignmentForm.get('address').touched
+                                    <div class="form-group"
+                                        [ngClass]="{'has-error': (assignmentForm.get('address').touched
+                                                                || assignmentForm.get('address').dirty) &&
+                                                                !assignmentForm.get('address').valid }">
+                                        <label for="txtAddress">Address*</label>
+                                        <textarea class="form-control" id="txtAddress" placeholder="Insert full address "
+                                            formControlName="address"></textarea>
+                                        <span class="help-block" *ngIf="(assignmentForm.get('address').touched
                                                                         || assignmentForm.get('address').dirty) &&
-                                                                        !assignmentForm.get('address').valid }">
-                                                <label for="txtAddress">Address*</label>
-                                                <textarea class="form-control" id="txtAddress" placeholder="Insert full address "
-                                                    formControlName="address"></textarea>
-                                                <span class="help-block" *ngIf="(assignmentForm.get('address').touched
-                                                                                || assignmentForm.get('address').dirty) &&
-                                                                                assignmentForm.get('address').errors">
-                                                    <span *ngIf="assignmentForm.get('address').errors.required" class="txtErr">
-                                                        * Please enter assignment full address.
-                                                    </span>
-                                                </span>
-                                            </div>
+                                                                        assignmentForm.get('address').errors">
+                                            <span *ngIf="assignmentForm.get('address').errors.required" class="txtErr">
+                                                * Please enter assignment full address.
+                                            </span>
+                                        </span>
+                                    </div>
 
-                                            <div class="form-group"
-                                                [ngClass]="{'has-error': (assignmentForm.get('remark').touched
-                                                                        || assignmentForm.get('remark').dirty) &&
-                                                                        !assignmentForm.get('remark').valid }">
-                                                <label for="txtRemark">Remark</label>
-                                                <textarea class="form-control" id="txtRemark" placeholder="Insert remark if any "formControlName="remark"></textarea>
-                                            </div>
-                                        </div>
+                                    <div class="form-group"
+                                        [ngClass]="{'has-error': (assignmentForm.get('remark').touched
+                                                                || assignmentForm.get('remark').dirty) &&
+                                                                !assignmentForm.get('remark').valid }">
+                                        <label for="txtRemark">Remark</label>
+                                        <textarea class="form-control" id="txtRemark" placeholder="Insert remark if any "formControlName="remark"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">

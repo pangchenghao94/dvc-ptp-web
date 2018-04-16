@@ -1,7 +1,7 @@
 <div [@routerTransition]>
     <ngx-loading [show]="loading" [config]="{fullScreenBackdrop: true}"></ngx-loading>    
     <app-page-header [heading]="mode == 2 ? 'Edit Inspection & Destruction' : 'Add Inspection & Destruction'" [icon]="'fa-tasks'"></app-page-header>
-    <div class="col-sm-10 col-centered">
+    <div class="col-lg-12 col-xl-10 col-centered">
         <div class="card mb-3">
             <div class="card-header">Inspection & Destruction Form</div>
             <form [formGroup]="indForm" (ngSubmit)="submit()" novalidate>                    
@@ -33,15 +33,15 @@
                             </div>
                             
                             <div class="row">
-                                <div class="col-lg-4 d-flex align-items-center">
+                                <div class="col-lg-12 col-xl-6 d-flex align-items-center">
                                     <input formControlName="p_close" type="checkbox">
                                     <span class="pl-3"> Premise Close</span>
                                 </div>
-                                <div class="col-lg-4 d-flex align-items-center">
+                                <div class="col-lg-12  col-xl-6 d-flex align-items-center">
                                     <input formControlName="p_empty" type="checkbox">
                                     <span class="pl-3"> Premise Empty</span>
                                 </div>
-                                <div class="col-lg-4 d-flex align-items-center">
+                                <div class="col-lg-12 d-flex align-items-center">
                                     <input formControlName="p_cooperation" type="checkbox">
                                     <span class="pl-3"> Cooperation</span>
                                 </div>
@@ -193,16 +193,16 @@
 
                             <div class="row">
                                 <div class="mt-2 ml-3">
-                                    <button type="button" [class]="exhibitData ? 'btn btn-primary' : 'btn btn-outline-primary'" [disabled]="!exhibitData" (click)="openExhibitModal(modalExhibit)">
+                                    <button type="button" [class]="exhibitData ? 'btn btn-primary' : 'btn btn-outline-primary'" [disabled]="!exhibitData" (click)="openModal(modalExhibit, 'lg')">
                                         <i class="fa fa-pencil"></i> Exhibit
                                     </button>
                                 </div>
-                                <div class="mt-2 ml-2">
+                                <div class="mt-2 ml-3">
                                     <button type="button" [class]="sek5Data ? 'btn btn-primary' : 'btn btn-outline-primary'" [disabled]="!sek5Data" (click)="openModal(modalSek5, null)">
                                         <i class="fa fa-pencil"></i> Seksyen 5
                                     </button>
                                 </div>
-                                <div class="mt-2 ml-2">
+                                <div class="mt-2 ml-3">
                                     <button type="button" [class]="sek8Data ? 'btn btn-primary' : 'btn btn-outline-primary'" [disabled]="!sek8Data" (click)="openModal(modalSek8, 'lg')">
                                         <i class="fa fa-pencil"></i> Seksyen 8
                                     </button>
@@ -315,6 +315,15 @@
                                                     !exhibitForm.get('type').valid }">
                         <label for="txtType">Type of Exhibit</label>
                         <input type="text" class="form-control" id="txtType" formControlName="type" placeholder="Insert the type of exhibit.">
+                        
+                        <span class="help-block" *ngIf="(exhibitForm.get('type').touched ||
+                                                        exhibitForm.get('type').dirty) &&
+                                                        exhibitForm.get('type').errors">
+                            <span *ngIf="exhibitForm.get('type').errors.required" class="txtErr">
+                                * Please fill in the exhibit type.
+                            </span>
+                        </span>
+
                     </div>
         
                     <div class="form-group" [ngClass]="{'has-error': (exhibitForm.get('code').touched
@@ -322,6 +331,14 @@
                                                     !exhibitForm.get('code').valid }">
                         <label for="txtCode">Code</label>
                         <input type="text" class="form-control" id="txtCode" formControlName="code" placeholder="Insert exhibit code.">
+
+                        <span class="help-block" *ngIf="(exhibitForm.get('code').touched ||
+                                                        exhibitForm.get('code').dirty) &&
+                                                        exhibitForm.get('code').errors">
+                            <span *ngIf="exhibitForm.get('code').errors.required" class="txtErr">
+                                * Please fill in the exhibit code.
+                            </span>
+                        </span>
                     </div>
 
                     <div class="form-group" [ngClass]="{'has-error': (exhibitForm.get('img').touched
@@ -483,179 +500,195 @@
         </button>
     </div>
     <div class="modal-body">
-        <div class="row pt-2">
-            <div class="col-lg-12">
-                <div class="alert alert-info">
-                    PERINTAH BERKENAAN AKTA PEMUSNAHAN SERANGGA PEMBAWA PENYAKIT 1975 (PINDAAN) 2000
+        <form [formGroup]="sek8Form" novalidate>
+            <div class="row pt-2">
+                <div class="col-lg-12">
+                    <div class="alert alert-info">
+                        PERINTAH BERKENAAN AKTA PEMUSNAHAN SERANGGA PEMBAWA PENYAKIT 1975 (PINDAAN) 2000
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row pt-3">
-            <div class="col-lg-12">
-                <strong class="pr-2">Date Until:</strong>
-                {{ sek8Data.checking_date }}
+            <div class="form-group pt-3"
+                [ngClass]="{'has-error': (sek8Form.get('checking_date').touched
+                                        || sek8Form.get('checking_date').dirty) &&
+                                        !sek8Form.get('checking_date').valid }">
+                <label for="txtCheckingDate">Date Until</label>
+                <div class="input-group">
+                    <input ngbDatepicker class="form-control" id="txtCheckingDate" placeholder="Select Seksyen 8 checking date"
+                        formControlName="checking_date" #dp="ngbDatepicker" readonly="readonly" style="max-width: 195px">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
+                            <i class="fa fa-calendar" style="cursor: pointer"></i>
+                        </button>
+                    </div>
+                </div>
+                <span class="help-block" *ngIf="(sek8Form.get('checking_date').touched
+                                                    || sek8Form.get('checking_date').dirty) &&
+                                                    sek8Form.get('checking_date').errors">
+                    <span *ngIf="sek8Form.get('checking_date').errors.required" class="txtErr">
+                        * Please select the checking date.
+                    </span>
+                </span>
             </div>
-        </div>
 
-        <hr>
+            <hr>
 
-        <div class="row">
-            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
-                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx1 == '1'">
+            <div class="row">
+                <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                    <input type="checkbox" formControlName="chkbx1">
+                </div>
+                <div class="col">
+                    <span>Pungut dan buang bekas-bekas yang atau boleh mengandungi air agaar ia tidak akan mengandungi air.</span>
+                </div>
             </div>
-            <div class="col">
-                <span>Pungut dan buang bekas-bekas yang atau boleh mengandungi air agaar ia tidak akan mengandungi air.</span>
-            </div>
-        </div>
 
-        <hr>
+            <hr>
 
-        <div class="row">
-            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
-                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx2 == '1'">
+            <div class="row">
+                <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                    <input type="checkbox" formControlName="chkbx2">
+                </div>
+                <div class="col">
+                    <span>Tutup semua bekas simpanan air dengan rapat dan gosok dan bersihkan sebelum mengisi air yang baharu sekurang-kurangnya
+                        seminggu sekali.</span>
+                </div>
             </div>
-            <div class="col">
-                <span>Tutup semua bekas simpanan air dengan rapat dan gosok dan bersihkan sebelum mengisi air yang baharu sekurang-kurangnya
-                    seminggu sekali.</span>
-            </div>
-        </div>
 
-        <hr>
+            <hr>
 
-        <div class="row">
-            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
-                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx3 == '1'">
+            <div class="row">
+                <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                    <input type="checkbox" formControlName="chkbx3">
+                </div>
+                <div class="col">
+                    <span>Jangan buang dan bersihkan bekas-bekas air yang telah dicampurkan dengan ubat kimia oleh Jabatan Kesihatan.</span>
+                </div>
             </div>
-            <div class="col">
-                <span>Jangan buang dan bersihkan bekas-bekas air yang telah dicampurkan dengan ubat kimia oleh Jabatan Kesihatan.</span>
-            </div>
-        </div>
 
-        <hr>
+            <hr>
 
-        <div class="row">
-            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
-                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx4 == '1'">
+            <div class="row">
+                <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                    <input type="checkbox" formControlName="chkbx4">
+                </div>
+                <div class="col">
+                    <span>Campurkan satu sudu besar garam ke dalam perangkap-perangkap semut setiap kali airnya diganti.</span>
+                </div>
             </div>
-            <div class="col">
-                <span>Campurkan satu sudu besar garam ke dalam perangkap-perangkap semut setiap kali airnya diganti.</span>
-            </div>
-        </div>
 
-        <hr>
+            <hr>
 
-        <div class="row">
-            <div class="col">
-                <span>Elakkan air bertakung di lubang pokok, tunggul-tunggul buluh dan pokok-pokok yang boleh mengandungi air seperti
-                    pokok pisang, pokok bunga dalam pasu dan lain-lain dengan</span>
+            <div class="row">
+                <div class="col">
+                    <span>Elakkan air bertakung di lubang pokok, tunggul-tunggul buluh dan pokok-pokok yang boleh mengandungi air seperti
+                        pokok pisang, pokok bunga dalam pasu dan lain-lain dengan</span>
+                </div>
             </div>
-        </div>
-        <div class="row pt-2">
-            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
-                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx5 == '1'">
+            <div class="row pt-2">
+                <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                    <input type="checkbox" formControlName="chkbx5">
+                </div>
+                <div class="col">
+                    <span>memusnahkan dan melupuskan</span>
+                </div>
             </div>
-            <div class="col">
-                <span>memusnahkan dan melupuskan</span>
+            <div class="row pt-2">
+                <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                    <input type="checkbox" formControlName="chkbx6">
+                </div>
+                <div class="col">
+                    <span>menyalur air darinya</span>
+                </div>
             </div>
-        </div>
-        <div class="row pt-2">
-            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
-                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx6 == '1'">
+            <div class="row pt-2">
+                <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                    <input type="checkbox" formControlName="chkbx7">
+                </div>
+                <div class="col">
+                    <span>mengisikan dengan simen / pasir</span>
+                </div>
             </div>
-            <div class="col">
-                <span>menyalur air darinya</span>
-            </div>
-        </div>
-        <div class="row pt-2">
-            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
-                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx7 == '1'">
-            </div>
-            <div class="col">
-                <span>mengisikan dengan simen / pasir</span>
-            </div>
-        </div>
 
-        <hr>
+            <hr>
 
-        <div class="row">
-            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
-                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx8 == '1'">
+            <div class="row">
+                <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                    <input type="checkbox" formControlName="chkbx8">
+                </div>
+                <div class="col">
+                    <span>Elakkan bahagian-bahagian jentera, besi-besi buruk, pembancuh simen, perkakas jamban, kenderaan rosak dan
+                        lain-lain perkakas dari menakung air.</span>
+                </div>
             </div>
-            <div class="col">
-                <span>Elakkan bahagian-bahagian jentera, besi-besi buruk, pembancuh simen, perkakas jamban, kenderaan rosak dan
-                    lain-lain perkakas dari menakung air.</span>
-            </div>
-        </div>
 
-        <hr>
+            <hr>
 
-        <div class="row">
-            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
-                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx9 == '1'">
+            <div class="row">
+                <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                    <input type="checkbox" formControlName="chkbx9">
+                </div>
+                <div class="col">
+                    <span>Bersihkan tepi-tepi kolam dari rumput-rumpai dan pertumbuhan di bawahnya dan tepi-tepinya mestilah sentiasa
+                        bersih dari sebarang tumbuh-tumbuhan.</span>
+                </div>
             </div>
-            <div class="col">
-                <span>Bersihkan tepi-tepi kolam dari rumput-rumpai dan pertumbuhan di bawahnya dan tepi-tepinya mestilah sentiasa
-                    bersih dari sebarang tumbuh-tumbuhan.</span>
-            </div>
-        </div>
 
-        <hr>
+            <hr>
 
-        <div class="row">
-            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
-                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx10 == '1'">
+            <div class="row">
+                <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                    <input type="checkbox" formControlName="chkbx10">
+                </div>
+                <div class="col">
+                    <span>Buang semua tumbuh-tumbuhan dan lain-lain benda yang terapung dari kolam-kolan.</span>
+                </div>
             </div>
-            <div class="col">
-                <span>Buang semua tumbuh-tumbuhan dan lain-lain benda yang terapung dari kolam-kolan.</span>
-            </div>
-        </div>
 
-        <hr>
+            <hr>
 
-        <div class="row">
-            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
-                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx11 == '1'">
+            <div class="row">
+                <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                    <input type="checkbox" formControlName="chkbx11">
+                </div>
+                <div class="col">
+                    <span>Timbus / ratakan lubang-lubang dalam tanah.</span>
+                </div>
             </div>
-            <div class="col">
-                <span>Timbus / ratakan lubang-lubang dalam tanah.</span>
-            </div>
-        </div>
 
-        <hr>
+            <hr>
 
-        <div class="row">
-            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
-                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx12 == '1'">
+            <div class="row">
+                <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                    <input type="checkbox" formControlName="chkbx12">
+                </div>
+                <div class="col">
+                    <span>Membubuh ubat jentik-jentik dalam telaga / kolam / lembah supaya menghalang serangga pembawa penyakit dari
+                        membiak.</span>
+                </div>
             </div>
-            <div class="col">
-                <span>Membubuh ubat jentik-jentik dalam telaga / kolam / lembah supaya menghalang serangga pembawa penyakit dari
-                    membiak.</span>
-            </div>
-        </div>
 
-        <hr>
+            <hr>
 
-        <div class="row">
-            <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
-                <input type="checkbox" value="" disabled="disabled" [checked]="sek8Data.chkbx13 == '1'">
+            <div class="row">
+                <div class="mr-0 ml-3 d-flex justify-content-center align-items-center">
+                    <input type="checkbox" formControlName="chkbx13">
+                </div>
+                <div class="col">
+                    <span>Potong dan buang segala tumbuh-tumbuhan dan pungut dan buang semua sampah-sarapnya supaya premis bersih dan
+                        kemas.</span>
+                </div>
             </div>
-            <div class="col">
-                <span>Potong dan buang segala tumbuh-tumbuhan dan pungut dan buang semua sampah-sarapnya supaya premis bersih dan
-                    kemas.</span>
-            </div>
-        </div>
 
-        <hr>
+            <hr>
 
-        <div class="row pt-2 pb-3">
-            <div class="col-lg-2">
-                <strong>Remark:</strong>
+            <div class="form-group pt-2 pb-3"
+                [ngClass]="{'has-error': (sek8Form.get('remark').touched
+                                        || sek8Form.get('remark').dirty) &&
+                                        !sek8Form.get('remark').valid }">
+                <label for="txtRemark">Remark</label>
+                <textarea class="form-control" id="txtRemark" formControlName="remark" placeholder="Insert number of potential inside breeding finding."></textarea>
             </div>
-            <div class="col-lg-10">
-                {{ sek8Data.remark }}
-            </div>
-        </div>
-
+        </form>
     </div>
 </ng-template>
 
@@ -685,29 +718,68 @@
                 </h5>
             </div>
         </div>
-        <div class="row pt-2">
-            <div class="col-lg-4">
-                <strong>Date:</strong>
+        <form [formGroup]="sek5Form" novalidate>
+            <div class="form-group pt-3"
+                [ngClass]="{'has-error': (sek5Form.get('date').touched
+                                        || sek5Form.get('date').dirty) &&
+                                        !sek5Form.get('date').valid }">
+                <label for="txtDate"></label>
+                <div class="input-group">
+                    <input ngbDatepicker class="form-control" id="txtDate" placeholder="Select Seksyen 8 checking date"
+                        formControlName="date" #dp="ngbDatepicker" readonly="readonly" style="max-width: 195px">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
+                            <i class="fa fa-calendar" style="cursor: pointer"></i>
+                        </button>
+                    </div>
+                </div>
+                <span class="help-block" *ngIf="(sek5Form.get('date').touched
+                                                    || sek5Form.get('date').dirty) &&
+                                                    sek5Form.get('date').errors">
+                    <span *ngIf="sek5Form.get('date').errors.required" class="txtErr">
+                        * Please enter your first name.
+                    </span>
+                </span>
             </div>
-            <div class="col-lg-8">
-                {{ sek5Data.date }}
+            <div class="row pt-2">
+                <div class="col-lg-12">
+                    <ngb-timepicker formControlName="time" [meridian]="true"></ngb-timepicker>
+                </div>
+            </div>
+            
+            <div class="form-group pt-2 pb-3"
+                [ngClass]="{'has-error': (sek5Form.get('remark').touched
+                                        || sek5Form.get('remark').dirty) &&
+                                        !sek5Form.get('remark').valid }">
+                <label for="txtRemark">Remark</label>
+                <textarea class="form-control" id="txtRemark" formControlName="remark" placeholder="Insert number of potential inside breeding finding."></textarea>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #modalEditConfirmation let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            Edit Confirmation
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-12">
+                Confirm to edit this inspection and destruction record?
             </div>
         </div>
-        <div class="row pt-2">
-            <div class="col-lg-4">
-                <strong>Time:</strong>
-            </div>
-            <div class="col-lg-8">
-                {{ sek5Data.time }}
-            </div>
-        </div>
-        <div class="row pt-2 pb-3 text-wrap">
-            <div class="col-lg-4">
-                <strong>Remark:</strong>
-            </div>
-            <div class="col-lg-8">
-                {{ sek5Data.remark }}
-            </div>
-        </div>
+    </div>
+    <div class="modal-footer">
+        <button (click)="editInd()" class="btn btn-outline-primary">
+            Proceed
+        </button>
+        <button class="btn btn-outline-secondary" (click)="d('Cancel click')">
+            Cancel
+        </button>      
     </div>
 </ng-template>

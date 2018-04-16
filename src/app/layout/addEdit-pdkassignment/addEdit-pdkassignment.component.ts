@@ -4,11 +4,17 @@ import { Observable } from 'rxjs/Observable';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 import { MatPaginator, MatTableDataSource, MatAutocompleteTrigger } from '@angular/material';
-import { NgbDateStruct, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct, NgbDateParserFormatter, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router, RouterLinkActive } from '@angular/router';
 import { AuthService, User, Assignment, GeneralService, CustomNgbDateParseFormatter } from '../../shared';
 import { FormGroup, FormBuilder, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import * as $ from 'jquery';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 @Component({
     providers: [{provide: NgbDateParserFormatter, useClass: CustomNgbDateParseFormatter}],
@@ -26,12 +32,33 @@ export class AddEditPDKAssignmentComponent implements OnInit {
     dataSource: any;
     showNoUser: boolean = false;
     assignment: Assignment = new Assignment();
-
-    //selectedRowIndex: number = -1;
+    fullNameList: any;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild('autoCompleteInput', { read: MatAutocompleteTrigger }) autoComplete: MatAutocompleteTrigger;
 
+    @ViewChild('paSelect') paSelect: NgbTypeahead;
+    @ViewChild('pkaSelect') pkaSelect: NgbTypeahead;   
+
+    focus_pa$ = new Subject<string>();
+    focus_pka$ = new Subject<string>();
+    click_pa$ = new Subject<string>();
+    click_pka$ = new Subject<string>();
+
+    pka_search = (text$: Observable<string>) => text$
+      .debounceTime(200).distinctUntilChanged()
+      .merge(this.focus_pka$)
+      .merge(this.click_pka$.filter(() => !this.pkaSelect.isPopupOpen()))
+      .map(term => (term === '' ? this.users : this.users.filter(v => v.full_name.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10));
+
+    pa_search = (text$: Observable<string>) => text$
+      .debounceTime(200).distinctUntilChanged()
+      .merge(this.focus_pa$)
+      .merge(this.click_pa$.filter(() => !this.paSelect.isPopupOpen()))
+      .map(term => (term === '' ? this.users : this.users.filter(v => v.full_name.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10));
+      
+    formatter = (x: {full_name: string}) => x.full_name;
+    
     constructor(private fb: FormBuilder, private auth: AuthService, private changeDetectorRefs: ChangeDetectorRef, 
         private route: ActivatedRoute, private router: Router, private general: GeneralService) {
 
@@ -51,7 +78,10 @@ export class AddEditPDKAssignmentComponent implements OnInit {
             team: ['', Validators.required],
             address: ['', Validators.required],
             remark: '',
-            selectUserCtrl: ''
+            selectUserCtrl: '',
+            pka: ['', Validators.required],
+            pa: ''
+
         });
 
         this.auth.getData("api/fullNameList").then((result) => {
@@ -75,7 +105,7 @@ export class AddEditPDKAssignmentComponent implements OnInit {
                         startWith<string | User>(''),
                         map(value => typeof value === 'string' ? value : value.full_name),
                         map(user => user ? this.filterStates(user) : this.users.slice())
-                    );
+                    );                
             }
         },
         (err) => {
@@ -101,14 +131,31 @@ export class AddEditPDKAssignmentComponent implements OnInit {
                         this.assignment.address = assignmentData.data.address;
                         this.assignment.remark = assignmentData.data.remark;
                         this.assignment.postcode = assignmentData.data.postcode;
-    
+                        this.assignment.postcode = assignmentData.data.postcode; 
+                        this.assignment.pka = assignmentData.data.pka;
+                        this.assignment.pka_full_name = assignmentData.data.pka_full_name;                        
+                        this.assignment.pa = assignmentData.data.pa;
+                        this.assignment.pa_full_name = assignmentData.data.pa_full_name;                        
+
+                        console.log(assignmentData);
+                        console.log(this.assignment);
+                        let temp_pa: User = new User();
+                        temp_pa.user_id = this.assignment.pa;
+                        temp_pa.full_name = this.assignment.pa_full_name;
+
+                        let temp_pka: User = new User();
+                        temp_pka.user_id = this.assignment.pka;
+                        temp_pka.full_name = this.assignment.pka_full_name;
+
                         //fetch user data to form for edit
                         this.assignmentForm.patchValue({
                             date: this.general.toNgbDateStruct(this.assignment.date),
                             postcode: this.assignment.postcode,
                             team: this.assignment.team,
                             address: this.assignment.address,
-                            remark: this.assignment.remark
+                            remark: this.assignment.remark,
+                            pa: temp_pa,
+                            pka: temp_pka
                         });
                     }
                 }
@@ -169,7 +216,7 @@ export class AddEditPDKAssignmentComponent implements OnInit {
 
     submit(){
         if(this.dataSource.data.length == 0)
-                this.showNoUser = this.dataSource.data.length > 0 ? false : true;
+            this.showNoUser = this.dataSource.data.length > 0 ? false : true;
         
         else{
             this.assignment.team = this.assignmentForm.get('team').value;
@@ -177,6 +224,8 @@ export class AddEditPDKAssignmentComponent implements OnInit {
             this.assignment.postcode = this.assignmentForm.get('postcode').value;
             this.assignment.remark = this.assignmentForm.get('remark').value;
             this.assignment.address = this.assignmentForm.get('address').value;
+            this.assignment.pka = (this.assignmentForm.get('pka').value).user_id;
+            this.assignment.pa = (this.assignmentForm.get('pa').value).user_id;            
             
             let user_id_lst = new Array<string>();
             this.dataSource.data.forEach(element => {
@@ -187,6 +236,8 @@ export class AddEditPDKAssignmentComponent implements OnInit {
             data["data"] = this.assignment;
             data["data2"] = user_id_lst;
 
+            // console.log(this.assignment);
+            // console.log(this.assignmentForm);
             if(this.mode == 1){
                 console.log(this.assignment);
                 this.auth.postData(data, "api/assignment/add").then((result) => {

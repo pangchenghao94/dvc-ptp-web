@@ -50,9 +50,9 @@ export class ViewINDComponent implements OnInit {
                 let ind_data = responseData.ind;
 
                 this.ind.assignment_id = ind_data.assignment_id;
-                this.ind.p_cooperation = ind_data.p_cooperation;
-                this.ind.p_close = ind_data.p_close;
-                this.ind.p_empty = ind_data.p_empty;
+                this.ind.p_cooperation = this.general.convertIntToBool(ind_data.p_cooperation);
+                this.ind.p_close = this.general.convertIntToBool(ind_data.p_close);
+                this.ind.p_empty = this.general.convertIntToBool(ind_data.p_empty);
                 this.ind.p_shortAddr = ind_data.p_shortAddr;
                 this.ind.po_name = ind_data.po_name;
                 this.ind.po_id = ind_data.po_id;
@@ -63,10 +63,10 @@ export class ViewINDComponent implements OnInit {
                 this.ind.container_type = ind_data.container_type;
                 this.ind.no_pot_out_breeding = ind_data.no_pot_out_breeding;
                 this.ind.no_pot_in_breeding = ind_data.no_pot_in_breeding;
-                this.ind.act_abating = ind_data.act_abating;
-                this.ind.act_destroy = ind_data.act_destroy;
-                this.ind.act_education = ind_data.act_education;
-                this.ind.act_pamphlet = ind_data.act_pamphlet;
+                this.ind.act_abating = this.general.convertIntToBool(ind_data.act_abating);
+                this.ind.act_destroy = this.general.convertIntToBool(ind_data.act_destroy);
+                this.ind.act_education = this.general.convertIntToBool(ind_data.act_education);
+                this.ind.act_pamphlet = this.general.convertIntToBool(ind_data.act_pamphlet);
                 this.ind.coor_lat = ind_data.coor_lat;
                 this.ind.coor_lng = ind_data.coor_lng;
                 this.ind.created_by = ind_data.full_name;
@@ -75,12 +75,26 @@ export class ViewINDComponent implements OnInit {
                 if (responseData.exhibit.exhibit_id) {
                     this.exhibitData = {};
                     this.exhibitData.exhibit = responseData.exhibit;
+                    this.exhibitData.exhibit.acceptance = this.general.convertIntToBool(this.exhibitData.exhibit.acceptance); 
                     this.exhibitData.exhibitItems = responseData.exhibitItems;
                 }
 
                 if (responseData.sek8) {
                     this.sek8Data = responseData.sek8;
-                    this.sek8Data.checking_date = this.general.toDateDisplayFormat(this.sek8Data.checking_date);
+                    this.sek8Data.chkbx1 = this.general.convertIntToBool(this.sek8Data.chkbx1);
+                    this.sek8Data.chkbx2 = this.general.convertIntToBool(this.sek8Data.chkbx2);
+                    this.sek8Data.chkbx3 = this.general.convertIntToBool(this.sek8Data.chkbx3);
+                    this.sek8Data.chkbx4 = this.general.convertIntToBool(this.sek8Data.chkbx4);
+                    this.sek8Data.chkbx5 = this.general.convertIntToBool(this.sek8Data.chkbx5);
+                    this.sek8Data.chkbx6 = this.general.convertIntToBool(this.sek8Data.chkbx6);
+                    this.sek8Data.chkbx7 = this.general.convertIntToBool(this.sek8Data.chkbx7);
+                    this.sek8Data.chkbx8 = this.general.convertIntToBool(this.sek8Data.chkbx8);
+                    this.sek8Data.chkbx9 = this.general.convertIntToBool(this.sek8Data.chkbx9);
+                    this.sek8Data.chkbx10 = this.general.convertIntToBool(this.sek8Data.chkbx10);
+                    this.sek8Data.chkbx11 = this.general.convertIntToBool(this.sek8Data.chkbx11);
+                    this.sek8Data.chkbx12 = this.general.convertIntToBool(this.sek8Data.chkbx12);
+                    this.sek8Data.chkbx13 = this.general.convertIntToBool(this.sek8Data.chkbx13);
+                    this.sek8Data.checking_date = this.sek8Data.checking_date;
                 }
 
                 if (responseData.sek5) {
@@ -88,7 +102,7 @@ export class ViewINDComponent implements OnInit {
                     let arr_dt = temp_dt.split(' ');
                 
                     this.sek5Data = {
-                    date : this.general.toDateDisplayFormat(arr_dt[0]),
+                    date : arr_dt[0],
                     time : arr_dt[1],
                     remark : responseData.sek5.remark
                     };

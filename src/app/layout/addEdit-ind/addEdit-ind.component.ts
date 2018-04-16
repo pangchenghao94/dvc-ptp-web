@@ -1,23 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService, GeneralService } from '../../shared';
+import { AuthService, GeneralService, CustomNgbDateParseFormatter } from '../../shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { InD } from '../../shared/class/model/ind';
-import { NgbModal, NgbModalRef, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct, NgbTimeStruct, NgbDateParserFormatter, NgbModal, NgbModalRef, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { ExhibitItem } from '../../shared/class/model/exhibit_item';
 
 @Component({
+    providers: [{provide: NgbDateParserFormatter, useClass: CustomNgbDateParseFormatter}],    
     selector: 'addEdit-ind',
     templateUrl: './addEdit-ind.component.html',
     styleUrls: ['./addEdit-ind.component.scss'],
     animations: [routerTransition()]            
 })
 export class AddEditINDComponent implements OnInit {
+    @ViewChild('modalEditConfirmation') modalEditConfirmation: ElementRef;
+
     mode: any;
     indForm: FormGroup;
     poDetailsForm: FormGroup;
     exhibitForm: FormGroup;
+    sek8Form: FormGroup;
+    sek5Form: FormGroup;
     ind: any;
     sek8Data: any;
     sek5Data: any;
@@ -52,7 +57,6 @@ export class AddEditINDComponent implements OnInit {
         else{
             this.router.navigate(['/manageIND']);
         }
-        console.log(this.exhibitData);
 
         this.indForm = this.fb.group({
             ind_id: this.ind.ind_id,
@@ -77,80 +81,69 @@ export class AddEditINDComponent implements OnInit {
             coor_lat: this.ind.coor_lat,
             coor_lng: this.ind.coor_lng
         });
-    }
-
-    ngOnInit() {}
-
-    submit(){
-        console.log(this.indForm);
-    }
-
-    openModal(content, size) {
-        this.modal = this.modalService.open(content, {
-            backdrop: 'static',
-            keyboard: false,
-            size: size
-        });
-    }
-
-    async openExhibitModal(content){
-        const promisesArray: any[] = [];  
-        this.loading = true;
 
         this.poDetailsForm = this.fb.group({
-            exhibit_id: this.exhibitData.exhibit.exhibit_id,
-            po_full_name: this.exhibitData.exhibit.po_full_name,
-            po_ic_no: [this.exhibitData.exhibit.po_ic_no, [Validators.pattern("^[0-9]{12,12}$")]],
-            acceptance: this.general.convertIntToBool(this.exhibitData.exhibit.acceptance)
+            exhibit_id: '',
+            po_full_name: '',
+            po_ic_no: ['', [Validators.pattern("^[0-9]{12,12}$")]],
+            acceptance: ''
         });
-      
+        
         this.exhibitForm = this.fb.group({
             type: ['', Validators.required],
             code: ['', Validators.required],
             img: ['', Validators.required]
         });
 
-        let postData = this.general.getAuthObject();
-        
-        if(this.exhibitData.exhibit.floor_plan_URI == null || this.exhibitData.exhibit.premise_location_URI == null){   
-            postData.data = {
+        this.sek8Form = this.fb.group({
+            sek8_id: '',
+            checking_date: ['', Validators.required],
+            chkbx1: [false, Validators.required],
+            chkbx2: [false, Validators.required],
+            chkbx3: [false, Validators.required],
+            chkbx4: [false, Validators.required],
+            chkbx5: [false, Validators.required],
+            chkbx6: [false, Validators.required],
+            chkbx7: [false, Validators.required],
+            chkbx8: [false, Validators.required],
+            chkbx9: [false, Validators.required],
+            chkbx10: [false, Validators.required],
+            chkbx11: [false, Validators.required],
+            chkbx12: [false, Validators.required],
+            chkbx13: [false, Validators.required],
+            remark: ''
+        });
+
+        this.sek5Form = this.fb.group({
+            sek5_id: '',
+            date: ['', Validators.required],
+            time: ['', Validators.required],
+            remark: ''
+        });
+    }
+
+    async ngOnInit() {
+        if(this.exhibitData){
+            this.poDetailsForm.patchValue({
                 exhibit_id: this.exhibitData.exhibit.exhibit_id,
-                premise_location_path: this.exhibitData.exhibit.premise_location_path,
-                floor_plan_path: this.exhibitData.exhibit.floor_plan_path
-            } 
+                po_full_name: this.exhibitData.exhibit.po_full_name,
+                po_ic_no: this.exhibitData.exhibit.po_ic_no,
+                acceptance: this.exhibitData.exhibit.acceptance
+            });
 
-            promisesArray.push(this.auth.postData(postData, "api/getDrawingsURL").then((result) => {
-                let responseData: any = result;
-    
-                if (responseData.status == "0") {
-                    alert(responseData.message);
-                }
-    
-                else if (responseData.error) {
-                    console.log(responseData.error.text);
-                }
-                else if (responseData.status == "1") {
-                    this.exhibitData.exhibit.floor_plan_URI = responseData.floor_plan;
-                    this.exhibitData.exhibit.premise_location_URI = responseData.premise_location;
-                }
-            },
-            (err) => {
-                alert("API error, please contact administrative person.");
-                console.log("API error: " + JSON.stringify(err));
-            }));
-        }
-    
+            const promisesArray: any[] = [];  
+            this.loading = true;
 
-        for(let i = 0; i < this.exhibitData.exhibitItems.length; i++){
-            let item = this.exhibitData.exhibitItems[i];
-
-            if(item.fileName == null){
+            let postData = this.general.getAuthObject();
+            
+            if(this.exhibitData.exhibit.floor_plan_URI == null || this.exhibitData.exhibit.premise_location_URI == null){   
                 postData.data = {
                     exhibit_id: this.exhibitData.exhibit.exhibit_id,
-                    s3_path: item.s3_path
-                }
-                
-                promisesArray.push(this.auth.postData(postData, "api/getExhibitItemURL").then((result) => {
+                    premise_location_path: this.exhibitData.exhibit.premise_location_path,
+                    floor_plan_path: this.exhibitData.exhibit.floor_plan_path
+                } 
+
+                promisesArray.push(this.auth.postData(postData, "api/getDrawingsURL").then((result) => {
                     let responseData: any = result;
         
                     if (responseData.status == "0") {
@@ -161,7 +154,8 @@ export class AddEditINDComponent implements OnInit {
                         console.log(responseData.error.text);
                     }
                     else if (responseData.status == "1") {
-                        item.fileName = responseData.s3_path;
+                        this.exhibitData.exhibit.floor_plan_URI = responseData.floor_plan;
+                        this.exhibitData.exhibit.premise_location_URI = responseData.premise_location;
                     }
                 },
                 (err) => {
@@ -169,24 +163,109 @@ export class AddEditINDComponent implements OnInit {
                     console.log("API error: " + JSON.stringify(err));
                 }));
             }
+        
+
+            for(let i = 0; i < this.exhibitData.exhibitItems.length; i++){
+                let item = this.exhibitData.exhibitItems[i];
+
+                if(item.fileName == null){
+                    postData.data = {
+                        exhibit_id: this.exhibitData.exhibit.exhibit_id,
+                        s3_path: item.s3_path
+                    }
+                    
+                    promisesArray.push(this.auth.postData(postData, "api/getExhibitItemURL").then((result) => {
+                        let responseData: any = result;
+            
+                        if (responseData.status == "0") {
+                            alert(responseData.message);
+                        }
+            
+                        else if (responseData.error) {
+                            console.log(responseData.error.text);
+                        }
+                        else if (responseData.status == "1") {
+                            item.fileName = responseData.s3_path;
+                        }
+                    },
+                    (err) => {
+                        alert("API error, please contact administrative person.");
+                        console.log("API error: " + JSON.stringify(err));
+                    }));
+                }
+            }
+
+            if (promisesArray.length != 0) {
+                await Promise.all(promisesArray)
+                    .then((res) => {
+                        this.loading = false;
+                    },
+                    (firstErr) => {
+                        this.loading = false;
+                        alert("API error, please contact administrative person.");
+                        console.log("API error: " + JSON.stringify(firstErr));
+                    });
+            }
+            else {
+                this.loading = false;
+            }
         }
 
-        if (promisesArray.length != 0) {
-            await Promise.all(promisesArray)
-                .then((res) => {
-                    this.loading = false;
-                },
-                (firstErr) => {
-                    this.loading = false;
-                    alert("API error, please contact administrative person.");
-                    console.log("API error: " + JSON.stringify(firstErr));
-                });
-        }
-        else {
-            this.loading = false;
+        if(this.sek5Data){
+            this.sek5Form.patchValue({
+                sek5_id: this.sek5Data.sek5_id,
+                date: this.general.toNgbDateStruct(this.sek5Data.date),
+                time: this.general.toNgbTimeStruct(this.sek5Data.time),
+                remark: this.sek5Data.remark
+            });
+            console.log(this.sek5Data.time);
         }
 
-        this.openModal(content, 'lg');
+        if(this.sek8Data){
+            this.sek8Form.patchValue({
+                sek8_id: this.sek8Data.sek8_id,
+                checking_date: this.general.toNgbDateStruct(this.sek8Data.checking_date),
+                chkbx1: this.sek8Data.chkbx1,
+                chkbx2: this.sek8Data.chkbx2,
+                chkbx3: this.sek8Data.chkbx3,
+                chkbx4: this.sek8Data.chkbx4,
+                chkbx5: this.sek8Data.chkbx5,
+                chkbx6: this.sek8Data.chkbx6,
+                chkbx7: this.sek8Data.chkbx7,
+                chkbx8: this.sek8Data.chkbx8,
+                chkbx9: this.sek8Data.chkbx9,
+                chkbx10: this.sek8Data.chkbx10,
+                chkbx11: this.sek8Data.chkbx11,
+                chkbx12: this.sek8Data.chkbx12,
+                chkbx13: this.sek8Data.chkbx13,
+                remark: this.sek8Data.remark,
+            });
+        }
+    }
+
+    submit(){
+        this.openModal(this.modalEditConfirmation, null);
+    }
+
+    async editInd(){
+        const promisesArray: any[] = [];  
+        this.loading = true;
+
+        promisesArray.push(
+            
+        );
+        console.log(this.sek5Form);
+        console.log(this.sek8Form);
+        console.log(this.exhibitData);
+        console.log(this.poDetailsForm);
+        console.log(this.indForm);
+    }
+
+    openModal(content, size) {
+        this.modal = this.modalService.open(content, {
+            keyboard: false,
+            size: size
+        });
     }
 
     openExhibitItemModal(content, path){
@@ -224,7 +303,6 @@ export class AddEditINDComponent implements OnInit {
         exhibitItem.type     = this.exhibitForm.get('type').value,
         exhibitItem.code     = this.exhibitForm.get('code').value
         
-        console.log(exhibitItem);
         this.exhibitData.exhibitItems.push(exhibitItem);
         this.exhibitForm.reset();
     }

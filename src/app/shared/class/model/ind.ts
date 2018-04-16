@@ -2,9 +2,9 @@ export class InD {
     ind_id: number;
     assignment_id: number;
     user_id: number;
-    p_cooperation: string;
-    p_close: string;
-    p_empty: string;
+    p_cooperation: boolean;
+    p_close: boolean;
+    p_empty: boolean;
     p_shortAddr: string;
     po_name: string;
     po_id: string;
@@ -15,10 +15,10 @@ export class InD {
     container_type: string;
     no_pot_out_breeding: number;
     no_pot_in_breeding: number;
-    act_abating: string;
-    act_destroy: string;
-    act_education: string;
-    act_pamphlet: string;
+    act_abating: boolean;
+    act_destroy: boolean;
+    act_education: boolean;
+    act_pamphlet: boolean;
     act_sek5: string;
     act_sek8: string;
     coor_lat: number;

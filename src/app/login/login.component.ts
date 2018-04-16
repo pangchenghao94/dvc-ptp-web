@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
     responseData : any;
     user : User;
     userData : any;
+    loading: boolean = false;;
 
     showWrongUsernameOrPass : boolean = true;
     showPassEmpty : boolean = true;
@@ -31,8 +32,9 @@ export class LoginComponent implements OnInit {
 
         else{
             this.userData = {"username": this.user.username, "password" : this.user.password};
-            
+            this.loading = true;
             this.auth.postData(this.userData, "api/login").then((result) => {
+                this.loading = false;
                 this.responseData = result;
     
                 if(this.responseData.status == "2") {
@@ -56,6 +58,8 @@ export class LoginComponent implements OnInit {
                 }
             }, 
             (err) =>{
+                this.loading = false;
+                alert("API error: " + JSON.stringify(err));
                 console.log("API error: " + err);
             });
         }

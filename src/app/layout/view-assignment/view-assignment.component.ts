@@ -14,16 +14,16 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class ViewAssignmentComponent implements OnInit {
     displayedColumns = ['user_id', 'full_name'];
     dataSource: any;
-    assignment: any = new Assignment();
+    assignment: Assignment = new Assignment();
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     
     constructor(private general: GeneralService, private auth: AuthService, private route: ActivatedRoute, private router: Router) {
         this.route.params.subscribe(params => {
-            this.assignment.assingment_id = params['id'];
+            this.assignment.assignment_id = params['id'];
         });
-        this.getAssignment(this.assignment.assingment_id);
+        this.getAssignment(this.assignment.assignment_id);
     }
 
     ngOnInit() {}
@@ -31,7 +31,7 @@ export class ViewAssignmentComponent implements OnInit {
     getAssignment(id){
         this.auth.postData(this.general.getAuthObject(), "api/assignment/get/" + id).then((result) => {
             let assignmentData: any = result;
-                    
+
             if(assignmentData.status == "0"){
                 alert(assignmentData.message);
             }
@@ -47,6 +47,8 @@ export class ViewAssignmentComponent implements OnInit {
                     this.assignment.remark = assignmentData.data.remark;
                     this.assignment.createdBy = assignmentData.data.full_name;
                     this.assignment.date = this.general.toDateDisplayFormat(assignmentData.data.date);
+                    this.assignment.pa_full_name = assignmentData.data.pa_full_name;
+                    this.assignment.pka_full_name = assignmentData.data.pka_full_name;
 
                     this.auth.postData(this.general.getAuthObject(), "api/assignment_admin/getList/" + this.assignment.assignment_id).then((result) => {
                         let assignment_admin: any = result;
@@ -80,6 +82,8 @@ export class ViewAssignmentComponent implements OnInit {
                     }); 
                 }
             }
+        
+        
         },
         (err) => {
             alert("API error, please contact administrative person.");

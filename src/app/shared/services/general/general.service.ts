@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserType } from '../../class';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 import { AbstractControl } from '@angular/forms';
 
 @Injectable()
@@ -44,14 +44,20 @@ export class GeneralService {
     return temp_date.toISOString().slice(0, 19).replace('T', ' ');
   }
 
-  toNgbDateStruct(date: string){
-    let temp_date = date.split("-");
-    let temp_date2: NgbDateStruct = {year: parseInt(temp_date[0]), month: parseInt(temp_date[1]), day:parseInt(temp_date[2])};
+  toNgbDateStruct(mySql_date: string){
+    let temp_date = mySql_date.split("-");
+    let temp_date2: NgbDateStruct = { year: parseInt(temp_date[0]), month: parseInt(temp_date[1]), day:parseInt(temp_date[2]) };
     return temp_date2;
   }
 
-  toDateDisplayFormat(date: string){
-    let temp_date = new Date(date);
+  toNgbTimeStruct(mySql_time: string){
+    let temp_time = mySql_time.split(":");
+    let temp_time2: NgbTimeStruct = { hour: parseInt(temp_time[0]), minute: parseInt(temp_time[1]), second: parseInt(temp_time[2]) };
+    return temp_time2;
+  }
+  
+  toDateDisplayFormat(mySql_date: string){
+    let temp_date = new Date(mySql_date);
     return temp_date.getDate() + "/" + (temp_date.getMonth() + 1) + "/" + temp_date.getFullYear();
   }
 

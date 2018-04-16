@@ -39,16 +39,16 @@
                         <hr>
 
                         <div class="row pt-2">
-                            <div class="col-lg-4 d-flex align-items-center">
-                                <input type="checkbox" value="" disabled="disabled" [checked]="ind.p_close == '1'">
+                            <div class="col-lg-12 col-xl-6 d-flex align-items-center">
+                                <input type="checkbox" disabled="disabled" [checked]="ind.p_close">
                                 <strong class="pl-3"> Premise Close</strong>
                             </div>
-                            <div class="col-lg-4 d-flex align-items-center">
-                                <input type="checkbox" value="" disabled="disabled" [checked]="ind.p_empty == '1'">
+                            <div class="col-lg-12 col-xl-6 d-flex align-items-center">
+                                <input type="checkbox" disabled="disabled" [checked]="ind.p_empty">
                                 <strong class="pl-3"> Premise Empty</strong>
                             </div>
-                            <div class="col-lg-4 d-flex align-items-center">
-                                <input type="checkbox" value="" disabled="disabled" [checked]="ind.p_cooperation == '1'">
+                            <div class="col-lg-12 d-flex align-items-center">
+                                <input type="checkbox" disabled="disabled" [checked]="ind.p_cooperation">
                                 <strong class="pl-3"> Cooperation</strong>
                             </div>
                         </div>
@@ -174,19 +174,19 @@
 
                         <div class="row pt-2">
                             <div class="col-lg-12">
-                                <input type="checkbox" value="" disabled="disabled" [checked]="ind.act_abating == '1'">
+                                <input type="checkbox" disabled="disabled" [checked]="ind.act_abating">
                                 <strong class="pl-3"> Abating</strong>
                             </div>
                             <div class="col-lg-12">
-                                <input type="checkbox" value="" disabled="disabled" [checked]="ind.act_destroy == '1'">
+                                <input type="checkbox" disabled="disabled" [checked]="ind.act_destroy">
                                 <strong class="pl-3"> Destroy Breeding Area</strong>
                             </div>
                             <div class="col-lg-12">
-                                <input type="checkbox" value="" disabled="disabled" [checked]="ind.act_education == '1'">
+                                <input type="checkbox" disabled="disabled" [checked]="ind.act_education">
                                 <strong class="pl-3"> Education</strong>
                             </div>
                             <div class="col-lg-12">
-                                <input type="checkbox" value="" disabled="disabled" [checked]="ind.act_pamphlet == '1'">
+                                <input type="checkbox" disabled="disabled" [checked]="ind.act_pamphlet">
                                 <strong class="pl-3"> Pamphlet</strong>
                             </div>
                         </div>
@@ -199,12 +199,12 @@
                                     <i class="fa fa-pencil"></i> Exhibit
                                 </button>
                             </div>
-                            <div class="mt-2 ml-2">
+                            <div class="mt-2 ml-3">
                                 <button type="button" [class]="sek5Data ? 'btn btn-primary' : 'btn btn-outline-primary'" [disabled]="!sek5Data" (click)="openModal(modalSek5, null)">
                                     <i class="fa fa-pencil"></i> Seksyen 5
                                 </button>
                             </div>
-                            <div class="mt-2 ml-2">
+                            <div class="mt-2 ml-3">
                                 <button type="button" [class]="sek8Data ? 'btn btn-primary' : 'btn btn-outline-primary'" [disabled]="!sek8Data" (click)="openModal(modalSek8, 'lg')">
                                     <i class="fa fa-pencil"></i> Seksyen 8
                                 </button>
@@ -336,7 +336,7 @@
         <div class="row pt-3">
             <div class="col-lg-12">
                 <strong class="pr-2">Date Until:</strong>
-                {{ sek8Data.checking_date }}
+                {{ this.general.toDateDisplayFormat(sek8Data.checking_date) }}
             </div>
         </div>
 
@@ -525,7 +525,7 @@
                 <strong>Date:</strong>
             </div>
             <div class="col-lg-8">
-                {{ sek5Data.date }}
+                {{ this.general.toDateDisplayFormat(sek5Data.date) }}
             </div>
         </div>
         <div class="row pt-2">

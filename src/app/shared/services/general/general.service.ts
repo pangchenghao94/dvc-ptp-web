@@ -36,10 +36,14 @@ export class GeneralService {
       return "error"; 
   }
 
-  toMySqlDateStr(date: NgbDateStruct){
+  toMySqlDateStr(date: NgbDateStruct, time?: NgbTimeStruct){
     let temp_date : Date = new Date(date.year, date.month-1, date.day);   
     temp_date.setHours(0, -temp_date.getTimezoneOffset(), 0, 0); 
-    // temp_date.setDate(temp_date.getDate() + 1);
+    
+    if(time){
+      temp_date.setHours(time.hour, -temp_date.getTimezoneOffset(), 0, 0); 
+      temp_date.setMinutes(time.minute);
+    }
 
     return temp_date.toISOString().slice(0, 19).replace('T', ' ');
   }

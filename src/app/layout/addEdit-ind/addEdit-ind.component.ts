@@ -6,6 +6,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { InD } from '../../shared/class/model/ind';
 import { NgbDateStruct, NgbTimeStruct, NgbDateParserFormatter, NgbModal, NgbModalRef, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { ExhibitItem } from '../../shared/class/model/exhibit_item';
+import { Exhibit } from '../../shared/class/model/exhibit';
+import { Sek5 } from '../../shared/class/model/sek5';
+import { Sek8 } from '../../shared/class/model/sek8';
 
 @Component({
     providers: [{provide: NgbDateParserFormatter, useClass: CustomNgbDateParseFormatter}],    
@@ -247,18 +250,135 @@ export class AddEditINDComponent implements OnInit {
         this.openModal(this.modalEditConfirmation, null);
     }
 
+    getIndFormData(){
+        let data: InD             = new InD();
+        data.ind_id               = this.indForm.get("ind_id").value;    
+        data.assignment_id        = this.indForm.get("assignment_id").value;
+        data.p_close              = this.indForm.get("p_close").value;
+        data.p_empty              = this.indForm.get("p_empty").value;
+        data.p_cooperation        = this.indForm.get("p_cooperation").value;
+        data.p_shortAddr          = this.indForm.get("p_shortAddr").value;
+        data.po_name              = this.indForm.get("po_name").value;
+        data.po_id                = this.indForm.get("po_id").value;
+        data.no_familyMember      = this.indForm.get("no_familyMember").value;
+        data.no_fever             = this.indForm.get("no_fever").value;
+        data.no_out_breeding      = this.indForm.get("no_out_breeding").value;
+        data.no_in_breeding       = this.indForm.get("no_in_breeding").value;
+        data.container_type       = this.indForm.get("container_type").value;
+        data.no_pot_out_breeding  = this.indForm.get("no_pot_out_breeding").value;
+        data.no_pot_in_breeding   = this.indForm.get("no_pot_in_breeding").value;
+        data.act_abating          = this.indForm.get("act_abating").value;
+        data.act_destroy          = this.indForm.get("act_destroy").value;
+        data.act_education        = this.indForm.get("act_education").value;
+        data.act_pamphlet         = this.indForm.get("act_pamphlet").value;
+        data.coor_lat             = this.indForm.get("coor_lat").value;
+        data.coor_lng             = this.indForm.get("coor_lng").value;  
+        
+        console.log(data);
+
+        return data;
+    }
+
+    getExhibitData(){
+        let justExhibit: Exhibit  = new Exhibit();
+        justExhibit.exhibit_id    = this.exhibitForm.get('exhibit_id').value;
+        justExhibit.po_full_name  = this.exhibitForm.get('po_full_name').value;
+        justExhibit.po_ic_no      = this.exhibitForm.get('po_ic_no').value;
+        justExhibit.acceptance    = this.exhibitForm.get('acceptance').value;
+        
+        console.log(justExhibit);
+
+        return justExhibit;
+    }
+
+    getSek5Data(){
+        let sek5: Sek5 = new Sek5();
+        sek5.sek5_id = this.sek5Form.get('sek5_id').value;
+        sek5.appointment_date   = this.general.toMySqlDateStr(this.sek5Form.get('date').value, this.sek5Form.get('time').value);
+        sek5.remark = this.sek5Form.get('remark').value;
+        
+        console.log(sek5);
+
+        return sek5;
+    }
+    
+    getSek8Data(){
+        let sek8: Sek8 = new Sek8();
+
+    }
+
     async editInd(){
         const promisesArray: any[] = [];  
         this.loading = true;
 
-        promisesArray.push(
-            
-        );
-        console.log(this.sek5Form);
-        console.log(this.sek8Form);
-        console.log(this.exhibitData);
-        console.log(this.poDetailsForm);
-        console.log(this.indForm);
+        let postData = this.general.getAuthObject();
+        postData.data = this.getIndFormData();
+
+        if (this.exhibitData != null)
+            postData.exhibitData = this.getExhibitData();
+        if (this.sek5Data != null)
+            postData.sek5Data = this.getSek5Data();
+        if (this.sek8Data != null)
+            postData.sek8Data = this.getSek8Data();;
+
+        // promisesArray.push(
+        //     this.auth.postData(postData, "api/ind/update").then(async (result) => {
+        //         let responseData: any = result;
+
+        //         if (responseData.status == "0") {
+        //             this.general.displayUnauthorizedAccessAlert(responseData.message);
+        //             this.loading.dismiss();
+        //         }
+        //         else {
+        //             if (responseData.error) {
+        //                 this.general.displayUnexpectedError(responseData.error.text);
+        //                 this.loading.dismiss();
+        //             }
+        //             else {
+        //                 if (this.exhibitData != null) {
+        //                     let exhibit_id = this.exhibitData.exhibit.exhibit_id;
+
+        //                     const promisesArray: any[] = [];
+
+        //                     promisesArray.push(
+        //                         this.uploadFloorPlan(exhibit_id, this.exhibitData.exhibit.floor_plan_URI)
+        //                     );
+
+        //                     promisesArray.push(
+        //                         this.uploadPremiseLocation(exhibit_id, this.exhibitData.exhibit.premise_location_URI)
+        //                     );
+
+        //                     //upload exhibitItems
+        //                     this.exhibitData.exhibitItems.forEach(item => {
+        //                         promisesArray.push(
+        //                             this.uploadExhibititem(exhibit_id, item)
+        //                         );
+        //                     });
+
+        //                     await Promise.all(promisesArray)
+        //                         .then((res) => {
+        //                             this.general.displayToast("I&D has been edited successfully");
+        //                             this.loading.dismiss();
+        //                         },
+        //                             (firstErr) => {
+        //                                 this.loading.dismiss();
+        //                                 this.general.displayUnexpectedError(firstErr);
+        //                                 console.error("Error uploading file.", firstErr);
+        //                             });
+        //                 }
+        //                 else {
+        //                     this.general.displayToast("I&D has been edited successfully");
+        //                     this.loading.dismiss();
+        //                 }
+        //             }
+        //         }
+        //     },
+        //         (err) => {
+        //             console.log(JSON.stringify(err));
+        //             this.general.displayAPIErrorAlert();
+        //             this.loading.dismiss();
+        //         })
+        // );
     }
 
     openModal(content, size) {

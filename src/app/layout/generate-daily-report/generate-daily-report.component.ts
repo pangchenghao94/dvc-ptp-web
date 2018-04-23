@@ -7,13 +7,13 @@ import * as moment from "moment";
 import * as XLSX from "xlsx-populate";
 
 @Component({
-    selector: 'manage-daily-report',
-    templateUrl: './manage-daily-report.component.html',
-    styleUrls: ['./manage-daily-report.component.scss'],
+    selector: 'generate-daily-report',
+    templateUrl: './generate-daily-report.component.html',
+    styleUrls: ['./generate-daily-report.component.scss'],
     animations: [routerTransition()],      
     providers: [{provide: NgbDateParserFormatter, useClass: CustomNgbDateParseFormatter}],      
 })
-export class ManageDailyReportComponent implements OnInit {
+export class GenerateDailyReportComponent implements OnInit {
     loading: boolean = false;
     selectAssignment: any;
     assignmentList: any;

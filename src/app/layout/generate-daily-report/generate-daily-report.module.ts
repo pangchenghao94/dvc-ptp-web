@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ManageDailyReportRoutingModule } from './manage-daily-report-routing.module';
-import { ManageDailyReportComponent } from './manage-daily-report.component';
+import { GenerateDailyReportRoutingModule } from './generate-daily-report-routing.module';
+import { GenerateDailyReportComponent } from './generate-daily-report.component';
 import { PageHeaderModule } from '../../shared';
 import { LoadingModule } from 'ngx-loading';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -17,9 +17,9 @@ import { MatSelectModule } from '@angular/material/select';
         FormsModule,   
         ReactiveFormsModule,     
         MatSelectModule,    
-        ManageDailyReportRoutingModule,
+        GenerateDailyReportRoutingModule,
         NgbModule.forRoot()        
     ],
-    declarations: [ManageDailyReportComponent]
+    declarations: [GenerateDailyReportComponent]
 })
-export class ManageDailyReportModule {}
+export class GenerateDailyReportModule {}

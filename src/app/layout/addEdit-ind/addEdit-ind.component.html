@@ -33,17 +33,21 @@
                             </div>
                             
                             <div class="row">
-                                <div class="col-lg-12 col-xl-6 d-flex align-items-center">
+                                <div class="col-lg-12 col-xl-6 d-flex align-items-center" *ngIf="!this.indForm.get('area_inspection').value">
                                     <input formControlName="p_close" type="checkbox">
                                     <span class="pl-3"> Premise Close</span>
                                 </div>
-                                <div class="col-lg-12  col-xl-6 d-flex align-items-center">
+                                <div class="col-lg-12  col-xl-6 d-flex align-items-center" *ngIf="!this.indForm.get('area_inspection').value"> 
                                     <input formControlName="p_empty" type="checkbox">
                                     <span class="pl-3"> Premise Empty</span>
                                 </div>
-                                <div class="col-lg-12 d-flex align-items-center">
+                                <div class="col-lg-12 d-flex align-items-center" *ngIf="!this.indForm.get('area_inspection').value">
                                     <input formControlName="p_cooperation" type="checkbox">
                                     <span class="pl-3"> Cooperation</span>
+                                </div>
+                                <div class="col-lg-12 d-flex align-items-center">
+                                    <input formControlName="area_inspection" type="checkbox">
+                                    <span class="pl-3"> Area Inspection</span>
                                 </div>
                             </div>
 
@@ -51,11 +55,11 @@
                                 [ngClass]="{'has-error': (indForm.get('po_name').touched
                                                         || indForm.get('po_name').dirty) &&
                                                         !indForm.get('po_name').valid }">
-                                <label for="txtPOName">Full Name</label>
-                                <input type="text" class="form-control" id="txtPOName" formControlName="po_name" placeholder="Insert premise owner full name.">
+                                <label for="txtPOName">{{ indForm.get('area_inspection').value ? 'Area Name' : 'Full Name' }}</label>
+                                <input type="text" class="form-control" id="txtPOName" formControlName="po_name">
                             </div>
 
-                            <div class="form-group"
+                            <div class="form-group" *ngIf="!this.indForm.get('area_inspection').value"
                                 [ngClass]="{'has-error': (indForm.get('po_id').touched
                                                         || indForm.get('po_id').dirty) &&
                                                         !indForm.get('po_id').valid }">
@@ -71,7 +75,7 @@
                                 </span>
                             </div>
 
-                            <div class="form-group"
+                            <div class="form-group" 
                                 [ngClass]="{'has-error': (indForm.get('p_shortAddr').touched
                                                         || indForm.get('p_shortAddr').dirty) &&
                                                         !indForm.get('p_shortAddr').valid }">
@@ -79,7 +83,7 @@
                                 <textarea class="form-control" id="txtSAddr" formControlName="p_shortAddr" placeholder="Insert premise address" style="height: 90px; resize: none;"></textarea>
                             </div>
 
-                            <div class="form-group"
+                            <div class="form-group" *ngIf="!this.indForm.get('area_inspection').value"
                                 [ngClass]="{'has-error': (indForm.get('no_familyMember').touched
                                                         || indForm.get('no_familyMember').dirty) &&
                                                         !indForm.get('no_familyMember').valid }">
@@ -87,7 +91,7 @@
                                 <input type="number" class="form-control" id="txtNoFamMembers" formControlName="no_familyMember" placeholder="Insert number of family members.">
                             </div>
 
-                            <div class="form-group"
+                            <div class="form-group" *ngIf="!this.indForm.get('area_inspection').value"
                                 [ngClass]="{'has-error': (indForm.get('no_fever').touched
                                                         || indForm.get('no_fever').dirty) &&
                                                         !indForm.get('no_fever').valid }">
@@ -165,9 +169,23 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-12 d-flex align-items-center">
-                                    <input formControlName="act_abating" type="checkbox">
-                                    <span class="pl-3">Abating</span>
+                                <div class="col-lg-12">
+                                    <div class="form-group"
+                                        [ngClass]="{'has-error': (indForm.get('abating_amount').touched
+                                                                || indForm.get('abating_amount').dirty) &&
+                                                                !indForm.get('abating_amount').valid }">
+                                        <label for="txtAbatingAmount">Abating Amount</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="txtAbatingAmount" formControlName="abating_amount" placeholder="Please insert the abating amount (gram/ml).">
+                                            <div ngbDropdown class="input-group-append">
+                                                <button class="btn btn-outline-secondary" type="button" id="dropdownBasic1" ngbDropdownToggle>{{ indForm.get('abating_measure_type').value == 0 ? 'Gram' : 'ml' }}</button>
+                                                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                                    <button class="dropdown-item" type="button" (click)="indForm.get('abating_measure_type').setValue('0')">Gram</button>
+                                                    <button class="dropdown-item" type="button" (click)="indForm.get('abating_measure_type').setValue('1')">ml</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -294,7 +312,7 @@
                         <button type="button" class="btn btn-outline-primary" (click)="openFPModal(modalFloorPlan, null)">
                             <i class="fa fa-pencil"></i> Floor Plan
                         </button>
-                        <button type="button" class="btn btn-outline-danger ml-3" (click)="openFLModal(modalPremiseLocation, null)">
+                        <button type="button" class="btn btn-outline-danger ml-3" (click)="openPLModal(modalPremiseLocation, null)">
                             <i class="fa fa-pencil"></i> Premise Location
                         </button>
                     </div>
@@ -346,7 +364,7 @@
                                                     !exhibitForm.get('img').valid }">
                         <label for="fiExhibitPhoto">Exhibit Photo</label>
                         <input type="file" class="form-control-file" id="fiExhibitPhoto" formControlName="img"
-                            ngbPopover="Image size must not exceed 5MB. Accepted file types: jpg, jpeg and png." triggers="mouseenter:mouseleave"
+                            ngbTooltip="Image size must not exceed 5MB. Accepted file types: jpg, jpeg and png."
                             [size]="5000000"
                             [withMeta]="true"
                             [allowedExt]="allowedExt">

@@ -1,0 +1,138 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'Daily Report'" [icon]="'fa-file-text-o'"></app-page-header>
+    <ngx-loading [show]="loading" [config]="{fullScreenBackdrop: true}"></ngx-loading> 
+
+    <ngb-alert *ngIf="!alertClose" type="warning" (close)="alertClose = true">
+        <strong>Warning!</strong> {{ alertMsg }}
+    </ngb-alert>
+
+    <div class="col-xl-9 col-lg-12 col-centered">
+        <div class="card mb-3">
+            <div class="card-header">Generate Daily Report</div>
+            
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="input-group" style="float: right; width: 250px;">
+                            <input ngbDatepicker class="form-control" placeholder="Select date" [(ngModel)]="reportDate" #dp="ngbDatepicker" (click)="dp.toggle()">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" (click)="filterDate()" type="button"
+                                    ngbTooltip="Select report date">
+                                    <i class="fa fa-refresh" style="cursor: pointer"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-6">
+                        <form [formGroup]="dailyReportForm" novalidate>
+                            <div class="form-group" [ngClass]="{'has-error': (dailyReportForm.get('EPID_week').touched
+                                                                                || dailyReportForm.get('EPID_week').dirty) &&
+                                                                                !dailyReportForm.get('EPID_week').valid }">
+                                <label for="txtEPIDWeek">EPID Week</label>
+                                <input type="text" class="form-control" id="txtEPIDWeek" placeholder="Insert EPID Week" formControlName="EPID_week">
+                            </div>
+                    
+                            <div class="form-group" [ngClass]="{'has-error': (dailyReportForm.get('pemandu1').touched
+                                                                                || dailyReportForm.get('pemandu1').dirty) &&
+                                                                                !dailyReportForm.get('pemandu1').valid }">
+                                <label for="txtEPIDWeek">Pemandu 1</label>
+                                <input type="text" class="form-control" id="txtEPIDWeek" placeholder="Insert pemandu 1" formControlName="pemandu1">
+                            </div>
+                    
+                            <div class="form-group" [ngClass]="{'has-error': (dailyReportForm.get('pemandu2').touched
+                                                                                || dailyReportForm.get('pemandu2').dirty) &&
+                                                                                !dailyReportForm.get('pemandu2').valid }">
+                                <label for="txtPemandu2">Pemandu 2</label>
+                                <input type="text" class="form-control" id="txtPemandu2" placeholder="Insert pemandu 2" formControlName="pemandu2">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group" [ngClass]="{'has-error': (dailyReportForm.get('gps_x').touched
+                                                                                    || dailyReportForm.get('gps_x').dirty) &&
+                                                                                    !dailyReportForm.get('gps_x').valid }">
+                                        <label for="txtGpsX">GPS X</label>
+                                        <input type="text" class="form-control" id="txtGpsX" placeholder="Insert GPS X value" formControlName="gps_x">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group" [ngClass]="{'has-error': (dailyReportForm.get('gps_y').touched
+                                                                                    || dailyReportForm.get('gps_y').dirty) &&
+                                                                                    !dailyReportForm.get('gps_y').valid }">
+                                        <label for="txtGpsY">GPS Y</label>
+                                        <input type="text" class="form-control" id="txtGpsY" placeholder="Insert GPS Y value" formControlName="gps_y">
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <div class="form-group" [ngClass]="{'has-error': (dailyReportForm.get('remark').touched
+                                                                                || dailyReportForm.get('remark').dirty) &&
+                                                                                !dailyReportForm.get('remark').valid }">
+                                <label for="txtRemark">Remark</label>
+                                <textarea type="text" class="form-control" id="txtRemark" placeholder="Remark" formControlName="remark"></textarea>
+                            </div>
+                    
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label>Depart time</label>
+                                    <ngb-timepicker formControlName="time_depart" [meridian]="true"></ngb-timepicker>
+                                </div>
+                                <div class="form-group col">
+                                    <label>Start survey time</label>
+                                    <ngb-timepicker formControlName="time_start_survey" [meridian]="true"></ngb-timepicker>
+                                </div>
+                            </div>
+                    
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label>End survey time</label>
+                                    <ngb-timepicker formControlName="time_end_survey" [meridian]="true"></ngb-timepicker>
+                                </div>
+                                <div class="form-group col">
+                                    <label>Arrived office time</label>
+                                    <ngb-timepicker formControlName="time_arrived_office" [meridian]="true"></ngb-timepicker>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-xl-6">
+                        <mat-form-field>
+                            <mat-select placeholder="Select the assignments for the daily report"
+                                [(value)]="selectAssignment" (selectionChange)="selectingAssignment()"
+                                [disabled]="assignmentList == null || assignmentList.lenght <= 0">
+                                <mat-option *ngFor="let item of assignmentList" [value]="item">
+                                    {{ item.pka_full_name }} | {{ item.address }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div *ngFor="let item of selectedAssignments">
+                            <div class="card bg-light mb-3">
+                                <div class="card-body">
+                                
+                                    <button type="button" class="custom-fab" (click)="removeAssignment(item)">
+                                        <i class="fa fa-trash-o"></i>
+                                    </button>
+
+                                    <h4 class="card-title">{{ item.address }}</h4>
+                                    <p class="card-text">
+                                        <span class="pr-2">PKA:</span>{{ item.pka_full_name }} <br/>
+                                        <span class="pr-2">PA:</span>{{ item.pa_full_name }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button type="button" class="btn btn-outline-primary" (click)="generateReport()">
+                    <i class="fa fa-file-text-o pr-2"></i> Generate Report
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

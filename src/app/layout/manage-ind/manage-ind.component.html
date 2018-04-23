@@ -9,12 +9,14 @@
                         <div class="input-group" style="float: right; width: 250px;">
                             <input ngbDatepicker class="form-control" placeholder="Filter by date" [(ngModel)]="indDate" #dp="ngbDatepicker" (click)="dp.toggle()">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" (click)="filterList()" type="button">
+                                <button class="btn btn-outline-secondary" (click)="filterList()" type="button"
+                                    ngbTooltip="Filter">
                                     <i class="fa fa-filter" style="cursor: pointer"></i>
                                 </button>
                             </div>
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" (click)="applyFilter('')" type="button">
+                                <button class="btn btn-outline-secondary" (click)="applyFilter('')" type="button"
+                                    ngbTooltip="Clear date">
                                     <i class="fa fa-eraser" style="cursor: pointer"></i>
                                 </button>
                             </div>

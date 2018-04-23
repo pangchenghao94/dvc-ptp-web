@@ -94,4 +94,8 @@ export class GeneralService {
     else if( str == "0")
       return false;
   }
+
+  // displayUnexpectedError(message: string, title?: string){
+    
+  // }
 }

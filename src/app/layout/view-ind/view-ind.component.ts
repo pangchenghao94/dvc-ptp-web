@@ -50,6 +50,7 @@ export class ViewINDComponent implements OnInit {
                 let ind_data = responseData.ind;
 
                 this.ind.assignment_id = ind_data.assignment_id;
+                this.ind.area_inspection = this.general.convertIntToBool(ind_data.area_inspection);
                 this.ind.p_cooperation = this.general.convertIntToBool(ind_data.p_cooperation);
                 this.ind.p_close = this.general.convertIntToBool(ind_data.p_close);
                 this.ind.p_empty = this.general.convertIntToBool(ind_data.p_empty);
@@ -63,7 +64,8 @@ export class ViewINDComponent implements OnInit {
                 this.ind.container_type = ind_data.container_type;
                 this.ind.no_pot_out_breeding = ind_data.no_pot_out_breeding;
                 this.ind.no_pot_in_breeding = ind_data.no_pot_in_breeding;
-                this.ind.act_abating = this.general.convertIntToBool(ind_data.act_abating);
+                this.ind.abating_amount = ind_data.abating_amount;
+                this.ind.abating_measure_type = ind_data.abating_measure_type;
                 this.ind.act_destroy = this.general.convertIntToBool(ind_data.act_destroy);
                 this.ind.act_education = this.general.convertIntToBool(ind_data.act_education);
                 this.ind.act_pamphlet = this.general.convertIntToBool(ind_data.act_pamphlet);
@@ -102,9 +104,10 @@ export class ViewINDComponent implements OnInit {
                     let arr_dt = temp_dt.split(' ');
                 
                     this.sek5Data = {
-                    date : arr_dt[0],
-                    time : arr_dt[1],
-                    remark : responseData.sek5.remark
+                        sek5_id: responseData.sek5.sek5_id, 
+                        date : arr_dt[0],
+                        time : arr_dt[1],
+                        remark : responseData.sek5.remark
                     };
                 }
             }

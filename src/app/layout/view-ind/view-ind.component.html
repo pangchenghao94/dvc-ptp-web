@@ -39,30 +39,34 @@
                         <hr>
 
                         <div class="row pt-2">
-                            <div class="col-lg-12 col-xl-6 d-flex align-items-center">
+                            <div class="col-lg-12 col-xl-6 d-flex align-items-center" *ngIf="!ind.area_inspection">
                                 <input type="checkbox" disabled="disabled" [checked]="ind.p_close">
                                 <strong class="pl-3"> Premise Close</strong>
                             </div>
-                            <div class="col-lg-12 col-xl-6 d-flex align-items-center">
+                            <div class="col-lg-12 col-xl-6 d-flex align-items-center" *ngIf="!ind.area_inspection">
                                 <input type="checkbox" disabled="disabled" [checked]="ind.p_empty">
                                 <strong class="pl-3"> Premise Empty</strong>
                             </div>
-                            <div class="col-lg-12 d-flex align-items-center">
+                            <div class="col-lg-12 d-flex align-items-center" *ngIf="!ind.area_inspection">
                                 <input type="checkbox" disabled="disabled" [checked]="ind.p_cooperation">
                                 <strong class="pl-3"> Cooperation</strong>
+                            </div>
+                            <div class="col-lg-12 d-flex align-items-center">
+                                <input type="checkbox" disabled="disabled" [checked]="ind.area_inspection">
+                                <strong class="pl-3"> Area Inspection</strong>
                             </div>
                         </div>
 
                         <div class="row pt-2">
                             <div class="col-lg-4">
-                                <strong>Name:</strong>
+                                <strong>{{ ind.area_inspection ? 'Area Name' : 'Full Name'}}:</strong>
                             </div>
                             <div class="col-lg-8">
                                 {{ ind.po_name }}
                             </div>
                         </div>
 
-                        <div class="row pt-2">
+                        <div class="row pt-2" *ngIf="!ind.area_inspection">
                             <div class="col-lg-4">
                                 <strong>IC. Number:</strong>
                             </div>
@@ -80,7 +84,7 @@
                             </div>
                         </div>
 
-                        <div class="row pt-2">
+                        <div class="row pt-2" *ngIf="!ind.area_inspection">
                             <div class="col-lg-4">
                                 <strong>No. of family members:</strong>
                             </div>
@@ -88,7 +92,7 @@
                                 {{ ind.no_familyMember }}
                             </div>
                         </div>
-                        <div class="row pt-2">
+                        <div class="row pt-2" *ngIf="!ind.area_inspection">
                             <div class="col-lg-4">
                                 <strong>No. of fever members:</strong>
                             </div>
@@ -153,6 +157,7 @@
                                 {{ ind.no_pot_out_breeding }}
                             </div>
                         </div>
+
                         <div class="row pt-2">                        
                             <div class="col-lg-4">
                                 <strong>Inside:</strong>
@@ -172,11 +177,16 @@
 
                         <hr>
 
-                        <div class="row pt-2">
-                            <div class="col-lg-12">
-                                <input type="checkbox" disabled="disabled" [checked]="ind.act_abating">
-                                <strong class="pl-3"> Abating</strong>
+                        <div class="row pt-2">                        
+                            <div class="col-lg-4">
+                                <strong>Abating:</strong>
                             </div>
+                            <div class="col-lg-8">
+                                {{ ind.abating_amount }}{{ ind.abating_measure_type == 0 ? 'gram' : 'ml' }}
+                            </div>
+                        </div>
+
+                        <div class="row pt-2">
                             <div class="col-lg-12">
                                 <input type="checkbox" disabled="disabled" [checked]="ind.act_destroy">
                                 <strong class="pl-3"> Destroy Breeding Area</strong>

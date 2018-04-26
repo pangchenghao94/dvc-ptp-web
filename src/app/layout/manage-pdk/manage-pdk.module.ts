@@ -6,12 +6,14 @@ import { ManagePDKComponent } from './manage-pdk.component';
 import { PageHeaderModule } from './../../shared';
 import { MatTableModule, MatFormFieldModule, MatPaginatorModule, MatInputModule, MatSortModule } from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { LoadingModule } from 'ngx-loading';
 
 @NgModule({
     imports: [
         CommonModule, 
         ManagePDKRoutingModule,
         PageHeaderModule,
+        LoadingModule,
         MatTableModule,
         MatFormFieldModule,
         MatPaginatorModule,

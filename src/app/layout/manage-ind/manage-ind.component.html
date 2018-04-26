@@ -1,12 +1,13 @@
 <div [@routerTransition]>
     <app-page-header [heading]="'Manage Inspection & Destruction'" [icon]="'fa-tasks'"></app-page-header>
+    <ngx-loading [show]="loading" [config]="{fullScreenBackdrop: true}"></ngx-loading> 
     <div class="col-sm-12 col-centered">
         <div class="card mb-3">
             <div class="card-header">Assignment List</div>
             <div class="card-body">
                 <div class="row" style="padding-bottom: 15px">
                     <div class="col">
-                        <div class="input-group" style="float: right; width: 250px;">
+                        <div class="input-group" style="float:right; width: 250px;">
                             <input ngbDatepicker class="form-control" placeholder="Filter by date" [(ngModel)]="indDate" #dp="ngbDatepicker" (click)="dp.toggle()">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary" (click)="filterList()" type="button"
@@ -21,6 +22,18 @@
                                 </button>
                             </div>
                         </div>
+
+                        <!-- <div class="form-group">
+                            <input id="typeahead-focus" type="text" class="form-control" [(ngModel)]="selectAssignment" #selectAssignment="ngbTypeahead" placeholder="Filter by assignment"
+                                [ngbTypeahead]="selectAssignment" [inputFormatter]="formatter" [resultFormatter]="formatter" [resultTemplate]="rt"                                    
+                                (focus)="selectAssignment$.next($event.target.value)" (click)="selectAssignment$.next($event.target.value)"/>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" (click)="applyFilter('')" type="button"
+                                    ngbTooltip="Filter by assignment">
+                                    <i class="fa fa-refresh" style="cursor: pointer"></i>
+                                </button>
+                            </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -88,3 +101,9 @@
         </div>
     </div>
 </div>
+
+<ng-template #rt let-r="result" let-t="term">
+    <div>
+        {{ r.pka_full_name }} | {{ r.address }}
+    </div>
+</ng-template>

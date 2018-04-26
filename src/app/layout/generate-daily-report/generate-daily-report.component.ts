@@ -120,9 +120,10 @@ export class GenerateDailyReportComponent implements OnInit {
                         var counter = 0;
 
                         this.reportData = JSON.parse(JSON.stringify(this.selectedAssignments));
-                        this.reportData.forEach(item => {
+                        for(let i = 0; i < this.reportData.length; i++){
+                            let item = this.reportData[i];
                             item.data = responseData.data.filter(item2 => item2.assignment_id == item.assignment_id)[0];
-                        });
+                        }
                         
                         var url = "assets/report_templates/PEMERIKSAAN_PENGUATKUASAAN_APSPP.xlsx";
 
@@ -153,9 +154,6 @@ export class GenerateDailyReportComponent implements OnInit {
             });
         }
         else{
-            // this.alertClose = false;
-            // this.alertMsg = "Please select at least one assignment to generate daily report."
-            // setTimeout(() => this.alertClose = true, 10000);
             alert("Please select at least one assignment to generate daily report.");
         }
 
@@ -230,8 +228,41 @@ export class GenerateDailyReportComponent implements OnInit {
     downloadReport(workbook){
         workbook.outputAsync("base64")
             .then((base64) => {
-                this.loading = false;
-                location.href = "data:" + XLSX.MIME_TYPE + ";base64," + base64;
+                fetch("data:" + XLSX.MIME_TYPE + ";base64," + base64)
+                .then(res => res.blob())
+                .then(blob => {
+                    let data: any = blob
+                    let file: File = new File([data], "dailyReport.xlsx");
+                    let postData = new FormData();
+                    let auth_data = this.general.getAuthObject();
+
+                    var temp_date = new Date();
+                    var created_date = (this.general.toMySqlDateStr({year: temp_date.getFullYear(), month: temp_date.getMonth()+1, day: temp_date.getDate()})).split(" ")[0];
+
+                    postData.append("token", auth_data.token);
+                    postData.append("user_id", auth_data.user_id);
+                    postData.append("created_date", created_date);                    
+                    postData.append("file", file); 
+
+                    this.auth.postData2(postData, "api/upload/daily_report").then((result) => {
+                        let responseData: any = result;
+                        this.loading = false
+                    },
+                    (err) => {
+                        this.loading = false;
+                        alert("API error, please contact administrative person.");
+                        console.log(err);
+                        throw new Error("Fail to upload daily report");
+                    });
+                });
+
+                //download Report
+                var link = document.createElement("a");    
+                link.href = "data:" + XLSX.MIME_TYPE + ";base64," + base64;
+                link.download = "dailyReport.xlsx";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             });
     }
 }

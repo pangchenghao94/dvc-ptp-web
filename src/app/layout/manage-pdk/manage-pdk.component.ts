@@ -19,6 +19,7 @@ export class ManagePDKComponent implements OnInit {
     dateFilter: string;
     modal: NgbModalRef;
     assignment: Assignment = new Assignment();
+    loading: boolean = false;
     
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -31,6 +32,7 @@ export class ManagePDKComponent implements OnInit {
     }
 
     getAssignmentList(){
+        this.loading = true;
         this.auth.postData(this.general.getAuthObject(), "api/assignment/assignmentList").then((result) => {
             let responseData: any = result;
 
@@ -50,9 +52,10 @@ export class ManagePDKComponent implements OnInit {
                     this.dataSource.sort = this.sort;
                 }
             }
-                
+            this.loading = false;
         },
         (err) => {
+            this.loading = false;
             console.log("API error: " + JSON.stringify(err));
         });
     }

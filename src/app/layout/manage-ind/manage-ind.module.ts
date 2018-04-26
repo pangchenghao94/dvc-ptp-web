@@ -6,12 +6,14 @@ import { ManageINDComponent } from './manage-ind.component';
 import { PageHeaderModule } from './../../shared';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatTableModule, MatFormFieldModule, MatPaginatorModule, MatInputModule, MatSortModule } from '@angular/material';
+import { LoadingModule } from 'ngx-loading';
 
 @NgModule({
     imports: [
         CommonModule, 
         ManageINDRoutingModule,
         PageHeaderModule,
+        LoadingModule,
         FormsModule,
         MatTableModule,
         MatFormFieldModule,

@@ -2,16 +2,11 @@
     display: block;
 }
 
-mat-row:hover{
-    background: #FAFAFA;
-    cursor: pointer;
-}
-
 .form-control[readonly]{
     background-color: #fff;
 }
 
-@media (min-width: 1366){
+@media (min-width: 1366px){
     .tbl-userlst .mat-cell, 
     .tbl-userlst .mat-header-cell{
         flex: unset;
@@ -37,7 +32,12 @@ mat-row:hover{
         width: 10%;
     }
 
-    .tbl-userlst .mat-column-status{
+    .tbl-userlst .mat-column-state{
         width: 10%;
     }
+}
+
+mat-row:hover{
+    background: #FAFAFA;
+    cursor: pointer;
 }

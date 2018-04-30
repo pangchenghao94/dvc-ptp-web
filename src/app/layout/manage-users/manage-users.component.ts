@@ -93,6 +93,7 @@ export class ManageUsersComponent implements OnInit {
         },
         (err) => {
             this.loading = false;
+            alert(err.message);
             console.log("API error: " + err);
         });
     }
@@ -287,7 +288,30 @@ export class ManageUsersComponent implements OnInit {
     }
 
     resetPassword(id: any){
-        
+        if(confirm('Confirm to reset user password to his/her IC No. ?')){
+            this.loading = true;
+            let postData: any = this.general.getAuthObject();
+            postData.usertype = this.general.getUserType();
+            postData.data = {
+                password: this.userForm.get('ic_no').value,
+                user_id: this.userForm.get('id').value
+            };
+            this.auth.postData(postData, "api/user/resetPassword").then((result) => {
+                let responseData: any = result;
+                if(responseData.error){
+                    console.log(responseData.error.message);
+                }
+                else{
+                    alert('Successfully Reset User Password');
+                }
+                this.loading = false;
+                this.modal.close();
+            },
+            (err) => {
+                this.loading = false;
+                console.log("API error: " + err);
+            });
+        }
     }
 
     changeUserState(id: any, type: number){

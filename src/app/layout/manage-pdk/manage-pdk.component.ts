@@ -56,6 +56,7 @@ export class ManagePDKComponent implements OnInit {
         },
         (err) => {
             this.loading = false;
+            alert(err.message);            
             console.log("API error: " + JSON.stringify(err));
         });
     }

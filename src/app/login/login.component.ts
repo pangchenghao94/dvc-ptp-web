@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
                     else{
                         localStorage.setItem('userData', JSON.stringify(this.responseData.data)); 
                         localStorage.setItem('isLoggedin', 'true');
-                        this.router.navigate(['/dashboard']);
+                        this.router.navigate(['/managePDK']);
                     }
                 }
             }, 

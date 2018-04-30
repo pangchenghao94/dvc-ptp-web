@@ -74,6 +74,7 @@ export class ManageINDComponent implements OnInit {
         },
         (err) => {
             this.loading = false;
+            alert(err.message);            
             console.log("API error: " + JSON.stringify(err));
         });
     }

@@ -54,7 +54,7 @@
                                                                                     || dailyReportForm.get('gps_x').dirty) &&
                                                                                     !dailyReportForm.get('gps_x').valid }">
                                         <label for="txtGpsX">GPS X</label>
-                                        <input type="text" class="form-control" id="txtGpsX" placeholder="Insert GPS X value" formControlName="gps_x">
+                                        <input type="number" class="form-control" id="txtGpsX" placeholder="Insert GPS X value" formControlName="gps_x">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -62,7 +62,7 @@
                                                                                     || dailyReportForm.get('gps_y').dirty) &&
                                                                                     !dailyReportForm.get('gps_y').valid }">
                                         <label for="txtGpsY">GPS Y</label>
-                                        <input type="text" class="form-control" id="txtGpsY" placeholder="Insert GPS Y value" formControlName="gps_y">
+                                        <input type="number" class="form-control" id="txtGpsY" placeholder="Insert GPS Y value" formControlName="gps_y">
                                     </div>
                                 </div>
                             </div>
@@ -130,7 +130,11 @@
 
             <div class="card-footer">
                 <button type="button" class="btn btn-outline-primary" (click)="generateReport()">
-                    <i class="fa fa-file-text-o pr-2"></i> Generate Report
+                    <i class="fa fa-download pr-2"></i> Generate & Download Report
+                </button>
+                <button type="button" class="btn btn-outline-secondary"
+                    [routerLink]="['/manageReport/']" [routerLinkActive]="['router-link-active']">
+                    Cancel
                 </button>
             </div>
         </div>

@@ -7,12 +7,14 @@ import { PageHeaderModule } from './../../shared';
 import { MatTableModule, MatFormFieldModule, MatPaginatorModule, MatInputModule, MatSortModule } from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LoadingModule } from 'ngx-loading';
 
 @NgModule({
     imports: [
         CommonModule, 
         ManageUsersRoutingModule, 
         PageHeaderModule,
+        LoadingModule,
         MatTableModule,
         MatFormFieldModule,
         MatPaginatorModule,

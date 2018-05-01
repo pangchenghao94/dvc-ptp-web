@@ -87,6 +87,10 @@ export class GeneralService {
   getToken(){
     return JSON.parse(localStorage.getItem('userData')).token;
   }
+
+  getUserType(){
+    return JSON.parse(localStorage.getItem('userData')).usertype;    
+  }
   
   convertIntToBool(str){
     if(str == "1")

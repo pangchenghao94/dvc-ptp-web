@@ -236,8 +236,7 @@ export class AddEditPDKAssignmentComponent implements OnInit {
             data["data"] = this.assignment;
             data["data2"] = user_id_lst;
 
-            // console.log(this.assignment);
-            // console.log(this.assignmentForm);
+            console.log(data);
             if(this.mode == 1){
                 console.log(this.assignment);
                 this.auth.postData(data, "api/assignment/add").then((result) => {
@@ -257,7 +256,7 @@ export class AddEditPDKAssignmentComponent implements OnInit {
                     }
                 }, 
                 (err) =>{
-                    console.log("API error: " + err);
+                    console.log(err);
                 });
             }
             else if(this.mode == 2){

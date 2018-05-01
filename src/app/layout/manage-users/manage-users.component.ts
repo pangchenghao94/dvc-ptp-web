@@ -19,6 +19,7 @@ export class ManageUsersComponent implements OnInit {
     userForm: any;
     modal: NgbModalRef;
     user: User = new User();
+    loading: boolean = false;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -66,6 +67,7 @@ export class ManageUsersComponent implements OnInit {
     }
 
     getUserList(){
+        this.loading = true;
         this.auth.postData(this.general.getAuthObject(), "api/userlist").then((result) => {
             let userList: any = result;
 
@@ -85,12 +87,13 @@ export class ManageUsersComponent implements OnInit {
                     this.dataSource = new MatTableDataSource(userList.data);
                     this.dataSource.paginator = this.paginator;
                     this.dataSource.sort = this.sort;
-                    console.log(this.dataSource);
                 }
             }
+            this.loading = false;
         },
         (err) => {
-            debugger;
+            this.loading = false;
+            alert(err.message);
             console.log("API error: " + err);
         });
     }
@@ -102,6 +105,7 @@ export class ManageUsersComponent implements OnInit {
     }
     
     open(content, type: any, id: number) {
+        this.loading = true;
         if(type != "add"){
             this.mode = 0;
 
@@ -118,7 +122,6 @@ export class ManageUsersComponent implements OnInit {
                     }
 
                     else{
-                        console.log(userData.data);
                         this.user = new User();
                         this.user.user_id = id;
                         this.user.ic_no = userData.data.ic_no;                        
@@ -131,12 +134,15 @@ export class ManageUsersComponent implements OnInit {
                         this.user.usertype = userData.data.usertype;
                     }
                 }
+                this.loading = false;
             },
             (err) => {
+                this.loading = false;   
                 console.log("API error: " + err);
             });
         }
         else{
+            this.loading = false;
             this.mode = 1;
             this.userForm.reset();
             this.userForm.get('username').enable();
@@ -176,6 +182,7 @@ export class ManageUsersComponent implements OnInit {
 
     submit() {
         if(this.mode == 1){
+            this.loading = true;
             let user: User = new User();
             user.username = this.userForm.get('username').value;
             user.password = this.userForm.get('passwordGrp.repeatPassword').value; 
@@ -188,7 +195,6 @@ export class ManageUsersComponent implements OnInit {
             let data: any = this.general.getAuthObject();
             data["data"] = user;
 
-            console.log(data);
             this.auth.postData(data, "api/user/add").then((result) => {
                 let responseData:any = result;
                 
@@ -213,27 +219,33 @@ export class ManageUsersComponent implements OnInit {
                         this.dataSource.paginator = this.paginator;
                     }
                 }
+                this.loading = false;
                 this.modal.close();
             }, 
             (err) =>{
+                this.loading = false;
                 console.log("API error: " + err);
             });
         }
         else if(this.mode == 2){
-            let user: User = new User();
-            user.password = this.userForm.get('passwordGrp.repeatPassword').value;
-            user.ic_no = this.userForm.get('ic_no').value;
-            user.full_name = this.userForm.get('fullName').value;
-            user.phone_no = this.userForm.get('telNo').value;
-            user.email = this.userForm.get('email').value;
-            user.gender = this.userForm.get('gender').value;
-            user.usertype = this.userForm.get('userType').value;
-            
-            this.auth.postData(user, "api/user/update/" + this.userForm.get('id').value).then((result) => {
-                let responseData:any = result;
+            this.loading = true;
+            let postData: any = this.general.getAuthObject();
+            postData.ic_no = this.userForm.get('ic_no').value;
+            postData.full_name = this.userForm.get('fullName').value;
+            postData.phone_no = this.userForm.get('telNo').value;
+            postData.email = this.userForm.get('email').value;
+            postData.gender = this.userForm.get('gender').value;
+            postData.usertype = this.userForm.get('userType').value;
 
-                if(responseData.error) {
-                    console.log(responseData.error);
+            this.auth.postData(postData, "api/user/update/" + this.userForm.get('id').value).then((result) => {
+                let responseData:any = result;
+                if(responseData.status == "0"){
+                    console.log(responseData.message);
+                    alert(responseData.message);
+                }
+                else if(responseData.error) {
+                    console.log(responseData.error.text);
+                    alert(responseData.error.text);                    
                 }
                 else{
                     alert("User have been updated successfully");
@@ -246,10 +258,11 @@ export class ManageUsersComponent implements OnInit {
                         } 
                     }
                 }
-                
+                this.loading = false;
                 this.modal.close();
             }, 
             (err) =>{
+                this.loading = false;
                 console.log("API error: " + err);
             });
         }
@@ -275,12 +288,36 @@ export class ManageUsersComponent implements OnInit {
     }
 
     resetPassword(id: any){
-        
+        if(confirm('Confirm to reset user password to his/her IC No. ?')){
+            this.loading = true;
+            let postData: any = this.general.getAuthObject();
+            postData.usertype = this.general.getUserType();
+            postData.data = {
+                password: this.userForm.get('ic_no').value,
+                user_id: this.userForm.get('id').value
+            };
+            this.auth.postData(postData, "api/user/resetPassword").then((result) => {
+                let responseData: any = result;
+                if(responseData.error){
+                    console.log(responseData.error.message);
+                }
+                else{
+                    alert('Successfully Reset User Password');
+                }
+                this.loading = false;
+                this.modal.close();
+            },
+            (err) => {
+                this.loading = false;
+                console.log("API error: " + err);
+            });
+        }
     }
 
     changeUserState(id: any, type: number){
         if(type == 0){//deactive
             if(confirm('Confirm to deactive user ' + this.userForm.get('fullName').value + ' ?')){
+                this.loading = true;
                 this.auth.getData("api/user/deactivate/"+id).then((result) => {
                     let userData: any = result
                     if(userData.error){
@@ -289,23 +326,28 @@ export class ManageUsersComponent implements OnInit {
                     else{
                         alert('User deactivate successfully');
                         console.log(userData.message);
+
+                        for(let result of this.dataSource.data){
+                            if(result.user_id == id){
+                                result.state = "0";
+                            } 
+                        }
                     }
+                    this.loading = false;
+                    this.modal.close();
                 },
                 (err) => {
+                    this.loading = false;
                     console.log("API error: " + err);
                 });
             
-                for(let result of this.dataSource.data){
-                    if(result.user_id == id){
-                        result.state = "0";
-                    } 
-                }
+                
 
-                this.modal.close();
             }
         }
         else if(type == 1){//activate
             if(confirm('Confirm to activate user ' + this.userForm.get('fullName').value + ' ?')){
+                this.loading = true;
                 this.auth.getData("api/user/activate/"+id).then((result) => {
                     let userData: any = result
                     if(userData.error){
@@ -313,21 +355,21 @@ export class ManageUsersComponent implements OnInit {
                     }
                     else{
                         alert('User activate successfully');
-                        console.log(userData.message);
+
+                        for(let result of this.dataSource.data){
+                            if(result.user_id == id){
+                                result.state = "1";
+                            } 
+                        }
+                        
+                        this.loading = false;
+                        this.modal.close();
                     }
                 },
                 (err) => {
+                    this.loading = false;
                     console.log("API error: " + err);
                 });
-
-                for(let result of this.dataSource.data){
-                    if(result.user_id == id){
-                        result.state = "1";
-                    } 
-                }
-
-                console.log(this.dataSource.data);
-                this.modal.close();
             }
         }
         else{

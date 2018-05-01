@@ -1,5 +1,6 @@
 <div [@routerTransition]>
     <app-page-header [heading]="'Manage Users'" [icon]="'fa-user'"></app-page-header>
+    <ngx-loading [show]="loading" [config]="{fullScreenBackdrop: true}"></ngx-loading>         
     <div class="col-sm-11 col-centered">
         <div class="card mb-3">
             <div class="card-header">User List</div>
@@ -40,11 +41,11 @@
                                                                                     || userForm.get('fullName').dirty) &&
                                                                                     userForm.get('fullName').errors">
                                                         <span *ngIf="userForm.get('fullName').errors.required" class="txtErr">
-                                                            * Please enter your first name.
+                                                            * Please enter your full name.
                                                         </span>
-                                                        <span   class="txtErr">
+                                                        <!-- <span   class="txtErr">
                                                             * The first name must be longer than 6 characters.
-                                                        </span>
+                                                        </span> -->
                                                     </span>
                                                 </div>
                                                 <div class="form-group"

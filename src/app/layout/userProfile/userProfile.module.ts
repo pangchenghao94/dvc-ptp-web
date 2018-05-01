@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     imports: [
         CommonModule,
         UserProfileRoutingModule,
+        LoadingModule,
         PageHeaderModule,
         ReactiveFormsModule,
         NgbModule.forRoot()],

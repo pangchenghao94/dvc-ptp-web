@@ -15,8 +15,10 @@ export class UserProfileComponent implements OnInit {
     modal: NgbModalRef;
     usertypeStr: string;
     changePasswordForm: any;
-    
+    loading: boolean = false;
+
     constructor(private auth: AuthService, private general: GeneralService, private modalService: NgbModal, private fb: FormBuilder) {
+        this.loading = true;
         this.auth.postData(this.general.getAuthObject(), "api/user/get/" + this.general.getUserID()).then((result) => {
             let user: any = result;
                     
@@ -36,9 +38,11 @@ export class UserProfileComponent implements OnInit {
                     this.usertypeStr = this.general.getUserTypeDesc(this.user.usertype);
                 }
             }
+            this.loading = false;
         },
         (err) => {
-            console.log("API error: " + err);
+            this.loading = false;
+            console.log(err);
         });
     }
 

@@ -1,13 +1,13 @@
-import { BlankPageModule } from './blank-page.module';
+import { ManageReportModule } from './manage-report.module';
 
-describe('BlankPageModule', () => {
-    let blankPageModule: BlankPageModule;
+describe('ManageReportModule', () => {
+    let manageReportModule: ManageReportModule;
 
     beforeEach(() => {
-        blankPageModule = new BlankPageModule();
+        manageReportModule = new ManageReportModule();
     });
 
     it('should create an instance', () => {
-        expect(blankPageModule).toBeTruthy();
+        expect(manageReportModule).toBeTruthy();
     });
 });

@@ -83,7 +83,8 @@ export class UserProfileComponent implements OnInit {
             "oldPass"       : this.changePasswordForm.get('oldPass').value,
             "newPassRepeat" : this.changePasswordForm.get('passwordGrp.newPassRepeat').value
         };
-                
+
+        this.loading = true;
         this.auth.postData(data, "api/user/changePassword").then((result) => {
             let responseData: any = result
             console.log(responseData);
@@ -100,10 +101,11 @@ export class UserProfileComponent implements OnInit {
                     this.changePasswordForm.reset();
                 }
             }
-                
+            this.loading = false;
         },
         (err) => {
-            console.log("API error: " + err);
+            this.loading = false;
+            console.log(err);
         });
     }
 }

@@ -43,9 +43,9 @@
                                                         <span *ngIf="userForm.get('fullName').errors.required" class="txtErr">
                                                             * Please enter your full name.
                                                         </span>
-                                                        <!-- <span   class="txtErr">
-                                                            * The first name must be longer than 6 characters.
-                                                        </span> -->
+                                                        <span *ngIf="userForm.get('fullName').errors.minlength" class="txtErr">
+                                                            * The full name must be longer than 6 characters.
+                                                        </span>
                                                     </span>
                                                 </div>
                                                 <div class="form-group"
@@ -80,7 +80,7 @@
                                                             * Please enter username.
                                                         </span>
                                                         <span *ngIf="userForm.get('username').errors.pattern" class="txtErr">
-                                                            * The username must be longer than between 6 to 20 characters without special characters.
+                                                            * The username must be longer than between 4 to 20 characters without special characters.
                                                         </span>
                                                         <span *ngIf="userForm.get('username').errors.unique" class="txtErr">
                                                             * The username is in used, pick another unique username.
@@ -197,7 +197,6 @@
                                                                 <option value="1">Admin</option>
                                                                 <option selected value="2">Inspector</option>
                                                                 <option value="3">PDK</option>
-                                                                <option value="4">Clerk</option>
                                                             </select>
                                                             <span class="help-block" *ngIf="(userForm.get('userType').touched ||
                                                                                             userForm.get('userType').dirty) &&

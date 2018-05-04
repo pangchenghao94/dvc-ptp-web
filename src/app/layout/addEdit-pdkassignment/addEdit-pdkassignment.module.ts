@@ -7,6 +7,7 @@ import { AddEditPDKAssignmentComponent } from './addEdit-pdkassignment.component
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatFormFieldModule, MatInputModule, MatTableModule, MatPaginatorModule } from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { LoadingModule } from 'ngx-loading';
 
 @NgModule({
     imports: [CommonModule, 
@@ -14,6 +15,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         PageHeaderModule,
         ReactiveFormsModule,
         FormsModule,
+        LoadingModule,
         MatAutocompleteModule,
         MatFormFieldModule,
         MatInputModule,

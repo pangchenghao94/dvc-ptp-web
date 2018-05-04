@@ -78,24 +78,30 @@ export class UserProfileComponent implements OnInit {
     }
 
     submit(){
-        let data : any = this.general.getAuthObject();
-        data["data"] = {
-            "oldPass"       : this.changePasswordForm.get('oldPass').value,
-            "newPassRepeat" : this.changePasswordForm.get('passwordGrp.newPassRepeat').value
+        let postData : any = this.general.getAuthObject();
+        postData.data = {
+            oldPass       : this.changePasswordForm.get('oldPass').value,
+            newPassRepeat : this.changePasswordForm.get('passwordGrp.newPassRepeat').value
         };
 
+        console.log(postData);
+
         this.loading = true;
-        this.auth.postData(data, "api/user/changePassword").then((result) => {
+        this.auth.postData(postData, "api/user/changePassword").then((result) => {
             let responseData: any = result
             console.log(responseData);
             if(responseData.status == "0"){
                 alert(responseData.message);
             }
+            else if(responseData.status == "2"){
+                alert(responseData.message);
+                this.changePasswordForm.get('oldPass').setValue('');
+            }
             else{
                 if(responseData.error){
                     console.log(responseData.error.text);
                 }
-                else{
+                else if(responseData.status == "1"){
                     alert("Password has been updated successfully");
                     this.modal.close();
                     this.changePasswordForm.reset();

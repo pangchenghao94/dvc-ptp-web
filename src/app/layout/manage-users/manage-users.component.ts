@@ -93,7 +93,7 @@ export class ManageUsersComponent implements OnInit {
         },
         (err) => {
             this.loading = false;
-            alert(err.message);
+            this.general.displayErrorAlert("get user list");
             console.log("API error: " + err);
         });
     }
@@ -137,8 +137,10 @@ export class ManageUsersComponent implements OnInit {
                 this.loading = false;
             },
             (err) => {
-                this.loading = false;   
-                console.log("API error: " + err);
+                this.loading = false;  
+                this.modal.close();          
+                this.general.displayErrorAlert("get user data");      
+                console.log(err);
             });
         }
         else{
@@ -185,6 +187,7 @@ export class ManageUsersComponent implements OnInit {
             this.loading = true;
             let user: User = new User();
             user.username = this.userForm.get('username').value;
+            user.ic_no = this.userForm.get('ic_no').value;
             user.password = this.userForm.get('passwordGrp.repeatPassword').value; 
             user.full_name = this.userForm.get('fullName').value;
             user.phone_no = this.userForm.get('telNo').value;
@@ -224,7 +227,8 @@ export class ManageUsersComponent implements OnInit {
             }, 
             (err) =>{
                 this.loading = false;
-                console.log("API error: " + err);
+                this.general.displayErrorAlert("add user");
+                console.log(err);
             });
         }
         else if(this.mode == 2){
@@ -263,7 +267,8 @@ export class ManageUsersComponent implements OnInit {
             }, 
             (err) =>{
                 this.loading = false;
-                console.log("API error: " + err);
+                this.general.displayErrorAlert("update user");
+                console.log(err);
             });
         }
     }
@@ -325,8 +330,6 @@ export class ManageUsersComponent implements OnInit {
                     }
                     else{
                         alert('User deactivate successfully');
-                        console.log(userData.message);
-
                         for(let result of this.dataSource.data){
                             if(result.user_id == id){
                                 result.state = "0";

@@ -81,7 +81,7 @@ export class AddEditINDComponent implements OnInit {
             no_pot_in_breeding: [this.ind.no_pot_in_breeding, Validators.min(0)],
             abating_amount : this.ind.abating_amount,
             abating_measure_type : this.ind.abating_measure_type,
-            act_destroy: this.general.convertIntToBool(this.ind.act_destroy),
+            act_destroy: this.ind.act_destroy,
             act_education: this.general.convertIntToBool(this.ind.act_education),
             act_pamphlet: this.general.convertIntToBool(this.ind.act_pamphlet),
             coor_lat: this.ind.coor_lat,
@@ -424,8 +424,8 @@ export class AddEditINDComponent implements OnInit {
                 },
                 (firstErr) => {
                     this.loading = false;
-                    alert("API error, please contact administrative person.");
-                    console.log("API error: " + JSON.stringify(firstErr));
+                    alert("Fail to upload photos. Please contact system administrator.");
+                    console.log(firstErr);
                 });
         }
         else{
@@ -613,8 +613,12 @@ export class AddEditINDComponent implements OnInit {
     }
 
     removeExhibitItem(fileName){
-        if(confirm("Confirm to delete this exhibit item?"))
-            this.exhibitData.exhibitItems = this.exhibitData.exhibitItems.filter(item =>item.fileName != fileName);
+        if(confirm("Confirm to delete this exhibit item?")){
+            if(this.exhibitData.exhibitItems.length > 1)
+                this.exhibitData.exhibitItems = this.exhibitData.exhibitItems.filter(item =>item.fileName != fileName);
+            else
+                alert("Exhibit Item cannot be empty! Aborting Delete.");
+        }
     }
 
     downloadDrawing(type) {

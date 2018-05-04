@@ -5,6 +5,7 @@ import { GeneralService, AuthService, CustomNgbDateParseFormatter } from '../../
 import { FormGroup, FormBuilder } from '@angular/forms';
 import * as moment from "moment";
 import * as XLSX from "xlsx-populate";
+import { injectTemplateRef } from '@angular/core/src/render3';
 
 @Component({
     selector: 'generate-daily-report',
@@ -23,6 +24,7 @@ export class GenerateDailyReportComponent implements OnInit {
     alertMsg: string;
     alertClose = true;
     reportData: any = [];
+    reportData2: any = [];
 
     constructor(private fb: FormBuilder, private general: GeneralService, private auth: AuthService) {
         this.dailyReportForm = this.fb.group({
@@ -116,13 +118,15 @@ export class GenerateDailyReportComponent implements OnInit {
                 
                 else{
                     if(responseData.data.length > 0){
-                        this.reportData = [];
+                        this.reportData  = [];
+                        this.reportData2 = [];
                         var counter = 0;
 
                         this.reportData = JSON.parse(JSON.stringify(this.selectedAssignments));
                         for(let i = 0; i < this.reportData.length; i++){
                             let item = this.reportData[i];
                             item.data = responseData.data.filter(item2 => item2.assignment_id == item.assignment_id)[0];
+                            item.data2 = responseData.data2.filter(item3 => item3.assignment_id == item.assignment_id)[0];
                         }
                         
                         var url = "assets/report_templates/PEMERIKSAAN_PENGUATKUASAAN_APSPP.xlsx";
@@ -209,7 +213,7 @@ export class GenerateDailyReportComponent implements OnInit {
                 sheet.row(counter).cell(10).value(item.data.close);
                 sheet.row(counter).cell(11).value(item.data.empty);
                 sheet.row(counter).cell(12).value(item.data.premise_positive_compound);
-                sheet.row(counter).cell(13).value(item.data.container_positive_compound);
+                sheet.row(counter).cell(13).value(item.data2 ? item.data2.container_positive_compound : '0');
                 sheet.row(counter).cell(14).value(item.data.area_positive_surrounding);
                 sheet.row(counter).cell(15).value(item.data.container_positive_surrounding);
                 sheet.row(counter).cell(16).value(item.data.total_breeding);

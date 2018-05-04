@@ -33,6 +33,7 @@ export class AddEditPDKAssignmentComponent implements OnInit {
     showNoUser: boolean = false;
     assignment: Assignment = new Assignment();
     fullNameList: any;
+    loading: boolean = false;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild('autoCompleteInput', { read: MatAutocompleteTrigger }) autoComplete: MatAutocompleteTrigger;
@@ -109,10 +110,12 @@ export class AddEditPDKAssignmentComponent implements OnInit {
             }
         },
         (err) => {
-            console.log("API error: " + err);
+            this.general.displayErrorAlert("get user lists");
+            console.log(err);
         });
 
         if(this.mode == 2){
+            this.loading = true;
             this.auth.postData(this.general.getAuthObject(), "api/assignment/get/" + this.assignment.assignment_id).then((result) => {
                 let assignmentData: any = result;
                         
@@ -159,9 +162,12 @@ export class AddEditPDKAssignmentComponent implements OnInit {
                         });
                     }
                 }
+                this.loading = false;
             },
             (err) => {
-                console.log("API error: " + err);
+                this.loading = false;
+                this.general.displayErrorAlert("get assingment data");
+                console.log(err);
             });
 
             this.auth.postData(this.general.getAuthObject(), "api/assignment_admin/getList/" + this.assignment.assignment_id).then((result) => {
@@ -189,7 +195,8 @@ export class AddEditPDKAssignmentComponent implements OnInit {
                 }
             },
             (err) => {
-                console.log("API error: " + err);
+                this.general.displayErrorAlert("get user list");
+                console.log(err);
             }); 
         }
     }
@@ -215,71 +222,78 @@ export class AddEditPDKAssignmentComponent implements OnInit {
     }
 
     submit(){
-        if(this.dataSource.data.length == 0)
-            this.showNoUser = this.dataSource.data.length > 0 ? false : true;
-        
-        else{
-            this.assignment.team = this.assignmentForm.get('team').value;
-            this.assignment.date = this.general.toMySqlDateStr(this.assignmentForm.get('date').value);
-            this.assignment.postcode = this.assignmentForm.get('postcode').value;
-            this.assignment.remark = this.assignmentForm.get('remark').value;
-            this.assignment.address = this.assignmentForm.get('address').value;
-            this.assignment.pka = (this.assignmentForm.get('pka').value).user_id;
-            this.assignment.pa = (this.assignmentForm.get('pa').value).user_id;            
+        if(confirm(this.mode == 2 ? "Confirm to update assignment?": "Confirm to add assignment?")){
+            if(this.dataSource.data.length == 0)
+                this.showNoUser = this.dataSource.data.length > 0 ? false : true;
             
-            let user_id_lst = new Array<string>();
-            this.dataSource.data.forEach(element => {
-                user_id_lst.push(element.user_id);
-            });
+            else{
+                this.assignment.team = this.assignmentForm.get('team').value;
+                this.assignment.date = this.general.toMySqlDateStr(this.assignmentForm.get('date').value);
+                this.assignment.postcode = this.assignmentForm.get('postcode').value;
+                this.assignment.remark = this.assignmentForm.get('remark').value;
+                this.assignment.address = this.assignmentForm.get('address').value;
+                this.assignment.pka = (this.assignmentForm.get('pka').value).user_id;
+                this.assignment.pa = (this.assignmentForm.get('pa').value).user_id;            
+                
+                let user_id_lst = new Array<string>();
+                this.dataSource.data.forEach(element => {
+                    user_id_lst.push(element.user_id);
+                });
 
-            let data: any = this.general.getAuthObject();
-            data["data"] = this.assignment;
-            data["data2"] = user_id_lst;
+                let data: any = this.general.getAuthObject();
+                data.data = this.assignment;
+                data.data2 = user_id_lst;
 
-            console.log(data);
-            if(this.mode == 1){
-                console.log(this.assignment);
-                this.auth.postData(data, "api/assignment/add").then((result) => {
-                    let responseData:any = result;
-                    
-                    if(responseData.status == "0"){
-                        alert(responseData.message);
-                    }
-                    else{
-                        if(responseData.error) {
-                            console.log(responseData.error);
+                this.loading = true;
+
+                if(this.mode == 1){
+                    this.auth.postData(data, "api/assignment/add").then((result) => {
+                        let responseData:any = result;
+                        this.loading = false;
+                        
+                        if(responseData.status == "0"){
+                            alert(responseData.message);
                         }
                         else{
-                            alert("Assignment have been added successfully");
-                            this.router.navigate(['/managePDK']);
+                            if(responseData.error) {
+                                console.log(responseData.error);
+                            }
+                            else{
+                                alert("Assignment have been added successfully");
+                                this.router.navigate(['/managePDK']);
+                            }
                         }
-                    }
-                }, 
-                (err) =>{
-                    console.log(err);
-                });
-            }
-            else if(this.mode == 2){
-                this.auth.postData(data, "api/assignment/update").then((result) => {
-                    let responseData:any = result;
-                    
-                    if(responseData.status == "0"){
-                        alert(responseData.message);
-                    }
-                    else{
-                        if(responseData.error) {
-                            console.log(responseData.error);
+                    }, 
+                    (err) =>{
+                        this.loading = false;
+                        this.general.displayErrorAlert("add assignment");
+                        console.log(err);
+                    });
+                }
+                else if(this.mode == 2){
+                    this.auth.postData(data, "api/assignment/update").then((result) => {
+                        let responseData:any = result;
+                        this.loading = false; 
+
+                        if(responseData.status == "0"){
+                            alert(responseData.message);
                         }
                         else{
-                            alert("Assignment have been updated successfully");
-                            this.router.navigate(['/managePDK']);
+                            if(responseData.error) {
+                                console.log(responseData.error);
+                            }
+                            else{
+                                alert("Assignment have been updated successfully");
+                                this.router.navigate(['/managePDK']);
+                            }
                         }
-                    }
-                }, 
-                (err) =>{
-                    debugger;
-                    console.log("API error: " + err);
-                });
+                    }, 
+                    (err) =>{
+                        this.loading = false;
+                        this.general.displayErrorAlert("update assignment");
+                        console.log(err);
+                    });
+                }
             }
         }
     }   
@@ -311,5 +325,12 @@ export class AddEditPDKAssignmentComponent implements OnInit {
         $("#txtAutoComplete").blur();
         this.autoComplete.closePanel();       
                      
+    }
+
+    cancelBtn(){
+        if(this.mode == 2)
+            this.router.navigate(['/viewAssignment/' + this.assignment.assignment_id]);
+        else
+            this.router.navigate(['/managePDK']);
     }
 }

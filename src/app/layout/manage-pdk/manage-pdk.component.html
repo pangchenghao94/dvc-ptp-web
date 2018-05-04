@@ -46,6 +46,12 @@
                                     <mat-cell *matCellDef="let row"> {{row.team}} </mat-cell>
                                 </ng-container>
 
+                                <!-- Color Column [style.color]="row.color"-->
+                                <ng-container matColumnDef="pka_full_name">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> PKA </mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.pka_full_name}} </mat-cell>
+                                </ng-container>
+
                                 <!-- Name Column -->
                                 <ng-container matColumnDef="postcode">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header> Postcode </mat-header-cell>

@@ -1,5 +1,6 @@
 <div [@routerTransition]>
     <app-page-header [heading]="mode == 2 ? 'Edit Assignment' : 'Add Assignment'" [icon]="'fa-tasks'"></app-page-header>
+    <ngx-loading [show]="loading" [config]="{fullScreenBackdrop: true}"></ngx-loading>        
     <div class="col-lg-12 col-xl-10 col-centered">
         <form [formGroup]="assignmentForm" (ngSubmit)="submit()" novalidate>        
         <div class="card mb-3">
@@ -191,8 +192,7 @@
                     [disabled]="!assignmentForm.valid">
                     {{ mode == 2 ? 'Edit Assignment' : 'Add Assignment' }}
                 </button>
-                <button class="btn btn-outline-secondary"
-                    [routerLink]="['/viewAssignment/'+assignment.assignment_id]" [routerLinkActive]="['router-link-active']">
+                <button class="btn btn-outline-secondary" (click)="cancelBtn()">
                     Cancel
                 </button>
                     <!-- [disabled]="!userForm.valid" -->

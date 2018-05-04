@@ -48,8 +48,8 @@ export class ManageReportComponent implements OnInit {
         },
         (err) => {
             this.loading = false;
-            alert(err.message);            
-            console.log("API error: " + JSON.stringify(err));
+            this.general.displayErrorAlert("get report list");
+            console.log(err);
         });
     }
 
@@ -87,7 +87,8 @@ export class ManageReportComponent implements OnInit {
             },
             (err) => {
                 this.loading = false;
-                console.log("API error: " + JSON.stringify(err));
+                this.general.displayErrorAlert("delete report");
+                console.log(err);
             });
         }
     }
@@ -117,7 +118,7 @@ export class ManageReportComponent implements OnInit {
         },
         (err) => {
             this.loading = false;
-            console.log("API error: " + JSON.stringify(err));
+            console.log(err);
         });
     }
 }

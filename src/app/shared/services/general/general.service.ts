@@ -99,7 +99,7 @@ export class GeneralService {
       return false;
   }
 
-  // displayUnexpectedError(message: string, title?: string){
-    
-  // }
+  displayErrorAlert(message: string){
+    alert("Unable to " + message + ". Please contact system administrator");
+  }
 }

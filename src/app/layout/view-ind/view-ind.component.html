@@ -51,15 +51,15 @@
                                 <input type="checkbox" disabled="disabled" [checked]="ind.p_cooperation">
                                 <strong class="pl-3"> Cooperation</strong>
                             </div>
-                            <div class="col-lg-12 d-flex align-items-center">
+                            <div class="col-lg-12 d-flex align-items-center" *ngIf="ind.area_inspection">
                                 <input type="checkbox" disabled="disabled" [checked]="ind.area_inspection">
                                 <strong class="pl-3"> Area Inspection</strong>
                             </div>
                         </div>
 
-                        <div class="row pt-2">
+                        <div class="row pt-4">
                             <div class="col-lg-4">
-                                <strong>{{ ind.area_inspection ? 'Area Name' : 'Full Name'}}:</strong>
+                                <strong>{{ ind.area_inspection ? 'Area Name' : 'Full Name'}}</strong>
                             </div>
                             <div class="col-lg-8">
                                 {{ ind.po_name }}
@@ -68,7 +68,7 @@
 
                         <div class="row pt-2" *ngIf="!ind.area_inspection">
                             <div class="col-lg-4">
-                                <strong>IC. Number:</strong>
+                                <strong>IC. Number</strong>
                             </div>
                             <div class="col-lg-8">
                                 {{ ind.po_id }}
@@ -77,7 +77,7 @@
 
                         <div class="row pt-2">
                             <div class="col-lg-4">
-                                <strong>Address:</strong>
+                                <strong>Address</strong>
                             </div>
                             <div class="col-lg-8">
                                 {{ ind.p_shortAddr }}
@@ -86,7 +86,7 @@
 
                         <div class="row pt-2" *ngIf="!ind.area_inspection">
                             <div class="col-lg-4">
-                                <strong>No. of family members:</strong>
+                                <strong>No. of family members</strong>
                             </div>
                             <div class="col-lg-8">
                                 {{ ind.no_familyMember }}
@@ -94,7 +94,7 @@
                         </div>
                         <div class="row pt-2" *ngIf="!ind.area_inspection">
                             <div class="col-lg-4">
-                                <strong>No. of fever members:</strong>
+                                <strong>No. of fever members</strong>
                             </div>
                             <div class="col-lg-8">
                                 {{ ind.no_fever }}
@@ -113,16 +113,25 @@
 
                         <div class="row pt-2">
                             <div class="col-lg-4">
-                                <strong>Container Type:</strong>
+                                <strong>Container Type</strong>
                             </div>
                             <div class="col-lg-8">
                                 {{ ind.container_type }}
                             </div>
                         </div>
+                        
+                        <div class="row pt-2">
+                            <div class="col-lg-4">
+                                <strong>Destroyed Breeding Area</strong>
+                            </div>
+                            <div class="col-lg-8">
+                                {{ ind.act_destroy }}
+                            </div>
+                        </div>
 
                         <div class="row pt-2">
                             <div class="col-lg-4">
-                                <strong>Outside:</strong>
+                                <strong>Outside</strong>
                             </div>
                             <div class="col-lg-8">
                                 {{ ind.no_out_breeding }}
@@ -130,7 +139,7 @@
                         </div>
                         <div class="row pt-2">
                             <div class="col-lg-4">
-                                <strong>Inside:</strong>
+                                <strong>Inside</strong>
                             </div>
                             <div class="col-lg-8">
                                 {{ ind.no_in_breeding }}
@@ -151,7 +160,7 @@
                         
                         <div class="row pt-2">
                             <div class="col-lg-4">
-                                <strong>Outside:</strong>
+                                <strong>Outside</strong>
                             </div>
                             <div class="col-lg-8">
                                 {{ ind.no_pot_out_breeding }}
@@ -160,42 +169,38 @@
 
                         <div class="row pt-2">                        
                             <div class="col-lg-4">
-                                <strong>Inside:</strong>
+                                <strong>Inside</strong>
                             </div>
                             <div class="col-lg-8">
                                 {{ ind.no_pot_in_breeding }}
                             </div>
                         </div>
 
+                        <div class="row pt-2">                        
+                            <div class="col-lg-4">
+                                <strong>Abating</strong>
+                            </div>
+                            <div class="col-lg-8">
+                                {{ ind.abating_amount }} {{ ind.abating_measure_type == '0' ? 'gram' : 'ml' }}
+                            </div>
+                        </div>
+
                         <div class="row pt-5">
                             <div class="col-lg-12">
                                 <h5>
-                                    <strong>Action</strong>
+                                    <strong>Actions</strong>
                                 </h5>
                             </div>
                         </div>
 
                         <hr>
 
-                        <div class="row pt-2">                        
-                            <div class="col-lg-4">
-                                <strong>Abating:</strong>
-                            </div>
-                            <div class="col-lg-8">
-                                {{ ind.abating_amount }}{{ ind.abating_measure_type == '0' ? 'gram' : 'ml' }}
-                            </div>
-                        </div>
-
                         <div class="row pt-2">
-                            <div class="col-lg-12">
-                                <input type="checkbox" disabled="disabled" [checked]="ind.act_destroy">
-                                <strong class="pl-3"> Destroy Breeding Area</strong>
-                            </div>
-                            <div class="col-lg-12">
+                            <div class="col-lg-12 d-flex align-items-center">
                                 <input type="checkbox" disabled="disabled" [checked]="ind.act_education">
                                 <strong class="pl-3"> Education</strong>
                             </div>
-                            <div class="col-lg-12">
+                            <div class="col-lg-12 d-flex align-items-center">
                                 <input type="checkbox" disabled="disabled" [checked]="ind.act_pamphlet">
                                 <strong class="pl-3"> Pamphlet</strong>
                             </div>
@@ -228,7 +233,7 @@
                 <button type="button" class="btn btn-outline-primary mr-2" (click)="editBtn()">
                     <i class="fa fa-pencil"></i> Edit I&D
                 </button>
-                <button type="button" class="btn btn-outline-danger mr-2" (click)="deleteBtn()" [disabled]="true">
+                <button type="button" class="btn btn-outline-danger mr-2" (click)="deleteBtn()">
                     <i class="fa fa-pencil"></i> Delete I&D
                 </button>
                 <button class="btn btn-outline-secondary"
@@ -290,10 +295,10 @@
 
         <div class="row mb-4">
             <div class="col col-lg-12 pt-2">
-                <button type="button" class="btn btn-outline-primary" (click)="openFPModal(modalFloorPlan, null)">
+                <button type="button" class="btn btn-outline-primary" (click)="openFPModal(modalFloorPlan, 'lg')">
                     <i class="fa fa-pencil"></i> Floor Plan
                 </button>
-                <button type="button" class="btn btn-outline-danger ml-3" (click)="openPLModal(modalPremiseLocation, null)">
+                <button type="button" class="btn btn-outline-danger ml-3" (click)="openPLModal(modalPremiseLocation, 'lg')">
                     <i class="fa fa-pencil"></i> Premise Location
                 </button>
             </div>

@@ -1,5 +1,6 @@
 <div [@routerTransition]>
     <app-page-header [heading]="'View Assignment'" [icon]="'fa-file'"></app-page-header>
+    <ngx-loading [show]="loading" [config]="{fullScreenBackdrop: true}"></ngx-loading>    
     <div class="col-lg-12 col-xl-9 col-centered">
         <div class="card mb-3">
             <div class="card-header">View Assignment</div>
@@ -101,8 +102,12 @@
                     <button type="button" class="btn btn-outline-primary mr-3" (click)="editBtn()">
                         <i class="fa fa-pencil"></i> Edit Assignment
                     </button>
-                    <button type="button" class="btn btn-outline-danger" (click)="deleteBtn()">
+                    <button type="button" class="btn btn-outline-danger mr-3" (click)="deleteBtn()">
                         <i class="fa fa-pencil"></i> Delete Assignment
+                    </button>
+                    <button class="btn btn-outline-secondary"
+                        [routerLink]="['/managePDK']" [routerLinkActive]="['router-link-active']">
+                        Cancel
                     </button>
                 </div>
             </div>

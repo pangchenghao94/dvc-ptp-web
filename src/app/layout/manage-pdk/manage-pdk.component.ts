@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 
 export class ManagePDKComponent implements OnInit {
-    displayedColumns = ['assignment_id', 'address', 'team', 'postcode', 'date'];
+    displayedColumns = ['assignment_id', 'address', 'pka_full_name', 'team', 'postcode', 'date'];
     dataSource: any;
     dataSource2: any;
     dateFilter: string;
@@ -56,8 +56,8 @@ export class ManagePDKComponent implements OnInit {
         },
         (err) => {
             this.loading = false;
-            alert(err.message);            
-            console.log("API error: " + JSON.stringify(err));
+            alert("Fail to get assignment list. Please contact system administrator");            
+            console.log(err);
         });
     }
 
@@ -66,75 +66,6 @@ export class ManagePDKComponent implements OnInit {
         filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
         this.dataSource.filter = filterValue;
     }
-
-    // open(content, id: number) {
-    //     this.modal = this.modalService.open(content, {
-    //         backdrop: 'static',
-    //         keyboard: false,
-    //         size: 'lg'
-    //     });
-
-    //     this.auth.postData(this.general.getAuthObject(), "api/assignment/get/" + id).then((result) => {
-    //         let assignmentData: any = result;
-                    
-    //         if(assignmentData.status == "0"){
-    //             alert(assignmentData.message);
-    //         }
-    //         else{
-    //             if(assignmentData.error) {
-    //                 console.log(assignmentData.error.text);
-    //             }
-    //             else{
-    //                 this.assignment.assignment_id = assignmentData.data.assignment_id;
-    //                 this.assignment.user_id = assignmentData.data.user_id;
-    //                 this.assignment.team = assignmentData.data.team;
-    //                 this.assignment.address = assignmentData.data.address;
-    //                 this.assignment.remark = assignmentData.data.remark;
-    //                 this.assignment.createdBy = assignmentData.data.full_name;
-    //                 this.assignment.date = this.general.toDateDisplayFormat(assignmentData.data.date);
-
-    //                 this.auth.postData(this.general.getAuthObject(), "api/assignment_admin/getList/" + this.assignment.assignment_id).then((result) => {
-    //                     let assignment_admin: any = result;
-                                
-    //                     if(assignment_admin.status == "0"){
-    //                         alert(assignment_admin.message);
-    //                     }
-    //                     else{
-    //                         if(assignment_admin.error) {
-    //                             console.log(assignment_admin.error.text);
-    //                         }
-    //                         else{
-    //                             let temp_data: any = [];
-    //                             assignment_admin.data.forEach(element => {
-    //                                 let temp_user : User = new User();
-    //                                 temp_user.user_id = element.user_id;
-    //                                 temp_user.full_name = element.full_name;
-            
-    //                                 temp_data.push(temp_user);
-    //                             });
-    //                             debugger;
-    //                             this.dataSource2 = new MatTableDataSource(temp_data);            
-    //                             this.dataSource2._updateChangeSubscription();
-    //                             // setTimeout(() => {
-    //                             //     this.dataSource.paginator = this.paginator2;
-    //                             //     this.dataSource.sort = this.sort2;
-    //                             //   });
-    //                             this.dataSource2.paginator = this.paginator2;
-    //                             this.dataSource2.sort = this.sort2;
-                                
-    //                         }
-    //                     }
-    //                 },
-    //                 (err) => {
-    //                     console.log("API error: " + err);
-    //                 }); 
-    //             }
-    //         }
-    //     },
-    //     (err) => {
-    //         console.log("API error: " + err);
-    //     });
-    // }
 
     viewAssignment(assignment_id){
         this.router.navigate(['/viewAssignment', assignment_id]);

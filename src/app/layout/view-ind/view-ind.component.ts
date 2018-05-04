@@ -66,7 +66,7 @@ export class ViewINDComponent implements OnInit {
                 this.ind.no_pot_in_breeding = ind_data.no_pot_in_breeding;
                 this.ind.abating_amount = ind_data.abating_amount;
                 this.ind.abating_measure_type = ind_data.abating_measure_type;
-                this.ind.act_destroy = this.general.convertIntToBool(ind_data.act_destroy);
+                this.ind.act_destroy = ind_data.act_destroy;
                 this.ind.act_education = this.general.convertIntToBool(ind_data.act_education);
                 this.ind.act_pamphlet = this.general.convertIntToBool(ind_data.act_pamphlet);
                 this.ind.coor_lat = ind_data.coor_lat;
@@ -134,7 +134,32 @@ export class ViewINDComponent implements OnInit {
     }
 
     deleteBtn() {
+        if(confirm("Confirm to delete this Inspection & Destruction Record?")){
+            this.loading = true;
+            this.auth.postData(this.general.getAuthObject(), "api/ind/delete/" + this.ind.ind_id).then((result) => {
+                let responseData: any = result;
 
+                if (responseData.status == "0") {
+                    alert(responseData.message);
+                }
+
+                else if (responseData.error) {
+                    console.log(responseData.error.text);
+                }
+
+                else if (responseData.status == "1") {
+                    alert("Successfully deleted Inspection and Destruction record from the system database.");
+                    this.router.navigate(['/manageIND']);                
+                }
+
+                this.loading = false;
+            },
+            (err) => {
+                this.loading = false;
+                this.general.displayErrorAlert("delete Inspection and Destruction Record");
+                console.log(err);
+            });
+        }
     }
 
     async openExhibitModal(content) {
@@ -193,7 +218,6 @@ export class ViewINDComponent implements OnInit {
                     }
                     else if (responseData.status == "1") {
                         item.fileName = responseData.s3_path;
-                        console.log(responseData);
                     }
                 },
                 (err) => {

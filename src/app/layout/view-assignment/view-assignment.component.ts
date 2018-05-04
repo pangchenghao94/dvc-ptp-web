@@ -15,6 +15,7 @@ export class ViewAssignmentComponent implements OnInit {
     displayedColumns = ['user_id', 'full_name'];
     dataSource: any;
     assignment: Assignment = new Assignment();
+    loading: boolean = false;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -29,15 +30,19 @@ export class ViewAssignmentComponent implements OnInit {
     ngOnInit() {}
 
     getAssignment(id){
+        this.loading = true;
         this.auth.postData(this.general.getAuthObject(), "api/assignment/get/" + id).then((result) => {
             let assignmentData: any = result;
 
             if(assignmentData.status == "0"){
                 alert(assignmentData.message);
+                this.loading = false;
             }
             else{
                 if(assignmentData.error) {
+                    alert(assignmentData.error.text);
                     console.log(assignmentData.error.text);
+                    this.loading = false;
                 }
                 else{
                     this.assignment.assignment_id = assignmentData.data.assignment_id;
@@ -76,18 +81,20 @@ export class ViewAssignmentComponent implements OnInit {
                                 
                             }
                         }
+                        this.loading = false;
                     },
                     (err) => {
-                        console.log("API error: " + JSON.stringify(err));
+                        this.loading = false;
+                        console.log(err);
+                        this.general.displayErrorAlert("get assignment users list");
                     }); 
                 }
             }
-        
-        
         },
         (err) => {
-            alert("API error, please contact administrative person.");
-            console.log("API error: " + JSON.stringify(err));
+            this.loading = false;
+            this.general.displayErrorAlert("get assignment data");
+            console.log(err);
         });
     }
 
@@ -97,8 +104,10 @@ export class ViewAssignmentComponent implements OnInit {
 
     deleteBtn(){
         if(confirm("Confirm to delete assignment?")){
+            this.loading = true;
             this.auth.postData(this.general.getAuthObject(), "api/assignment/delete/" + this.assignment.assignment_id).then((result) => {
                 let responseData: any = result;
+                this.loading = false;
                 
                 if(responseData.status == "0"){
                     alert(responseData.message);
@@ -114,7 +123,9 @@ export class ViewAssignmentComponent implements OnInit {
                 }
             },
             (err) => {
-                console.log("API error: " + err);
+                this.loading = false;
+                this.general.displayErrorAlert("delete assignment");
+                console.log(err);
             });  
         }
     }

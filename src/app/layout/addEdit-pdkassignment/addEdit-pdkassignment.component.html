@@ -1,7 +1,7 @@
 <div [@routerTransition]>
     <app-page-header [heading]="mode == 2 ? 'Edit Assignment' : 'Add Assignment'" [icon]="'fa-tasks'"></app-page-header>
     <ngx-loading [show]="loading" [config]="{fullScreenBackdrop: true}"></ngx-loading>        
-    <div class="col-lg-12 col-xl-10 col-centered">
+    <div class="col-lg-12 col-xl-12 col-centered">
         <form [formGroup]="assignmentForm" (ngSubmit)="submit()" novalidate>        
         <div class="card mb-3">
             <div class="card-header">Assignment Form</div>
@@ -132,7 +132,7 @@
                                 <div class="col-sm-6">
                                     <div class="row">
                                         <div class="col-sm-12" [style.padding-bottom]="'10px'">
-                                            <h4>Assigned PDK</h4>
+                                            <h4>Assigned Users</h4>
                                         </div>
                                     </div>
                                     <div class="row">

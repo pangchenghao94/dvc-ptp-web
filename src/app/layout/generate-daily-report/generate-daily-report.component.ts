@@ -220,7 +220,7 @@ export class GenerateDailyReportComponent implements OnInit {
                 sheet.row(counter).cell(17).value(item.data.total_pot_breeding);
                 sheet.row(counter).cell(18).value(item.data.total_abating);
                 sheet.row(counter).cell(19).value(item.data.abating_amount_g);
-                sheet.row(counter).cell(20).value(item.data.s8 + item.data.s5);
+                sheet.row(counter).cell(20).value(parseInt(item.data.s8) + parseInt(item.data.s5));
                 sheet.row(counter).cell(21).value(item.data.ACD);
             }
             counter += 2;

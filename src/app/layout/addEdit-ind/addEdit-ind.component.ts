@@ -382,7 +382,7 @@ export class AddEditINDComponent implements OnInit {
         if (this.exhibitData != null){
         
             promisesArray.push(
-                fetch(this.exhibitData.exhibit.floor_plan_URI)
+                fetch(this.exhibitData.exhibit.floor_plan_URI, {mode: 'cors'})
                     .then(res => res.blob())
                     .then(blob => {
                         let data: any = blob;
@@ -392,7 +392,7 @@ export class AddEditINDComponent implements OnInit {
             );
     
             promisesArray.push(
-                fetch(this.exhibitData.exhibit.premise_location_URI)
+                fetch(this.exhibitData.exhibit.premise_location_URI, {mode: 'cors'})
                     .then(res => res.blob())
                     .then(blob => {
                         let data: any = blob;
@@ -406,7 +406,7 @@ export class AddEditINDComponent implements OnInit {
                 
                 if(item.file == null)
                     promisesArray.push(
-                        fetch(item.fileName)
+                        fetch(item.fileName, {mode: 'cors'})
                             .then(res => res.blob())
                             .then(blob => {
                                 let data: any = blob;
@@ -515,7 +515,7 @@ export class AddEditINDComponent implements OnInit {
         postData.append("user_id", this.auth_data.user_id);
         postData.append("exhibit_id", exhibit_id);
         postData.append("file", file);   
-        console.log(file);
+
         return this.auth.postData2(postData, "api/upload/floor_plan_drawing").then((result) => {
             let responseData: any = result;
         },
@@ -533,7 +533,6 @@ export class AddEditINDComponent implements OnInit {
         postData.append("user_id", this.auth_data.user_id);
         postData.append("exhibit_id", exhibit_id);
         postData.append("file", file);   
-        console.log(file);
         
         return this.auth.postData2(postData, "api/upload/premise_location_drawing").then((result) => {
             let responseData: any = result;
@@ -554,7 +553,6 @@ export class AddEditINDComponent implements OnInit {
         postData.append("type", item.type);     
         postData.append("exhibit_id", exhibit_id);
         postData.append("file", item.file);   
-        console.log(item.file);
         
         return this.auth.postData2(postData, "api/upload/exhibit_item").then((result) => {
             let responseData: any = result;
@@ -602,7 +600,7 @@ export class AddEditINDComponent implements OnInit {
         let exhibitItem: ExhibitItem = new ExhibitItem();
         let imgFile = (this.exhibitForm.get('img').value)[0];
         let src = imgFile.imgSrc;
-        console.log(imgFile);
+
         exhibitItem.file     = imgFile; 
         exhibitItem.fileName = src;
         exhibitItem.type     = this.exhibitForm.get('type').value,

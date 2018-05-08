@@ -61,6 +61,9 @@ export class GeneralService {
   }
   
   toDateDisplayFormat(mySql_date: string){
+    if(this.isSafari())
+      mySql_date = mySql_date.replace(/-/g, "/");
+
     let temp_date = new Date(mySql_date);
     return temp_date.getDate() + "/" + (temp_date.getMonth() + 1) + "/" + temp_date.getFullYear();
   }
@@ -101,5 +104,16 @@ export class GeneralService {
 
   displayErrorAlert(message: string){
     alert("Unable to " + message + ". Please contact system administrator");
+  }
+
+  isSafari(){
+    var ua = navigator.userAgent.toLowerCase(); 
+    if (ua.indexOf('safari') != -1) { 
+      if (ua.indexOf('chrome') > -1) {
+        return false;
+      } else {
+        return true;
+      }
+    }
   }
 }

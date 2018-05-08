@@ -1,7 +1,7 @@
 <div [@routerTransition]>
     <ngx-loading [show]="loading" [config]="{fullScreenBackdrop: true}"></ngx-loading>    
     <app-page-header [heading]="mode == 2 ? 'Edit Inspection & Destruction' : 'Add Inspection & Destruction'" [icon]="'fa-tasks'"></app-page-header>
-    <div class="col-lg-12 col-xl-10 col-centered">
+    <div class="col-lg-12 col-xl-12 col-centered">
         <div class="card mb-3">
             <div class="card-header">Inspection & Destruction Form</div>
             <form [formGroup]="indForm" (ngSubmit)="submit()" novalidate>                    

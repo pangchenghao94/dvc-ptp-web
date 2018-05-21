@@ -6,42 +6,62 @@
     background-color: #fff;
 }
 
-@media (min-width: 1366px){
-    .tbl-assignmentlst .mat-cell, 
-    .tbl-assignmentlst .mat-header-cell{
-        flex: unset;
-    }
+.tbl-assignmentlst {
+    @media (min-width: 1024px){
+        .mat-cell, 
+        .mat-header-cell{
+            flex: unset;
+        }
 
-    .tbl-assignmentlst .mat-column-assignment_id{
-        width: 5%;
-    }
-
-    .tbl-assignmentlst .mat-column-team{
-        width: 10%;
-    }
-
-    .tbl-assignmentlst .mat-column-pka_full_name{
-        width: 15%;
-    }
-
-    .tbl-assignmentlst .mat-column-postcode{
-        width: 10%;
-    }
-
-    .tbl-assignmentlst .mat-column-date{
-        width: 10%;
-    }
-
-    .tbl-assignmentlst .mat-column-address{
-        width: 50%;
-    }
-
-    .btn-delAssignment{
-        float: right;
-    } 
+        .mat-column-assignment_id{
+            width: 5%;
+        }
     
-    .btn-editAssignment{
-        float: left;
+        .mat-column-team{
+            width: 15%;
+        }
+    
+        .mat-column-pka_full_name{
+            width: 20%;
+        }
+    
+        .mat-column-postcode{
+            width: 10%;
+        }
+    
+        .mat-column-date{
+            width: 15%;
+        }
+    
+        .mat-column-address{
+            width: 35%;
+        }
+    }
+
+    @media (min-width: 1366px){
+        .mat-column-assignment_id{
+            width: 5%;
+        }
+    
+        .mat-column-team{
+            width: 10%;
+        }
+    
+        .mat-column-pka_full_name{
+            width: 15%;
+        }
+    
+        .mat-column-postcode{
+            width: 10%;
+        }
+    
+        .mat-column-date{
+            width: 10%;
+        }
+    
+        .mat-column-address{
+            width: 50%;
+        }
     }
 }
 

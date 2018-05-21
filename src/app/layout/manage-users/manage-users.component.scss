@@ -5,35 +5,62 @@
 .form-control[readonly]{
     background-color: #fff;
 }
+.tbl-userlst{
+    @media (min-width: 1024px){
+        .mat-cell, 
+        .mat-header-cell{
+           flex: unset;
+        }
 
-@media (min-width: 1366px){
-    .tbl-userlst .mat-cell, 
-    .tbl-userlst .mat-header-cell{
-        flex: unset;
+        .mat-column-user_id{
+            width: 5%;
+        }
+    
+        .mat-column-full_name{
+            width: 40%;
+        }
+    
+        .mat-column-ic_no{
+            width: 20%;
+        }
+    
+        .mat-column-usertype{
+            width: 10%;
+        }
+    
+        .mat-column-phone_no{
+            width: 15%;
+        }
+    
+        .mat-column-state{
+            width: 10%;
+        }
     }
 
-    .tbl-userlst .mat-column-user_id{
-        width: 5%;
-    }
-
-    .tbl-userlst .mat-column-full_name{
-        width: 55%;
-    }
-
-    .tbl-userlst .mat-column-ic_no{
-        width: 10%;
-    }
-
-    .tbl-userlst .mat-column-usertype{
-        width: 10%;
-    }
-
-    .tbl-userlst .mat-column-phone_no{
-        width: 10%;
-    }
-
-    .tbl-userlst .mat-column-state{
-        width: 10%;
+    @media (min-width: 1366px){
+        .mat-column-user_id{
+           width: 5%;
+        }
+   
+        .mat-column-full_name{
+           width: 55%;
+        }
+   
+        .mat-column-ic_no{
+           width: 10%;
+        }
+   
+        .mat-column-usertype{
+           width: 10%;
+        }
+   
+        .mat-column-phone_no{
+           width: 10%;
+        }
+   
+        .mat-column-state{
+           width: 10%;
+        }
     }
 }
 

@@ -1,13 +1,16 @@
-.tbl-userlst .mat-cell, 
-.tbl-userlst .mat-header-cell{
-    flex: unset;
-}
-
-.tbl-userlst .mat-column-user_id{
-    width: 10%;
-}
-
-.tbl-userlst .mat-column-full_name{
-    width: 90%;
+.tbl-userlst {
+    .mat-cell, 
+    .mat-header-cell{
+        flex: unset;
+    }
+    
+    .mat-column-user_id{
+        width: 10%;
+    }
+    
+    .mat-column-full_name{
+        width: 90%;
+    }
+    
 }
 

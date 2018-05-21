@@ -12,92 +12,86 @@
                 <div class="row">
                     <div class="col-lg-12 d-flex">
                         <div class="ml-auto row">
-                            <strong>ID:</strong>
-                            <span class="pl-3 pr-4">{{ ind.ind_id }}</span>
+                            ID: 
+                            <span class="text-secondary pl-3 pr-4">{{ ind.ind_id }}</span>
 
-                            <strong>Created by:</strong>
-                            <span class="pl-3 pr-4">{{ ind.created_by }}</span>
+                            Created by: 
+                            <span class="text-secondary pl-3 pr-4">{{ ind.created_by }}</span>
         
-                            <strong>Date:  </strong>
-                            <span class="pl-3 pr-3">{{ ind.issue_date }}</span>
+                            Date: 
+                            <span class="text-secondary pl-3 pr-3">{{ ind.issue_date }}</span>
                         </div>
                     </div>
                 </div>
 
-                <hr>
-
                 <div class="row">
-                    <div class="col-md-6 text-wrap">
+                    <div class="col-lg-12 col-xl-6 pt-5 text-wrap">
                         <div class="row">
                             <div class="col-lg-12">
-                                <h5>
-                                    <strong>Premise Details</strong>
-                                </h5>
+                                <h5><strong>Premise Details</strong></h5>
                             </div>
                         </div>
-
-                        <hr>
 
                         <div class="row pt-2">
                             <div class="col-lg-12 col-xl-6 d-flex align-items-center" *ngIf="!ind.area_inspection">
                                 <input type="checkbox" disabled="disabled" [checked]="ind.p_close">
-                                <strong class="pl-3"> Premise Close</strong>
+                                <span class="pl-3"> Premise Close</span>
                             </div>
                             <div class="col-lg-12 col-xl-6 d-flex align-items-center" *ngIf="!ind.area_inspection">
                                 <input type="checkbox" disabled="disabled" [checked]="ind.p_empty">
-                                <strong class="pl-3"> Premise Empty</strong>
+                                <span class="pl-3"> Premise Empty</span>
                             </div>
                             <div class="col-lg-12 d-flex align-items-center" *ngIf="!ind.area_inspection">
                                 <input type="checkbox" disabled="disabled" [checked]="ind.p_cooperation">
-                                <strong class="pl-3"> Cooperation</strong>
+                                <span class="pl-3"> Cooperation</span>
                             </div>
                             <div class="col-lg-12 d-flex align-items-center" *ngIf="ind.area_inspection">
                                 <input type="checkbox" disabled="disabled" [checked]="ind.area_inspection">
-                                <strong class="pl-3"> Area Inspection</strong>
+                                <span class="pl-3"> Area Inspection</span>
                             </div>
                         </div>
 
                         <div class="row pt-4">
                             <div class="col-lg-4">
-                                <strong>{{ ind.area_inspection ? 'Area Name' : 'Full Name'}}</strong>
+                                {{ ind.area_inspection ? 'Area Name' : 'Full Name'}}
                             </div>
                             <div class="col-lg-8">
-                                {{ ind.po_name }}
+                                <span class="text-secondary">{{ ind.po_name == '' ? '-' : ind.po_name }}</span>
                             </div>
                         </div>
 
                         <div class="row pt-2" *ngIf="!ind.area_inspection">
                             <div class="col-lg-4">
-                                <strong>IC. Number</strong>
+                                IC. Number
                             </div>
                             <div class="col-lg-8">
-                                {{ ind.po_id }}
+                                <span class="text-secondary">{{ ind.po_id == '' ? '-' : ind.po_id }}</span>
                             </div>
                         </div>
 
                         <div class="row pt-2">
                             <div class="col-lg-4">
-                                <strong>Address</strong>
+                                Address
                             </div>
                             <div class="col-lg-8">
-                                {{ ind.p_shortAddr }}
+                                <span class="text-secondary">{{ ind.p_shortAddr }}</span>
                             </div>
                         </div>
 
                         <div class="row pt-2" *ngIf="!ind.area_inspection">
                             <div class="col-lg-4">
-                                <strong>No. of family members</strong>
+                                No. of family members
                             </div>
                             <div class="col-lg-8">
-                                {{ ind.no_familyMember }}
+                                <span class="text-secondary">{{ ind.no_familyMember }}</span>
                             </div>
                         </div>
                         <div class="row pt-2" *ngIf="!ind.area_inspection">
                             <div class="col-lg-4">
-                                <strong>No. of fever members</strong>
+                                No. of fever members
                             </div>
                             <div class="col-lg-8">
-                                {{ ind.no_fever }}
+                                <span class="text-secondary">{{ ind.no_fever }}</span>
                             </div>
                         </div>
 
@@ -109,45 +103,43 @@
                             </div>
                         </div>
 
-                        <hr>
-
                         <div class="row pt-2">
                             <div class="col-lg-4">
-                                <strong>Container Type</strong>
+                                Container Type
                             </div>
                             <div class="col-lg-8">
-                                {{ ind.container_type }}
+                                <span class="text-secondary">{{ ind.container_type == '' ? '-' : ind.container_type }}</span>
                             </div>
                         </div>
                         
                         <div class="row pt-2">
                             <div class="col-lg-4">
-                                <strong>Destroyed Breeding Area</strong>
+                                Destroyed Breeding Area
                             </div>
                             <div class="col-lg-8">
-                                {{ ind.act_destroy }}
+                                <span class="text-secondary">{{ ind.act_destroy }}</span>
                             </div>
                         </div>
 
                         <div class="row pt-2">
                             <div class="col-lg-4">
-                                <strong>Outside</strong>
+                                Outside
                             </div>
                             <div class="col-lg-8">
-                                {{ ind.no_out_breeding }}
+                                <span class="text-secondary">{{ ind.no_out_breeding }}</span>
                             </div>
                         </div>
                         <div class="row pt-2">
                             <div class="col-lg-4">
-                                <strong>Inside</strong>
+                                Inside
                             </div>
                             <div class="col-lg-8">
-                                {{ ind.no_in_breeding }}
+                                <span class="text-secondary">{{ ind.no_in_breeding }}</span>
                             </div>
                         </div>
 
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-lg-12 col-xl-6 pt-5">
                         <div class="row">
                             <div class="col-lg-12">
                                 <h5>
@@ -156,32 +148,30 @@
                             </div>
                         </div>
                         
-                        <hr>
-                        
                         <div class="row pt-2">
                             <div class="col-lg-4">
-                                <strong>Outside</strong>
+                                Outside
                             </div>
                             <div class="col-lg-8">
-                                {{ ind.no_pot_out_breeding }}
+                                <span class="text-secondary">{{ ind.no_pot_out_breeding }}</span>
                             </div>
                         </div>
 
                         <div class="row pt-2">                        
                             <div class="col-lg-4">
-                                <strong>Inside</strong>
+                                Inside
                             </div>
                             <div class="col-lg-8">
-                                {{ ind.no_pot_in_breeding }}
+                                <span class="text-secondary">{{ ind.no_pot_in_breeding }}</span>
                             </div>
                         </div>
 
                         <div class="row pt-2">                        
                             <div class="col-lg-4">
-                                <strong>Abating</strong>
+                                Abating
                             </div>
                             <div class="col-lg-8">
-                                {{ ind.abating_amount }} {{ ind.abating_measure_type == '0' ? 'gram' : 'ml' }}
+                                <span class="text-secondary">{{ ind.abating_amount }} {{ ind.abating_measure_type == '0' ? 'gram' : 'ml' }}</span>
                             </div>
                         </div>
 
@@ -193,33 +183,29 @@
                             </div>
                         </div>
 
-                        <hr>
-
-                        <div class="row pt-2">
+                        <div class="row pt-2 pb-5">
                             <div class="col-lg-12 d-flex align-items-center">
                                 <input type="checkbox" disabled="disabled" [checked]="ind.act_education">
-                                <strong class="pl-3"> Education</strong>
+                                <span class="pl-3"> Education</span>
                             </div>
                             <div class="col-lg-12 d-flex align-items-center">
                                 <input type="checkbox" disabled="disabled" [checked]="ind.act_pamphlet">
-                                <strong class="pl-3"> Pamphlet</strong>
+                                <span class="pl-3"> Pamphlet</span>
                             </div>
                         </div>
 
-                        <hr>
-
-                        <div class="row">
-                            <div class="mt-2 ml-3">
+                        <div class="row mt-2">
+                            <div class="ml-3">
                                 <button type="button" [class]="exhibitData ? 'btn btn-primary' : 'btn btn-outline-primary'" [disabled]="!exhibitData" (click)="openExhibitModal(modalExhibit)">
                                     <i class="fa fa-pencil"></i> Exhibit
                                 </button>
                             </div>
-                            <div class="mt-2 ml-3">
+                            <div class="ml-3">
                                 <button type="button" [class]="sek5Data ? 'btn btn-primary' : 'btn btn-outline-primary'" [disabled]="!sek5Data" (click)="openModal(modalSek5, null)">
                                     <i class="fa fa-pencil"></i> Seksyen 5
                                 </button>
                             </div>
-                            <div class="mt-2 ml-3">
+                            <div class="ml-3">
                                 <button type="button" [class]="sek8Data ? 'btn btn-primary' : 'btn btn-outline-primary'" [disabled]="!sek8Data" (click)="openModal(modalSek8, 'lg')">
                                     <i class="fa fa-pencil"></i> Seksyen 8
                                 </button>
@@ -230,10 +216,10 @@
             </div>
 
             <div class="card-footer">
-                <button type="button" class="btn btn-outline-primary mr-2" (click)="editBtn()">
+                <button type="button" class="btn btn-outline-primary mr-3" (click)="editBtn()">
                     <i class="fa fa-pencil"></i> Edit I&D
                 </button>
-                <button type="button" class="btn btn-outline-danger mr-2" (click)="deleteBtn()">
+                <button type="button" class="btn btn-outline-danger mr-3" (click)="deleteBtn()">
                     <i class="fa fa-pencil"></i> Delete I&D
                 </button>
                 <button class="btn btn-outline-secondary"
@@ -256,7 +242,7 @@
     </div>
     <div class="modal-body">
 
-        <div class="row">
+        <div class="row pt-2">
             <div class="col-lg-12">
                 <h5><strong>Premise Owner Details</strong></h5>
             </div>
@@ -271,19 +257,19 @@
 
         <div class="row pt-2">
             <div class="col-lg-4">
-                <strong>Full Name:</strong>
+                Full Name:
             </div>
             <div class="col-lg-8">
-                {{ exhibitData.exhibit.po_full_name }}
+                <span class="text-secondary">{{ exhibitData.exhibit.po_full_name == '' ? '-' : exhibitData.exhibit.po_full_name }}</span>
             </div>
         </div>
 
         <div class="row pt-2">
             <div class="col-lg-4">
-                <strong>IC. Number:</strong>
+                IC. Number:
             </div>
             <div class="col-lg-8">
-                {{ exhibitData.exhibit.po_ic_no }}
+                <span class="text-secondary">{{ exhibitData.exhibit.po_ic_no == '' ? '-' : exhibitData.exhibit.po_ic_no }}</span>
             </div>
         </div>
 
@@ -293,7 +279,7 @@
             </div>
         </div>
 
-        <div class="row mb-4">
+        <div class="row pb-4">
             <div class="col col-lg-12 pt-2">
                 <button type="button" class="btn btn-outline-primary" (click)="openFPModal(modalFloorPlan, 'lg')">
                     <i class="fa fa-pencil"></i> Floor Plan
@@ -310,12 +296,20 @@
                     <div class="row">
                         <div class="col-sm-8 align-self-center">
                             <div class="row">
-                                <div class="col-sm-3"><strong>Code</strong></div>
-                                <div class="col-sm-9">{{ item.code }}</div>
+                                <div class="col-sm-3">
+                                    Code
+                                </div>
+                                <div class="col-sm-9">
+                                    <span class="text-secondary">{{ item.code }}</span>
+                                </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-3"><strong>Type</strong></div>
-                                <div class="col-sm-9">{{ item.type }}</div>
+                                <div class="col-sm-3">
+                                    Type
+                                </div>
+                                <div class="col-sm-9">
+                                    <span class="text-secondary">{{ item.type }}</span>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-4 d-flex justify-content-around">
@@ -537,26 +531,26 @@
         </div>
         <div class="row pt-2">
             <div class="col-lg-4">
-                <strong>Date:</strong>
+                Date:
             </div>
             <div class="col-lg-8">
-                {{ this.general.toDateDisplayFormat(sek5Data.date) }}
+                <span class="text-secondary">{{ this.general.toDateDisplayFormat(sek5Data.date) }}</span>
             </div>
         </div>
         <div class="row pt-2">
             <div class="col-lg-4">
-                <strong>Time:</strong>
+                Time:
             </div>
             <div class="col-lg-8">
-                {{ sek5Data.time }}
+                <span class="text-secondary">{{ sek5Data.time }}</span>
             </div>
         </div>
         <div class="row pt-2 pb-3 text-wrap">
             <div class="col-lg-4">
-                <strong>Remark:</strong>
+                Remark:
             </div>
             <div class="col-lg-8">
-                {{ sek5Data.remark }}
+                <span class="text-secondary">{{ sek5Data.remark }}</span>
             </div>
         </div>
     </div>

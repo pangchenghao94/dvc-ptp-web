@@ -8,66 +8,66 @@
                 <div class="row">
                     <div class="col-lg-6" style="word-wrap:break-word">
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-12 col-xl-4">
                                 <strong>Assignment ID</strong>
                             </div>
-                            <div class="col-lg-8">
+                            <div class="col-lg-12 col-xl-8">
                                 {{ assignment.assignment_id }}
                             </div>
                         </div>
                         <div class="row" [style.padding-top]="'15px'">
-                            <div class="col-lg-4">
+                            <div class="col-lg-12 col-xl-4">
                                 <strong>Team</strong>
                             </div>
-                            <div class="col-lg-8">
+                            <div class="col-lg-12 col-xl-8">
                                 {{ assignment.team }}
                             </div>
                         </div>
                         <div class="row" [style.padding-top]="'15px'">
-                            <div class="col-lg-4">
+                            <div class="col-lg-12 col-xl-4">
                                 <strong>PKA (Pembantu Kesihatan Am)</strong>
                             </div>
-                            <div class="col-lg-8">
+                            <div class="col-lg-12 col-xl-8">
                                 {{ assignment.pka_full_name }}
                             </div>
                         </div>
                         <div class="row" [style.padding-top]="'15px'">
-                            <div class="col-lg-4">
+                            <div class="col-lg-12 col-xl-4">
                                 <strong>PA (Pembantu Am)</strong>
                             </div>
-                            <div class="col-lg-8">
+                            <div class="col-lg-12 col-xl-8">
                                 {{ assignment.pa_full_name }}
                             </div>
                         </div>
                         <div class="row" [style.padding-top]="'15px'">
-                            <div class="col-lg-4">
+                            <div class="col-lg-12 col-xl-4">
                                 <strong>Date</strong>
                             </div>
-                            <div class="col-lg-8">
+                            <div class="col-lg-12 col-xl-8">
                                 {{ assignment.date }}
                             </div>
                         </div>
                         <div class="row" [style.padding-top]="'15px'">
-                            <div class="col-lg-4">
+                            <div class="col-lg-12 col-xl-4">
                                 <strong>Created by</strong>
                             </div>
-                            <div class="col-lg-8">
+                            <div class="col-lg-12 col-xl-8">
                                 {{ assignment.createdBy }}
                             </div>
                         </div>
                         <div class="row" [style.padding-top]="'15px'">
-                            <div class="col-lg-4">
+                            <div class="col-lg-12 col-xl-4">
                                 <strong>Address</strong>
                             </div>
-                            <div class="col-lg-8">
+                            <div class="col-lg-12 col-xl-8">
                                 {{ assignment.address }}
                             </div>
                         </div>
                         <div class="row" [style.padding]="'15px 0 15px 0'">
-                            <div class="col-lg-4">
+                            <div class="col-lg-12 col-xl-4">
                                 <strong>Remark</strong>
                             </div>
-                            <div class="col-lg-8">
+                            <div class="col-lg-12 col-xl-8">
                                 {{ assignment.remark }}
                             </div>
                         </div>
@@ -98,18 +98,16 @@
             </div>
 
             <div class="card-footer">
-                <div class="col col-lg-12">
-                    <button type="button" class="btn btn-outline-primary mr-3" (click)="editBtn()">
-                        <i class="fa fa-pencil"></i> Edit Assignment
-                    </button>
-                    <button type="button" class="btn btn-outline-danger mr-3" (click)="deleteBtn()">
-                        <i class="fa fa-pencil"></i> Delete Assignment
-                    </button>
-                    <button class="btn btn-outline-secondary"
-                        [routerLink]="['/managePDK']" [routerLinkActive]="['router-link-active']">
-                        Cancel
-                    </button>
-                </div>
+                <button type="button" class="btn btn-outline-primary mr-3" (click)="editBtn()">
+                    <i class="fa fa-pencil"></i> Edit Assignment
+                </button>
+                <button type="button" class="btn btn-outline-danger mr-3" (click)="deleteBtn()">
+                    <i class="fa fa-pencil"></i> Delete Assignment
+                </button>
+                <button class="btn btn-outline-secondary"
+                    [routerLink]="['/managePDK']" [routerLinkActive]="['router-link-active']">
+                    Cancel
+                </button>
             </div>
         </div>
     </div>

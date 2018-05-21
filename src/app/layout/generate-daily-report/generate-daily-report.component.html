@@ -11,19 +11,6 @@
             <div class="card-header">Generate Daily Report</div>
             
             <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col">
-                        <div class="input-group" style="float: right; width: 250px;">
-                            <input ngbDatepicker class="form-control" placeholder="Select date" [(ngModel)]="reportDate" #dp="ngbDatepicker" (click)="dp.toggle()">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" (click)="filterDate()" type="button"
-                                    ngbTooltip="Select report date">
-                                    <i class="fa fa-refresh" style="cursor: pointer"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-xl-6">
                         <form [formGroup]="dailyReportForm" novalidate>
@@ -98,6 +85,19 @@
                         </form>
                     </div>
                     <div class="col-xl-6">
+                        <div class="form-group">
+                            <label for="txtDate">Daily Report Date</label>
+                            <div class="input-group">
+                                <input ngbDatepicker class="form-control" placeholder="Select date" [(ngModel)]="reportDate" #dp="ngbDatepicker" (click)="dp.toggle()">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" (click)="filterDate()" type="button"
+                                        ngbTooltip="Select report date">
+                                        <i class="fa fa-refresh" style="cursor: pointer"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                         <mat-form-field>
                             <mat-select placeholder="Select the assignments for the daily report"
                                 [(value)]="selectAssignment" (selectionChange)="selectingAssignment()"
@@ -129,7 +129,7 @@
             </div>
 
             <div class="card-footer">
-                <button type="button" class="btn btn-outline-primary" (click)="generateReport()">
+                <button type="button" class="btn btn-outline-primary mr-3" (click)="generateReport()">
                     <i class="fa fa-download pr-2"></i> Generate & Download Report
                 </button>
                 <button type="button" class="btn btn-outline-secondary"

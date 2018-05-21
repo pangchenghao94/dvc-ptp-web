@@ -81,7 +81,7 @@ export class AddEditPDKAssignmentComponent implements OnInit {
             remark: '',
             selectUserCtrl: '',
             pka: ['', Validators.required],
-            pa: ''
+            pa: ['', Validators.required]
 
         });
 
@@ -140,8 +140,6 @@ export class AddEditPDKAssignmentComponent implements OnInit {
                         this.assignment.pa = assignmentData.data.pa;
                         this.assignment.pa_full_name = assignmentData.data.pa_full_name;                        
 
-                        console.log(assignmentData);
-                        console.log(this.assignment);
                         let temp_pa: User = new User();
                         temp_pa.user_id = this.assignment.pa;
                         temp_pa.full_name = this.assignment.pa_full_name;

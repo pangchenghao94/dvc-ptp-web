@@ -21,10 +21,8 @@
                         </div>
                     </div>
 
-                    <hr>
-
-                    <div class="row">
-                        <div class="col-md-6">
+                    <div class="row pt-3">
+                        <div class="col-lg-12 col-xl-6">
 
                             <div class="row pt-3 pb-3">
                                 <div class="col">
@@ -101,7 +99,7 @@
 
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-lg-12 col-xl-6">
 
                             <div class="row pt-3 pb-3">
                                 <div class="col">
@@ -212,18 +210,18 @@
 
                             <hr>
 
-                            <div class="row">
-                                <div class="mt-2 ml-3">
+                            <div class="row mt-2">
+                                <div class="ml-3">
                                     <button type="button" [class]="exhibitData ? 'btn btn-primary' : 'btn btn-outline-primary'" [disabled]="!exhibitData" (click)="openModal(modalExhibit, 'lg')">
                                         <i class="fa fa-pencil"></i> Exhibit
                                     </button>
                                 </div>
-                                <div class="mt-2 ml-3">
+                                <div class="ml-3">
                                     <button type="button" [class]="sek5Data ? 'btn btn-primary' : 'btn btn-outline-primary'" [disabled]="!sek5Data" (click)="openModal(modalSek5, null)">
                                         <i class="fa fa-pencil"></i> Seksyen 5
                                     </button>
                                 </div>
-                                <div class="mt-2 ml-3">
+                                <div class="ml-3">
                                     <button type="button" [class]="sek8Data ? 'btn btn-primary' : 'btn btn-outline-primary'" [disabled]="!sek8Data" (click)="openModal(modalSek8, 'lg')">
                                         <i class="fa fa-pencil"></i> Seksyen 8
                                     </button>
@@ -320,10 +318,13 @@
                         </button>
                     </div>
                 </div>
+            
+            </div>
 
+            <div class="col-md-6">
                 <form [formGroup]="exhibitForm"  (ngSubmit)="submitExhibitItem()" novalidate>
-    
-                    <div class="row pt-3">
+
+                    <div class="row pb-2">
                         <div class="col-lg-12">
                             <h5>
                                 <strong>Exhibit Details</strong>
@@ -384,8 +385,8 @@
                         </span>
                     </div>
 
-                    <div class="row">
-                        <div class="col-lg-12">
+                    <div class="row pt-2">
+                        <div class="col-lg-12 text-center">
                             <button type="submit" class="btn btn-outline-primary" [disabled]="!exhibitForm.valid">
                                 <i class="fa fa-plus"></i> Add Exhibit Item
                             </button>
@@ -393,55 +394,56 @@
                     </div>
 
                 </form>
-            
+            </div>            
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h5>
+                    <strong>Exhibit Items</strong>
+                </h5>
             </div>
-
-            <div class="col-md-6">
-                
-                <div class="row pt-3">
-                    <div class="col-lg-12">
-                        <h5>
-                            <strong>Exhibit Items</strong>
-                        </h5>
-                    </div>
-                </div>
-
-                <div class="col-sm-12 mt-3 pl-0 pr-0" *ngFor="let item of exhibitData.exhibitItems">
-                    <div class="card bg-light mb-3">
-                        <div class="card-body">
-                            
-                            <button type="button" class="custom-fab" (click)="removeExhibitItem(item.fileName)">
-                                <i class="fa fa-trash-o"></i>
-                            </button>
-                            
-                            <div class="row">
-                                <div class="col-sm-8 align-self-center">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <strong>Code:</strong>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-12">{{ item.code }}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <strong>Type:</strong>
-                                        </div>
-                                    </div>
-                                    <div class="row">                                    
-                                        <div class="col-sm-9">{{ item.type }}</div>
+            <div class="col-sm-6 mt-3" *ngFor="let item of exhibitData.exhibitItems">
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        
+                        <button type="button" class="custom-fab" (click)="removeExhibitItem(item.fileName)">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
+                        
+                        <div class="row">
+                            <div class="col-sm-8 align-self-center">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        Code:
                                     </div>
                                 </div>
-                                <div class="col-sm-4 d-flex justify-content-around">
-                                    <img class="img-thumbnail img-exhibitItem" style="width: 100px; height: 100px;" (click)="openExhibitItemModal(modalExhibitItem, item.fileName)"
-                                        [src]="item.fileName" alt="">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <span class="text-secondary">{{ item.code }}</span>
+                                    </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        Type:
+                                    </div>
+                                </div>
+                                <div class="row">                                    
+                                    <div class="col-sm-9">
+                                        <span class="text-secondary">{{ item.type }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 d-flex justify-content-around">
+                                <img class="img-thumbnail img-exhibitItem" style="width: 100px; height: 100px;" (click)="openExhibitItemModal(modalExhibitItem, item.fileName)"
+                                    [src]="item.fileName" alt="">
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>            
+            </div>
         </div>
     </div>
 </ng-template>

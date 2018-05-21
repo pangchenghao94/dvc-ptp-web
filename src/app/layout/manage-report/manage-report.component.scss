@@ -6,3 +6,46 @@
     border: none;
     background-color: transparent;
 }
+
+.tbl-manage-report {
+    @media (min-width: 1024px){
+        .mat-cell, 
+        .mat-header-cell{
+            flex: unset;
+        }
+
+        .mat-column-daily_report_id{
+            width: 10%;
+        }
+    
+        .mat-column-created_by{
+            width: 40%;
+        }
+    
+        .mat-column-created_date{
+            width: 30%;
+        }
+    
+        .mat-column-action{
+            width: 20%;
+        }
+    }
+
+    @media (min-width: 1366px){
+        .mat-column-daily_report_id{
+            width: 5%;
+        }
+    
+        .mat-column-created_by{
+            width: 60%;
+        }
+    
+        .mat-column-created_date{
+            width: 20%;
+        }
+    
+        .mat-column-action{
+            width: 15%;
+        }
+    }
+}
